@@ -1,0 +1,2349 @@
+<!DOCTYPE html>
+<html>
+		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+
+	<head>
+
+
+		<title>SLINKYJS</title>
+		
+		<!-- <link type="text/css" rel="stylesheet" href="style.css"/> -->
+
+		<link href='http://fonts.googleapis.com/css?family=Quicksand:100,400' rel='stylesheet' type='text/css'>
+	 <!--	
+		<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js#startInNewWindow=false,startOpened=false,enablePersistent=false"></script>
+		-->
+		<script type="text/javascript" src="js/jquery-min.js"></script>
+		<script type="text/javascript" src="js/hammer.js"></script>
+		<script type="text/javascript" src="js/jsBezier-0.6.js"></script>
+
+		<script type="text/javascript">
+			//infamous RAF shim
+			(function() {
+					var lastTime = 0;
+					var vendors = ['ms', 'moz', 'webkit', 'o'];
+					for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+							window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+							window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+					}
+	
+					if (!window.requestAnimationFrame)
+							window.requestAnimationFrame = function(callback, element) {
+									var currTime = new Date().getTime();
+									var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+									var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+										timeToCall);
+									lastTime = currTime + timeToCall;
+									return id;
+							};
+	
+					if (!window.cancelAnimationFrame)
+							window.cancelAnimationFrame = function(id) {
+									clearTimeout(id);
+							};
+			}());
+		</script>
+		
+		
+		
+		
+		
+		
+		<script type="text/javascript">	
+				u=console
+				
+				function rnd(from,to){
+				    return Math.floor(Math.random()*(to-from+1)+from);
+				}
+				
+				var data = null;
+				function getArtData(cb){
+					$.getJSON('js/testImageData.json',function(d){
+						if(cb)cb(d);
+					})
+				}
+				
+				
+				function imageLoaded(e){
+					$(e).addClass('loaded');
+					setTimeout(function(){$(e).parents('.gridBox').addClass('loaded')},1500);
+				}
+				
+		</script>
+
+
+		
+		
+		<script type="text/javascript">
+			
+
+
+			var Slinky = function(options){
+				var that = this;
+				
+				
+				var Animator = function(options) {
+					if(!options)options={};
+					
+					var parent = options.parent;
+					
+					this.resetAnimation = function() {
+						this.easingCurve = options.easingCurve
+						this.easeToDuration = options.easeTime||500;//ms
+						this.isEasing = false;
+						this.activeDuration = 0;
+						this.easingProgress = this.activeDuration;
+						this.easeFactor = 0;
+						this.easingStartTime = 0;
+						this.easeToStart = 0;
+						this.easeToDiff = 0;
+						options.parent.isEasing = false;
+					}//resetAnimation
+					
+					
+					this.animateFrTo = function(from,to,ms,eFn) {
+					
+						ms = (ms==undefined)?this.easeToDuration:ms;
+						//ms = (parent.getLayoutIsXing())?parent.getLayoutXingMs():ms;
+						if(eFn)
+							this.easingCurve = eFn;
+						
+						var mTime = ms;// * f;
+						var d = from-to;
+
+						this.easeToDiff = -1*(d);//distance between start & end
+							
+						this.isEasing = true;
+						this.activeDuration=mTime;
+						this.easingStartTime = new Date();
+						this.easingProgress=0;
+						options.parent.isEasing = true;
+					}//animateFrTo
+					
+					
+					this.getNextFrameDiff = function(){
+						//if we are not done easing then we are still easing
+						var isProgressing = this.easingProgress < this.activeDuration;
+												
+						if(isProgressing){
+							//increment easing progress by the amount of time that has passed
+							this.easingProgress = new Date() - this.easingStartTime;					
+							this.easeFactor = this.easingCurve(null,this.easingProgress,0,1,this.activeDuration);//if g_easingProgress == g_activeDuration then there will be no easing effect (i.e. x will be set to x * 1)
+						}else{
+							this.resetAnimation();//reset easing
+						}
+						
+						var m = this.easeToDiff*(1-this.easeFactor);						
+						
+						return m;
+						
+					}//nextFrame
+					
+					this.resetAnimation();
+					
+					return {
+						isEasing : function(){return this.isEasing},
+						resetAnimation: this.resetAnimation,
+						animateFrTo: this.animateFrTo,
+						getNextFrameDiff: this.getNextFrameDiff
+					}
+					
+					
+				}//Animator
+
+
+
+				
+				var Box = function (grid) {
+					
+					this.parent = grid;
+					
+					this.ezEnabled = function(){return this.parent.itemEasing;}
+					this.ezOptions = this.parent.options.itemEasingParams;
+					this.doPreloading = this.parent.options.itemPreloading;
+					this.getlayoutXansEasing = function(){return this.parent.layoutXansEasing;}
+					this.getLayoutIsXing = function(){return this.parent.layoutIsXing;}
+					this.getLayoutXingMs = function(){return this.parent.layoutXansMs;}
+					//this.setSurfaceMap(this.parent.options.surfaceMap);
+					//this.surfaceMap = this.parent.surfaceMap;
+
+					this.x = this.y = 0;//init these -- incase needed prior to first stashPosition() 
+					this.dims = [0,0];
+					this.outerDims = [0,0];
+					
+					this.staticAxis = 0;
+					this.headPointPos = [0,0];
+					this.tailPointPos = [0,0];
+					this.pPos = [0,0];//paint position
+					this.prevObj = null;
+					this.nextObj = null;
+					
+					this.targetPaintPos = [0,0];
+					this.currentPaintPos = [0,0];
+					this.targetXY 	= [0,0];
+					this.currentXY 	= [0,0];
+					this.sizeRatio = 0;
+					this.displayClass	= '';
+					
+					this.isOnScreen = false;
+					this.isLoaded = false;
+
+					
+					//this.contentObj = {};//init to {}
+					this.ani_si = new Animator({easingCurve:easeOutCubic,parent:this});
+					this.ani_si_= new Animator({easingCurve:easeOutCubic,parent:this});					
+					
+					this.model = {};
+					
+					this.setModel = function(obj) {
+						this.model = obj;
+					}
+
+					this.e = document.createElement('div');
+					this.e.innerHTML = '<div class="boxLabel">X</div><img class="moneyShot" onload="imageLoaded(this)" src=""/>';
+					this.e.style.display='none';
+					this.$e = $(this.e);
+					this.$moneyShot = $('.moneyShot',this.$e);//.getElementsByTagName('img')[0]
+					
+					//this.$moneyShot.css({'width':this.w,'height':this.h})
+					
+					this.$e.data('model',this);
+					
+					this.$e.addClass('gridBox');
+					this.$c = $('.boxLabel',this.e);
+
+					//this.resetItemEasing();
+
+					grid.e.appendChild(this.e);
+				
+				};// Box
+				
+					
+				Box.prototype.updateContent = function(){
+					if(true){
+						//push mapped index value into DOM
+						this.$c.html( 
+							this.index
+							//+ "<br/>" + Math.round(this.currentXY[0])+':'+Math.round(this.targetXY[0])
+							//+ "<br/>" + Math.round(this.x)+':'+Math.round(this.y)
+							//+ "<br/>diff: " + Math.round(b.easeToDiff)
+							//+ "<br/>" + Math.round(this.sizeRatio*1000)/1000
+							+ "<br/>" + this.isOnSaEvt
+							+ "<br/>" + this.saEvtDistPercent
+							+ "<br/>" + this.waves.headRamp.toFixed(3)
+
+							//+ "<br/>" + this.displayClass 
+							
+						);
+						//this.$dbug.append("====>");
+					}
+				}//end updateContent()
+				
+				Box.prototype.setDimensions = function( w, h ) {
+					this.e.style.width = w + 'px';
+					this.e.style.height = h + 'px';
+					this.dims[0] = this.width = this.w = w;
+					this.dims[1] = this.height = this.h = h;
+					this.sizeRatio = h/w;
+					this.displayClass = this.getDisplayClass(this.sizeRatio);
+					this.$moneyShot.css({'width':this.w,'height':this.h})
+				}
+				
+				Box.prototype.getDisplayClass = function(ratio){
+					if(ratio > 1.1){
+						return 'portrait';
+					}else if(ratio < .9){
+						return 'landscape';
+					}else{
+						return 'square';
+					}
+				}
+				
+				//Box.prototype.setSurfaceMap = function(fn){
+				//	Box.prototype.surfaceMap = fn;
+				//}
+				//Box.prototype.surfaceMap = function(){return null};
+				
+				Box.prototype.paintToSurfaceMap = function(x,y){
+					this.parent.surfaceMap.call(this,x,y);
+				};
+				
+				Box.prototype.remove = function() {
+					grid.e.removeChild( this.e );
+				}
+				
+				Box.prototype.rotate = function( str ) {
+					this.e.style.webkitTransform = this.e.style.MozTransform =
+					this.e.style.OTransform = this.e.style.transform = 'rotate('+str+')';
+				}
+
+				Box.prototype.doOnScreen = function(torf) {
+					if(torf!=undefined && this.isOnScreen !== torf){
+						this.isOnScreen=torf;
+						if(torf && !this.isLoaded)this.$moneyShot.attr('src',this.model.imgUrl);
+						this.e.style.display=(torf)?'block':'none';
+						if(!torf)this.parent.setLastOffScreen(this);
+						this.isLoaded = true;//one could argue it might be better to call this after the DOM e load event. but let's see if we like this...
+					}
+					return this.isOnScreen;
+				}
+				
+				Box.prototype.setWaveforms = function(o) {
+					this.waves = o;
+				}
+				
+				
+				Box.prototype.getSaEvtStats = function(){
+					var 
+						si=this.parent.si, 
+						pPos = this.pPos[si],
+						ctr = pPos + this.outerDims[si]*.5,
+						saEvtPos = this.parent.saEventPos,
+						d = ctr - saEvtPos;
+					
+					return {
+						d:d,
+						dPercent:d/this.parent.gridDims[si],
+						isOnEvtPos:(saEvtPos >= pPos && saEvtPos <= pPos + this.outerDims[si])?true:false
+					}
+				}
+				
+				
+				
+				/**
+				* slinky is based on layouts that are [horizontally|vertically] offset by a master scroll value
+				* as the master scroll value changes, each box item is assigned an updated position
+				* each box updates its own x&y position through setAbsPos()
+				* if item easing is enabled position updating happens over time
+				*
+				* @method setAbsPos
+				* @param x - x value in absolute space
+				* @param y - y value in absolute space
+				* 
+				*/
+				
+				
+				Box.prototype.setAbsPos = function( x, y ) {
+					
+					
+					//if this is the last selected item then disable easing
+					if(!this.ezEnabled() && !this.getLayoutIsXing()){
+
+						this.currentXY[0] = x;//+5;//this creates a little jump ideally to make you feel like you just put something down.  Kinda jumpy tho.  Would be good to tune this a little.
+						this.x = x;
+						this.currentXY[1] = y;
+						this.y = y;
+						
+						return
+					}
+					
+					
+					var isOnSaEvt = this.isOnSaEvt;
+
+					var stats = this.getSaEvtStats();
+					this.isOnSaEvt = stats.isOnEvtPos;
+					this.saEvtDistance = stats.d;
+					this.saEvtDistPercent = stats.dPercent;					
+					
+					var touchRatio = stats.dPercent;
+					var trThresh = Math.abs(touchRatio) < .09;
+					
+					//1-easeOutQuint_t(this.parent.easingPercent);
+					var
+						synchThresh = 5 * (1-this.parent.easingPercent), //in px. if delta > synchThresh then isSynchThreshTrig = 1 (else zero)
+						si = this.parent.si, //active scroll index cache
+						si_ = this.parent.si_, //active scroll index inverted cache
+						axisArg = (si)?y:x,//si axis value
+						axisArg_ = (si_)?y:x,//si_ axis value
+												
+						isSynchThreshTrig = (
+							axisArg > this.targetXY[si] + synchThresh 
+							|| axisArg < this.targetXY[si] - synchThresh
+							|| trThresh
+						)?1:0,
+						
+						isSynchThreshTrig_ = (
+							axisArg_ > this.targetXY[si_] + synchThresh 
+							|| axisArg_ < this.targetXY[si_] - synchThresh
+							|| trThresh
+						)?1:0;
+						
+			
+					//=====EASING====
+					
+					
+					
+					//if there is a new target value on si or si_ then reset easing to new location
+					if(
+						(axisArg!=this.targetXY[si] && isSynchThreshTrig)
+						|| (axisArg_!=this.targetXY[si_] && isSynchThreshTrig_)
+					){
+						//go ahead and update the new x&y target
+						this.targetXY = [x,y];
+
+						//set ease type and time
+						var easeCurve, easeTime;
+						
+						if(this.getLayoutIsXing()){
+							//if we are in a (potentially big) grid layout state change
+							easeCurve = this.getlayoutXansEasing();
+							easeTime = this.getLayoutXingMs();
+						}else if(this.parent.isTouching){
+							//or one of the boxes is being directly manipulated
+							easeCurve = this.ezOptions.touchCurve
+							easeTime = this.ezOptions.easeTime;
+						}else{
+							//or we are in a normal state traveling to our target position
+							easeCurve = this.ezOptions.swipeCurve;
+							easeTime = this.ezOptions.easeTime;
+						}
+						
+						
+						//initalize if we do not have credible runtime values
+						if(this.currentXY[0]==0 && this.currentXY[1]==0){
+							this.currentXY[0]=x;
+							this.currentXY[1]=y;
+						}
+						
+						
+						//set or reset the animation program for each axis
+						this.ani_si.animateFrTo(
+							this.currentXY[si],
+							this.targetXY[si],
+							easeTime,
+							easeCurve
+						);
+						this.ani_si_.animateFrTo(
+							this.currentXY[si_],
+							this.targetXY[si_],
+							easeTime,
+							easeCurve
+						);
+						
+						
+					}//end if
+					
+
+					// m is the current pixel-distance between the current x|y value and the target value
+					var m = this.ani_si.getNextFrameDiff();
+					//if(this.isEasingTo){
+					if(Math.abs(m)>.001){
+						this.currentXY[si]=this.targetXY[si] - m;
+					}else{
+						this.currentXY[si]=this.targetXY[si];
+					}
+
+					var m_ = this.ani_si_.getNextFrameDiff();
+					if(Math.abs(m_)>.001){
+						this.currentXY[si_]=this.targetXY[si_] - m;
+					}else{
+						this.currentXY[si_]=this.targetXY[si_];
+					}
+
+
+					//====SPRING LIMITS=====
+					var _x = Math.min(Math.abs(touchRatio),1);
+					
+					var maxMove = 200;
+					
+					var maxSi = this.targetXY[si] + (maxMove * _x);
+					var minSi = this.targetXY[si] - (maxMove * _x);
+					
+					var maxSi_ = this.targetXY[si_] + (maxMove * _x);
+					var minSi_ = this.targetXY[si_] - (maxMove * _x);
+
+					
+					if(this.currentXY[si] > maxSi){
+						this.currentXY[si] = maxSi;
+					}
+					
+					if(this.currentXY[si] < minSi){
+						this.currentXY[si] = minSi;
+					}
+
+
+					
+					if(this.currentXY[si_] > maxSi_){
+						this.currentXY[si_] = maxSi_;
+					}
+					
+					if(this.currentXY[si_] < minSi_){
+						this.currentXY[si_] = minSi_;
+					}
+					
+
+					this.x = this.currentXY[0];
+					this.y = this.currentXY[1];
+
+				};//setAbsPos()
+				
+				
+				
+				
+				
+				
+				
+				var Grid = function($e,options,parent){
+					var that = this;
+					
+					
+					
+					this.options = options;
+					this.$e = $e;
+					this.e 	= $e[0];
+					
+					this.onChangePub = options.onChangePub;
+					
+					this.surfaceMap = function(){};
+					this.setSurfaceMap = function(fn){
+						this.surfaceMap = fn;
+					}
+					this.setSurfaceMap(options.surfaceMap);
+					
+					this.boxCount = 0;
+					this.boxes 		= [];
+
+					this.boxAxisLengths = [0,0];
+					this.trailingEdgeScrollPos = null;
+					
+					//used to keep code readable -- used in axisOffset.x & axisOffset.y
+					this.scrollAxisOffset = 0;//options.scrollAxisOffset; //default value (may be modified by this.setScrollAxis())
+					this.staticAxisOffset = options.staticAxisOffset; //default value (may be modified by this.setScrollAxis())
+
+					
+					this.axisOffset = [];	
+					this.gridDims = [];
+					
+					this.scrollPos = 0;
+					this.absScrollPos = 0;
+					
+
+					var lastD = 0;
+					
+					this.setScrollPos = function(v,isDelta) {
+						this.scrollPos = (isDelta)?this.scrollPos+v:v ;
+					}
+					
+					this.setAbsScrollPos = function(v,isDelta) {
+						this.scrollPos = (isDelta)?this.scrollPos+v:this.firstItemPos+v ;
+						return this.scrollPos;
+					}
+					
+					
+					this.getScrollViewDim = function(){
+						return this.gridDims[this.si];
+					}
+					this.getScrollDimCenter = function(){
+						return this.gridDims[this.si]/2;
+					}
+					this.getScrollPos = function(){
+						return this.scrollPos;
+					}
+					this.saEventPos = null;
+					this.saEventPosProgress = 0;
+					
+					this.easingPercent = 100;
+					this.isEasing=false;
+					this.isEasingTo=false;
+					this.marginScrollWarp = false;
+					
+					this.easeToThresh = 2;//px
+					
+					this.easingProgress 	= 0;//time now - easingStartTime
+					this.easingStartTime 	= 0;//time when easing started
+					
+					this.schwingBackDuration = 500;
+					this.schwingEasingFn = easeOutCubic;
+					this.easingDuration 	= 1800;//in ms
+					this.easeToDuration 	= 300;//in ms
+					//this.bounceBackDuration = 200;//ms
+					this.activeDuration = this.easingDuration;
+					
+					this.easeToStart			= 0;
+					this.easeToEnd				= 0;
+					this.easeToDiff				= 0;
+					
+					this.dMomentum				= 100;
+					this.momentum					= 0;
+					this.momentumLimit		= 150;
+					
+					
+					this.mouseWheelReleaseTime = 100;//ms
+					
+					this.isLooping = (options.isLooping||false);
+					
+					this.isTouching = false;
+					
+					this.isInTailMargin = false;
+					this.isInHeadMargin = false;
+					
+					this.scrollDirection = 0;
+					
+					this.itemMargins = options.itemMargins;
+					this.itemConstraint 	= options.itemConstraint;//staticAxis value
+					this.staticAxisCount = options.staticAxisCount;//
+										
+					this.scrollMarginFactor = 10;//this multiplies the size of the first element used in scroll margin
+					this.scrollMargin =[0,0];//should be based on size of first & last element
+					this.firstItemPos = 0;//this is probably always tied the the active scroll margin and is equal to the width of the first item
+
+					this.frameCtr = 0;
+					this.frameRateLog = [];
+					this.frameRate = 0;
+					this.lastFrameTime = new Date;
+					this.trackFrameRate = function(){
+						var sum,now = new Date;
+						this.frameRateLog.push(now-this.lastFrameTime);
+						
+						if(this.frameRateLog.length>100)
+							this.frameRateLog.shift();
+							
+						sum = this.frameRateLog.reduce(function(memo,val){return memo + val})
+						this.frameRate = 1000/(sum/100);
+						this.lastFrameTime = now;
+					}
+					
+					
+					this.lastSPL = 0;//track when the last call to startPhysicsLoop
+					this.splReleaseTime = 500;//ms
+					
+					this.fastScrollThresh = 20;
+					this.isFastScroll = false;
+					
+					
+					this.itemEasing=options.itemEasing;
+					this.setItemEasing = function(torf){
+						this.itemEasing = (torf)?true:false;
+					}
+					
+					this.lastOffscreen = null;
+					this.setLastOffScreen = function(o){
+						if(o){
+							return this.lastOffscreen = o;
+						}
+					}
+					
+					this.isChildEasing = false;
+
+					this.lastSelected = null;
+					
+
+					this.getBoxFromIndex = function(i){
+						return this.boxes[i];
+					}
+					
+					//initalizes / resets the grid per scrollAxis 
+					this.setScrollAxis = function(axis){
+						
+						if(!axis)axis=this.sa;//if we are just refreshing window size then maintin scrollAxis state
+					
+						this.sa = (axis=='y')?'y':'x';//scrollAxis ['x'|'y']
+						this.SA = this.sa.toUpperCase()
+						this.sx = (this.sa=='x'); //scrolls X;  true if scrollAxis is X
+						this.si = (this.sx)?0:1; //scroll axis index value data_xy_matrix[0|1]
+						this.si_ = (!this.sx)?0:1; //scroll axis index value data_xy_matrix[0|1]
+						this.saDim = (this.sx)?'width':'height',//scroll axis dimention property
+						this.saDim_ = (!this.sx)?'width':'height',//scroll axis dimention property
+						
+						this.gridDims[0] = $e.width();
+						this.gridDims[1] = $e.height();
+						
+						//this.staticAxisOffset = this.gridDims[this.si_]/2;//this is currently pinned to middle of the static axis
+						//if(!this.sx)//scroll is y-axis
+							//this.staticAxisOffset = this.gridDims[this.si_]/2;
+						
+						this.axisOffset[0] = (this.sx)?this.scrollAxisOffset:this.staticAxisOffset;
+						this.axisOffset[1] = (!this.sx)?this.scrollAxisOffset:this.staticAxisOffset;
+						
+						if(this.scrollPos==undefined) this.scrollPos = 0;//this.gridDims[this.si];
+						this.lastScrollPos		= 0;
+						this.lastScrollDiff	= 0;
+						//this.touchMoveTension =1;//coefficient
+						
+						//bounce margin is the distance you can drag the item list beyond the head or tail of the item list.
+						this.bounceMarginDefault = 50;
+						this.bounceMargin = this.bounceMarginDefault;//this.gridDims[this.si]*.5;
+						
+						if(this.trailingEdgeScrollPos)
+							this.trailingEdgeScrollPos=this.getTrailingEdgeScrollPos();
+						
+						//this.page							= 0;
+					}
+					
+					this.lastUserEvent = {time:new Date,evt:'init'};
+					this.tagLastUserEvent = function(evt){
+						this.lastUserEvent = {time:new Date,evt:evt};
+					}
+					
+					//this primes easing config
+					this.resetEasing();
+					//initalize scroll axis params
+					this.setScrollAxis(options.scrollAxis)
+					
+				}//END grid object
+				
+				Grid.prototype.toggleScrollAxis = function(axis){
+					this.jumpToScrollProgress(0);
+					
+					if(!axis){
+						axis =(this.sa=='x')?'y':'x';
+					}
+					this.setScrollAxis(axis);
+					this.resetAllItemConstraints();
+					
+					
+					var that=this;
+					setTimeout(function(){
+							that.setLayout(basicGridLayout,{axes:that.staticAxisCount});
+				//		that.doTransition(basicGridLayout,{axes:2},0,easeOutElastic);
+					}, 100)
+					
+					this.setLayout(basicGridLayout,{axes:this.staticAxisCount});
+
+					//this.handleGesture({type:'touch'});
+					
+					//this.oneShotPaint();
+				}
+				
+				Grid.prototype.toggleIsLooping = function(torf){
+					if (typeof torf === "undefined") {
+						torf = !this.isLooping;
+					}
+					this.isLooping = torf;
+				}
+				
+
+				//Grid.prototype.setLastSelected = function(o) {
+					//var r = null;
+					//if(this.isInHeadMargin && !this.isTouching){
+						//r = this.getBoxFromIndex(0);
+					//}else if(this.isInTailMargin && !this.isTouching){
+						//r = this.getBoxFromIndex(this.boxes.length-1);
+					//} else if (o) {
+						//r = o;
+					//}
+					//if(r){
+						//return this.lastSelected = r;
+					//}
+				//}
+				
+
+				//evt can be the event object or an integer value (representing the scroll axis event position)
+				// this thing sets saEventPos & saEventPosProgress
+				
+				Grid.prototype.setLastTouchOrigin = function(evt){
+					
+					//run only if we're doing item-level slinky action
+					if(!this.itemEasing)return;
+					
+					//if we're in the margins don't change anything
+					if(this.marginScrollWarp)return;
+					
+					//if this doensnt have the data we need then no deal.
+					if(!evt) return;
+					
+					//get the scroll axis event position
+					var sa = (isNaN(evt))?this.getPageSA_evt(evt):evt;
+					
+					//relative screen position translated to absolute position
+					//var absSa = this.absScrollPos + sa;
+					//this.$dbug.append('ABS:'+absSa+'<br>')
+					
+					var saEventPosProgress = sa/this.gridDims[this.si];
+					//update the global value -- this may be moved to a different handler -- here for now.
+					this.saEventPos = sa;//  /this.gridDims[this.si];
+					this.saEventPosProgress = saEventPosProgress;
+					
+					
+					//ok we're good
+					return {saEventPos:sa,saEventPosProgress:saEventPosProgress};
+					
+				}//END this.setLastTouchOrigin()
+					/*
+					
+					//cache evt.target
+					var t = null;//evt.target;
+					
+					//see if our target has any gridbox data attached
+					var d = (t)? $(t).closest('.gridBox').data():null;
+					
+					if(d){//if we clicked on a model item then set call it selected.
+						return d.model;
+					}else{//otherwise link get the closest scroll axis item()
+						
+						//find our closest item
+						var l = this.boxes.length;
+						for(var i = 0;i<l;i++){
+							
+							var b = this.getBoxFromIndex(i);
+							
+							//if(!b.isOnScreen)
+								//continue;
+
+							if(absSa>=b.headPointPos[this.si]&&absSa<=b.tailPointPos[this.si]){
+								return b;
+							}
+						}//END for
+						//this.$dbug.append('FAILED WITH:'+sa+'<br>')
+						return null;
+					}
+					*/
+				
+
+
+
+
+				Grid.prototype.getScrollFrame = function(){
+					//increment frame counter
+					this.frameCtr++;
+					
+					//flag if we are in an Easing state
+					this.isEasing = this.easingProgress < this.activeDuration;
+					
+					//easeFactor is our cached easing factor -- default is ZERO (no effect)
+					var easeFactor = 0;
+					
+					
+					if(this.isEasing){
+						//increment easing progress by the amount of time that has passed
+						this.easingProgress = new Date() - this.easingStartTime;					
+						easeFactor = easingFn(null,this.easingProgress,0,1,this.activeDuration);//if g_easingProgress == g_activeDuration then there will be no easing effect (i.e. x will be set to x * 1)
+						this.easingPercent = Math.min(1,this.easingProgress/this.activeDuration);
+					}else{
+						//were done so stop calculating
+						this.resetEasing();//easingProgress overrides any easeTo requests (if still in progress)
+						
+						var now = new Date;
+						
+						//u.log(now - this.lastSPL+' <--> '+this.splReleaseTime)
+						
+						if(!this.isChildEasing && (now - this.lastSPL) > this.splReleaseTime){
+							this.stopPhysicsLoop();
+						}
+					}
+					
+					
+					
+					
+					//======we are either in an easeTo transition or we are just having momentum====
+					if(this.isEasingTo){
+						var m = this.easeToDiff*(1-easeFactor);
+						this.setScrollPos(this.easeToEnd - m);
+					}else{
+						var m = this.momentum*(1-easeFactor);
+						if(m!=0)
+							this.setScrollPos(this.scrollPos + m);
+					}
+					
+					
+					
+					
+					
+					//======margin cases======
+					this.isInTailMargin = false;
+					this.isInHeadMargin = false;
+					
+					var D = this.lastScrollPos - this.scrollPos;
+					this.lastScrollDiff = D;
+
+					
+					this.isFastScroll = (this.lastScrollDiff>-this.fastScrollThresh && this.lastScrollDiff < this.fastScrollThresh)?false:true;//low speed
+
+
+
+
+					//if we have scrolled to a position into the leading margin
+
+
+
+
+
+					if (!this.isLooping && this.scrollPos>this.firstItemPos){
+						this.isInHeadMargin = true;
+
+
+
+						//if we are moving deeper into the margin
+						if(D < 0){
+							
+							this.setLastTouchOrigin(0);
+							
+							this.marginScrollWarp = true;//add tension if we are moving deeper
+							
+							//shorten the ease time if we are in the middle of a big throw
+							if(this.isEasing && this.activeDuration - this.easingProgress > this.easeToDuration){
+								this.activeDuration = this.easeToDuration;
+							}
+							
+						}else if(D > 0){
+							this.marginScrollWarp = false;//remove tension if we are moving out of the margin
+						}
+
+						
+						//hit head on the wall point
+						if(this.scrollPos>this.bounceMargin+this.firstItemPos){
+							this.setScrollPos(this.bounceMargin+this.firstItemPos);
+							this.resetEasing();
+							//this.marginScrollWarp = false;
+						}
+						
+						//schwing back
+						if(!this.isTouching && !this.isEasing){
+							this.easeTo(
+								this.firstItemPos-1,
+								this.schwingBackDuration,//this.easeToDuration
+								this.schwingEasingFn
+							);//offset 1px because easing has rounding errors
+						}
+					}//end leading-margin handling
+					
+					
+					
+					//if we have scrolled to a position into the trailing margin
+					if (!this.isLooping && this.scrollPos<this.trailingEdgeScrollPos){
+						this.isInTailMargin = true;
+						//if we are moving deeper into trailing margin
+						
+						if(D > 0){
+							
+							this.setLastTouchOrigin(this.gridDims[this.si]);
+							this.marginScrollWarp = true;//this.isTouching;
+							
+							//shorten the ease time if we are in the middle of a big throw
+							if(this.activeDuration - this.easingProgress > this.easeToDuration){
+								this.activeDuration = this.easeToDuration;
+							}
+						}else if(D < 0){
+							this.marginScrollWarp = false;//remove tension if we are moving out of the margin
+						}
+
+						//hit tail on the wall point
+						if(this.scrollPos<this.trailingEdgeScrollPos-this.bounceMargin){
+							this.setScrollPos(this.trailingEdgeScrollPos-this.bounceMargin);
+							this.resetEasing();
+						}
+						
+						//schwing back
+						if(!this.isTouching && !this.isEasing){
+							this.easeTo(
+								this.trailingEdgeScrollPos+1,
+								this.schwingBackDuration,//this.easeToDuration
+								this.schwingEasingFn
+							);//offset 1px because easing has rounding errors
+						}
+						
+					}//end trailing margin handling
+					
+					
+					
+					//make sure to release tension if we are not in the margin
+					if(!this.isInHeadMargin && !this.isInTailMargin)
+						this.marginScrollWarp = false;
+					
+					
+					//warp head or tail margin space if touchMoveTension is active 
+					if(this.marginScrollWarp && !this.isEasing){
+						var ns = (this.scrollPos>0)?this.scrollPos-this.firstItemPos:-(this.scrollPos-this.trailingEdgeScrollPos);//normalized scroll
+						var r = Math.min(1,ns/this.bounceMargin);//percent of bounce margin traveled
+						var ez = Math.min(1,easeOutQuart(null,r,0,1,1));
+						this.setScrollPos(D*ez,true)
+					}
+					
+					
+					//this.page = -Math.floor(this.scrollPos/this.boxAxisLengths[this.si])-1;//TODO: REMOVE if page number is not needed.
+					
+					if(D>0){
+						this.scrollDirection=1;
+					}else if(D<0){
+						this.scrollDirection=-1;
+					}else{
+						this.scrollDirection=0;
+					}
+					
+					this.lastScrollPos = this.scrollPos;
+					
+					this.absScrollPos 		= -(this.scrollPos - this.firstItemPos);
+					this.scrollProgress 	= this.absScrollPos/this.absTrailingEdgeScrollPos;
+					
+					
+					this.trackFrameRate();
+					
+					if(this.onChangePub)this.onChangePub(this)
+					
+					return this.scrollPos;//warpedScrollPos;
+					
+				}// getScrollFrame()
+				
+
+				Grid.prototype.startPhysicsLoop = function(){
+					this.lastSPL = new Date;//track when the last call to startPhysicsLoop
+					if(!physicsLoopRAF){
+						var that = this;
+						physicsLoopRAF = requestAnimationFrame( function(){that.assignBoxObjects()} );
+					}
+				}
+				
+				Grid.prototype.stopPhysicsLoop = function(){
+					if(physicsLoopRAF){
+						cancelAnimationFrame(physicsLoopRAF);
+						physicsLoopRAF = null;
+					}
+				}
+		
+				Grid.prototype.oneShotPaint = function(ev){
+					//this.stopPhysicsLoop();
+					if(!ev) return;
+					
+					//TODO:  INSTEAD OF setLastTouchOrigin() we should use outerDims method to get all boxes at the saEventPos
+					this.setLastTouchOrigin(ev);//CHANGE THIS !!!
+					
+					if(this.isEasing){
+						this.resetEasing();
+					}
+					this.startPhysicsLoop();
+				}
+				
+				Grid.prototype.getPageSA_evt = function(evt){
+					//u.log(evt)
+					if(!evt || !evt.gesture) return null;
+					return evt.gesture.center['page'+this.SA];
+				}
+
+				Grid.prototype.jumpObjTo = function(p,obj,origin){//object or index of object
+					
+					this.resetEasing();
+					
+					if(!obj)obj=0;
+					
+					if(!isNaN(obj)){obj = this.getBoxFromIndex(obj);}
+					
+					if(p>this.firstItemPos)
+						p=this.firstItemPos;
+
+					if(p<this.trailingEdgeScrollPos)
+						p=this.trailingEdgeScrollPos;
+					
+					//if(!isNaN(origin)){}//if origin is an axis value
+					//u.log(origin)
+					var oPoint = obj.headPointPos[this.si]+obj.width*.5;
+					//this.$dbug.append(oPoint)
+					
+					//this.setScrollPos(p-oPoint+this.firstItemPos)
+					this.setAbsScrollPos(p-oPoint)
+					this.startPhysicsLoop();
+				}
+				
+				//@param p = 0..1
+				Grid.prototype.jumpToScrollProgress = function(p){
+					if(p>1)p=0.999;
+					if(p<0)p=0.001;
+					//u.log(this.trailingEdgeScrollPos*p)
+					//this.jumpObjTo(-this.absTrailingEdgeScrollPos*p)
+					this.setAbsScrollPos(-this.absTrailingEdgeScrollPos*p)
+					this.startPhysicsLoop();
+				}
+
+
+
+				Grid.prototype.easeTo = function(p,ms,eFn){
+					ms = (ms==undefined)?this.easeToDuration:ms;
+					
+					if(eFn)
+						easingFn = eFn;
+					
+					//var _p = Math.round(p), _sp = Math.round(this.scrollPos);
+					
+					if(p>this.firstItemPos)
+						p=this.firstItemPos;
+					
+										
+					if(p<this.trailingEdgeScrollPos)
+						p=this.trailingEdgeScrollPos;
+					
+					
+					//this.$dbug.html(r);
+					this.momentum = 0;
+					this.easingPercent = 0;
+
+					this.isEasingTo = true;
+					this.activeDuration=ms;
+					this.easingStartTime = new Date();
+					this.easingProgress=0;
+					this.easeToStart = this.scrollPos;
+					
+					this.easeToEnd = p;
+					this.easeToDiff = -1*(this.easeToStart-this.easeToEnd);//distance between start & end
+					//if(this.easeToDiff<this.easeToThresh && this.easeToDiff>-this.easeToThresh)
+					if(this.easeToDiff<2 && this.easeToDiff>-2)
+						return false;
+
+					this.startPhysicsLoop();
+				}
+				
+				Grid.prototype.resetEasing = function(){
+					//easingFn = easeInOutCubic;
+					easingFn = easeOutCubic;
+
+					this.easingProgress = this.activeDuration;
+					this.isEasingTo = false;
+					this.isEasing = false;
+					this.easeToDiff = 0;
+					this.momentum = 0;
+					
+					
+					//this.$dbug.html("resetEasing"+new Date().getMilliseconds())
+				}
+
+	
+				Grid.prototype.startEasing = function(m,ev){
+					if(this.isInHeadMargin || this.isInTailMargin){
+						return;
+					}
+					if(m!=undefined)this.momentum = Math.min( Math.max(m,-this.momentumLimit), this.momentumLimit);
+					this.isEasing = true;
+					this.easingStartTime = new Date();
+					this.easingProgress=0;
+					this.activeDuration=this.easingDuration;
+					
+					//this.setLastSelected(this.setLastTouchOrigin(ev));
+					
+					this.startPhysicsLoop();
+				}
+				
+							
+			/**
+			 * Add new data items to the view model. 
+			 * calls setDimentions() on each object
+			 * calls setLayout() after all items are processed
+			 *
+			 * @method initBoxes
+			 * @param {object} data - the data to add
+			 * @param {callback} adapter - a method that is called on each data iteration -- returns slinky formatted data object for each item node
+			 * @param {boolean} append - passing a true value will append new data to existing data set
+			 */
+			 
+				Grid.prototype.initBoxes = function(data,adapter,append){
+					//u.log('initBoxes vvv')
+					
+					//if we are not appending new items to our box list
+					//call remove on each item then clear our model array & set boxCount cache to zero
+					if(!append && data){
+						$.each(this.boxes,function(i,o){
+							o.remove();
+						})
+						this.boxes=[];
+						this.boxCount = 0;//cached value of this.boxes.length
+					}
+					
+					
+					var ptr = this.boxCount;//if we are appending data then ptr = the current starting point of the boxes array
+					var c = this.boxCount += data.length;//update our data count end point & cache the value to c for the for loop
+					
+					//loop through data and create new objects
+					for(var i = ptr; i < c; i++){
+						var b = new Box(this);
+						
+						b.index = i;//each box gets a serial id
+
+						b.setModel(new adapter(data[i]));//shim data through the adapter.  We will eventually want to add a DOM template configuration for this as well.
+						var scrollAxis_staticAxis_arr = this.getConstrainedItemDims(b);
+						
+						b.setDimensions( 
+							scrollAxis_staticAxis_arr[this.si],
+							scrollAxis_staticAxis_arr[this.si_]
+						);//setDimetions() takes w,h -- this is resolved vis-a-vis si & si_
+						
+						//updateContent() will initalize the content in the box object
+						//subsequent hits to updateContent should update content based on current positioning values
+							//b.updateContent() //TODO: this is disabled because we are going to do this after setting layout anyway -- we may want to run this here at some point if there are any interal dependant transformations -- but we dont have that need at this point.
+						
+						this.boxes.push(b);
+						
+					}//END for loop
+					this.setLayout(basicGridLayout,{axes:this.staticAxisCount});
+				}//Grid.prototype.initBoxes
+				
+				Grid.prototype.resetAllItemConstraints = function(){
+					var c = this.boxCount;
+					
+					for (var i = 0; i < c; i++) {
+						var b = this.boxes[i];
+					
+						var scrollAxis_staticAxis_arr = this.getConstrainedItemDims(b);
+						
+						b.setDimensions( 
+							scrollAxis_staticAxis_arr[this.si],
+							scrollAxis_staticAxis_arr[this.si_]
+						);//setDimetions() takes w,h -- this is resolved vis-a-vis si & si_
+					}	
+				}
+				
+				Grid.prototype.getConstrainedItemDims = function(b){
+						var 
+							staticAxisDim 		= this.itemConstraint, 									//cache the constraint value (for the static axis)
+							constraintRatio 	= staticAxisDim / b.model[this.saDim_], //how much we will enlarge/reduce the scroll axis to scale 1:1 with our staticAxis constraint
+							scrollAxisDim 		= b.model[this.saDim]*constraintRatio, 	//calculate the scroll axis value
+							scrollAxis_staticAxis_arr = [scrollAxisDim,staticAxisDim];//save as relative matrix for setDimentions(w,h)
+						return scrollAxis_staticAxis_arr;
+				}
+				
+				Grid.prototype.setLayout = function(layout,options){
+					options=(!options)?{}:options;
+					var axes = options.axes;
+					
+					if(this.layout_cache) delete this.layout_cache;//clean up work files from last time a layout was run. layout.call() will 
+					this.boxAxisLengths = [0,0];//reset this value and reevalutate during layout build
+					
+					
+					var c = this.boxCount
+					//loop through data and create new objects
+					for(var i = 0; i < c; i++){
+						var b = this.getBoxFromIndex(i);
+						
+						//this.layouts[layout](b,this,axes);
+						layout.call(this,b,options);
+						
+						
+						//we are currently basing @scrollMargin on the first item h or w (per @si)
+						//if this is the first item then we should get the calculated values for h,w and position
+						if(i==0){
+							this.scrollMargin =[-b.width*this.si_*this.scrollMarginFactor,-b.height*this.si*this.scrollMarginFactor];//should be based on size of first & last element
+							this.firstItemPos = (this.sx)?b.width*this.scrollMarginFactor:b.height*this.scrollMarginFactor;//this is probably always tied the the active scroll margin and is equal to the width of the first item
+							this.bounceMargin = this.firstItemPos + this.bounceMarginDefault;
+						}
+						
+						if(this.boxAxisLengths[0]<b.tailPointPos[0])this.boxAxisLengths[0]=b.tailPointPos[0];
+						if(this.boxAxisLengths[1]<b.tailPointPos[1])this.boxAxisLengths[1]=b.tailPointPos[1];
+						
+					}//END for loop
+							
+					//The list has been updated -- now look at it and cache critical dimentional values for it.
+					//Set the total length value on the last item in the list
+					//this.boxAxisLengths[0]=b.tailPointPos[0];//remember to use primitive values here ;)
+					//this.boxAxisLengths[1]=b.tailPointPos[1];//and here too...
+					
+					//cache the location of the trailing edge of the stream
+					this.trailingEdgeScrollPos = Math.min(this.gridDims[this.si],this.getTrailingEdgeScrollPos());
+					this.absTrailingEdgeScrollPos = this.firstItemPos - this.trailingEdgeScrollPos;
+					
+				}
+				
+				
+				
+				
+				
+
+				Grid.prototype.doTransition = function(layout,options,ms,easing,surfaceMap){
+					options=(!options)?{}:options;
+					var axes = options.axes;
+					
+					if(isNaN(ms))ms=0;
+					
+					this.layoutXansEasing = easing || easeOutElastic;
+					this.layoutXansMs = ms;//TODO: document& init this
+					this.layoutIsXing = (ms>0)?true:false;//TODO: document& init this
+					
+					var that = this
+					//if(this.ltTimer){clearTimeout(this.ltTimer);}//todo: get this going too...
+					this.ltTimer = setTimeout(function(){
+						that.layoutIsXing = false;
+						that.ltTimer = null;
+					}, ms+100)//TODO: document& init this
+					
+					this.setLayout(layout,options);
+					
+					if(surfaceMap)
+						this.setSurfaceMap(surfaceMap)
+					
+					//oneShotPaint(value) value is the axis position (i.e. the origin or where the touch event would be) of the transition event. NOTE: zero doesn't work
+					this.oneShotPaint(1);//this.getScrollDimCenter()
+				}
+
+
+
+				
+
+				Grid.prototype.getTrailingEdgeScrollPos = function(){
+						//cache the location of the trailing edge of the stream
+						return -this.boxAxisLengths[this.si]+this.firstItemPos+this.gridDims[this.si];
+				}
+				
+
+
+				Grid.prototype.assignBoxObjects	= function(){
+					
+					var
+						isChildEasing_l =false;
+						that = this,
+						m = this.getScrollFrame(),
+						si = this.si,
+						si_= this.si_,
+						//scrollValXY = [0,0],
+						soo = [0,0], //scroll ordinal offset x/y matrix
+						soop = [0,0], //scroll ordinal offset x/y matrix *OFFSET FOR PAINTING*
+						sMargin = this.scrollMargin; //scrollMargin extends viewport bounds so that object redraws and repositions happen offscreen
+				
+					for(var i = 0; i < this.boxCount; i++){
+
+						var b = this.boxes[i];
+						
+						//update the active axis value
+						soo[si] = b.headPointPos[si] + m;
+						//update the static axis value
+						soo[si_] = b.headPointPos[si_];
+						
+						b.setAbsPos(this.axisOffset[0] + soo[0], this.axisOffset[1] + soo[1]);
+						
+						//CALCULATE SCREEN POSITION
+						//offset the scrollAxis by MOD of total length of the box objects.  origin value passthrough for inactive axis
+						soop[0] = (this.sx)? b.x % this.boxAxisLengths[0] :b.x;
+						soop[1] = (!this.sx)? b.y % this.boxAxisLengths[1] :b.y;
+						
+						//handle scrollAxis negativity in a positive context
+						//soop[0] = invertNegSwing.call(this,soop[0]);
+						//soop[1] = invertNegSwing.call(this,soop[1]);
+						soop[si] = invertNegSwing.call(this,soop[si]);
+						//u.log(isInViewport.call(this,b))
+
+						var itemPlusMarginDim = soop[si]+sMargin[si]+(b.dims[si]*.5)+this.itemMargins;
+						var tailRamp = itemPlusMarginDim/this.gridDims[si];
+						var headRamp = 1-tailRamp;
+						var triangle = 2*((tailRamp<.5)?tailRamp:headRamp);
+						//set DOM position
+						if(
+							isInViewport.call(this,b) 
+							&& (this.isLooping || isOnFirstPage.call(this,b))
+						){
+							b.doOnScreen(true);
+							b.setWaveforms({
+								tailRamp:tailRamp,
+								headRamp:headRamp,
+								triangle:triangle
+							});
+							b.paintToSurfaceMap( soop[0]+sMargin[0], soop[1]+sMargin[1]);
+							//b.updateContent();//this would ping the box object to update it's display based on current updated info
+							//this.$dbug.append('--->');
+						}else {
+							b.doOnScreen(false);
+							
+							b.setWaveforms({
+								tailRamp:false,
+								headRamp:false,
+								triangle:false
+							});
+						}
+						
+
+						//if this guy is still easing then let us know.
+						if(b.isEasing)isChildEasing_l=true;//&&b.isOnScreen
+
+
+						//this prevents item wrap around by determining is an object has scrolled off the page
+						function isOnFirstPage(b) {
+							return (
+							
+								b[this.sa] >= sMargin[si] && b[this.sa] <= (this.boxAxisLengths[si] + sMargin[si])
+						
+							)?true:false;
+						}
+						
+						function isInViewport(b) {
+							return (
+								soop[si] >= -(sMargin[0]+b.width+this.itemMargins*2) && soop[si] <= (this.gridDims[si] - sMargin[si])
+
+							)?true:false;
+						}
+						
+						function invertNegSwing(x){
+							if(x>=0) return x;
+							return Math.abs( this.boxAxisLengths[si]+x);
+						}
+
+					} // for this.boxCount
+					
+					this.isChildEasing = (isChildEasing_l)?true:false;
+					
+					
+					//if the physicsLoopRAF is running -- then call it again
+					if(physicsLoopRAF!==null){
+						physicsLoopRAF = requestAnimationFrame( function(){that.assignBoxObjects()} );
+					}
+					
+				}//Grid.prototype.assignBoxObjects
+				
+				
+
+
+				var 
+					mwEventsDetected = false,
+					lastMwTime = new Date(),
+					fingeredOffset = 0,
+					lastD = 0;
+									
+				//var touchHemisphere;//-1 if touching start in left field, +1 if in right field 
+				
+				Grid.prototype.handleGesture = function(ev){
+					this.tagLastUserEvent(ev);
+					//this.$dbug.html(new Date().getMilliseconds())
+					
+					function _mw(evt) {
+						var that=this;
+						
+						lastMwTime = new Date();
+						if(!mwEventsDetected){
+							mwEventsDetected = true;
+							var mwCheck = setInterval(function(){
+								var now = new Date();
+								
+								if(now-lastMwTime>100){
+									mwEventsDetected = false;
+									//that.isTouching=false;
+									//that.oneShotPaint();
+									that.handleGesture({type:'release'})
+									clearInterval(mwCheck);
+								}
+							},65)//mwCheck setInterval()
+						}//!mwEventsDetected
+					}//_mw()
+					
+					switch(ev.type) {
+					
+						case 'mousewheel':
+							_mw.call(this,ev);
+							//break;
+							
+						case '_mw':	//map events over for processing by dragleft
+							//this.$dbug.append(mwEventsDetected+"<br>")
+							
+							var
+								dy = ev.originalEvent.wheelDeltaY*.5,
+								dx = ev.originalEvent.wheelDeltaX*.5;
+							
+							var nextScrollPos = this.scrollPos + dx;
+							var maxScroll = this.trailingEdgeScrollPos;
+							var isNextHM = nextScrollPos>this.firstItemPos;
+							var isNextFM = nextScrollPos<maxScroll;
+							
+							if(isNextHM||isNextFM){
+								dx=Math.min(dx*.1,100);
+							}
+							
+							ev.gesture 							= ev.gesture || {};
+							ev.gesture.deltaX 			= dx;
+							ev.gesture.deltaY 			= dy;
+							ev.gesture.center 			= ev.gesture.center || {};
+							ev.gesture.center.pageX = ev.originalEvent.pageX;
+							ev.gesture.center.pageY = ev.originalEvent.pageY;
+							//fingeredOffset = this.scrollPos; moved below...
+							
+							
+						case 'dragup':
+						case 'dragdown':
+						case 'dragright':
+						case 'dragleft':
+
+							this.isTouching=true;
+							
+							//incase we are at the begining of a touch event or incase this is a fallthrough WheelEvent
+							if(fingeredOffset==0 || ev.originalEvent){
+								fingeredOffset = this.scrollPos;
+								lastD = 0;
+							}
+							
+							var D = (this.sx)?ev.gesture.deltaX:ev.gesture.deltaY;
+							//var D = ev.gesture.deltaX+ev.gesture.deltaY;
+							this.setScrollPos( D-lastD, true );
+							
+							lastD = D;
+							
+							this.oneShotPaint(ev);
+							
+							break;
+							
+						case 'swipeleft':
+						case 'swipeup':
+							//console.log('swipeleft: '+ev.gesture.velocityX)
+							ev.gesture.stopDetect();
+							this.isTouching=false;
+							//var m = this.momentum = -this.dMomentum;
+							var m = -1 * Math.pow(ev.gesture.velocityX+ev.gesture.velocityY,3) * 20;
+							this.startEasing(m,ev)
+							break;
+	
+						case 'swiperight':
+						case 'swipedown':
+							//console.log('swiperight: '+ev.gesture.velocityX+"  " + this.isInHeadMargin)
+							ev.gesture.stopDetect();
+							this.isTouching=false;
+							//var m = this.momentum = this.dMomentum;
+							var m = Math.pow(ev.gesture.velocityX+ev.gesture.velocityY,3) * 20;
+							this.startEasing(m,ev)
+							break;
+					
+						case 'touch':
+							//u.log('touch: '+new Date().getMilliseconds())
+							fingeredOffset = 0;
+							this.isTouching=true;
+							
+							this.oneShotPaint(ev);
+							break;
+							
+							
+						case 'release':
+							//u.log('release: '+new Date().getMilliseconds())
+							this.isTouching=false;
+							this.oneShotPaint();
+							break;					
+							
+							
+							
+					}//switch
+				}//handleGesture
+				
+
+				//=====INITALIZE BLOCK=====
+				var grid = {}, physicsLoopRAF;
+					
+				function init($e,options,parent){
+				
+
+					var defaults = {
+						onChangePub				:null,
+						adapter						:SlinkyItem,
+						isLooping					:false,
+						surfaceMap				:xyPlane,
+						itemPreloading		:false,
+						itemEasing				:false,
+						itemEasingParams	:{
+							touchCurve	:easeOutCubic,
+							swipeCurve	:easeOutCubic,
+							transitionCurve:easeOutCubic,
+							easeTime		:2500,
+							springLimit : 20 //in px
+						},
+						scrollAxis				:'x',
+						itemConstraint		:null,
+						staticAxisCount		:0
+					}
+					
+					var gridOptions = $.extend({},defaults,options||{})
+					
+					
+					var g = new Grid($e,gridOptions,parent)
+					
+					//g.data = options.data
+					
+					g.$dbug = $('.debug');//todo remove these!
+										
+					//g.setScrollAxis('x');
+					g.initBoxes(options.data,options.adapter);
+					g.assignBoxObjects();
+					
+					//setBoardSize($e);
+					
+					$(window).on('resize',function(evt){
+						//setBoardSize($e);
+						g.setScrollAxis();
+						//g.dbug();
+						g.oneShotPaint();
+					});
+					
+					var fanEvents =new Hammer($e[0],{prevent_default: true});
+					fanEvents.on('release dragdown dragup dragleft dragright swipeleft swipeup swipedown swiperight touch',function(evt){g.handleGesture(evt)});
+					
+					$e.on('DOMMouseScroll mousewheel', function(evt){
+						evt.preventDefault();
+						evt.stopPropagation();
+						g.handleGesture(evt)
+					})
+					
+					
+					$(".btnL1").click(function() {
+						g.jumpToScrollProgress(0);
+						setTimeout(function(){
+							g.doTransition(basicGridLayout,{axes:2},800,easeOutElastic,xyPlane);
+							//g.setSurfaceMap(xyPlane)
+						}, 100)
+					})
+					
+					$(".btnL2").click(function() {
+						g.jumpToScrollProgress(0);
+						setTimeout(function(){
+							g.doTransition(basicGridLayout,{axes:1},800,easeOutElastic,xyzBezier_1);
+							//g.setSurfaceMap(xyPlane)
+						}, 100)
+					})
+					
+					
+					$(".tailScroll").click(function() {
+						g.setLastTouchOrigin(g.gridDims[g.si]/2);
+						g.easeTo(g.getScrollPos()-g.getScrollViewDim(),600)
+					})
+					
+					$(".btn1").click(function() {
+						g.jumpToScrollProgress(0);
+						setTimeout(function(){
+							g.doTransition(basicGridLayout,{axes:0},800,easeOutElastic);
+						}, 100)
+					})
+					$(".btn2").click(function() {
+						g.jumpToScrollProgress(0);
+						setTimeout(function(){
+							g.doTransition(basicGridLayout,{axes:1},800,easeOutElastic);
+						}, 100)
+					})
+					$(".btn3").click(function() {
+						g.jumpToScrollProgress(0);
+						setTimeout(function(){
+							g.doTransition(basicGridLayout,{axes:2},800,easeOutElastic);
+						}, 100)
+					})
+					$(".btn4").click(function() {
+						g.jumpToScrollProgress(0);
+						setTimeout(function(){
+							g.doTransition(basicGridLayout,{axes:4},800,easeOutElastic);
+						}, 100)
+					})
+					$(".btn5").click(function() {
+						g.doTransition(stackLayout,{axes:1},800,easeOutElastic);//easeInOutQuad
+					})
+					
+					$(".toggleItemEase").click(function() {
+						g.setItemEasing(!g.itemEasing);//easeInOutQuad
+					})
+					
+					
+					$(".toggleScrollAxis").click(function() {
+						g.toggleScrollAxis();
+					})
+					
+					
+					$(".toggleIsLooping").click(function() {
+						g.toggleIsLooping();
+					})
+					
+					
+					
+					g.$dbug.click(function() {
+						//g.toggleScrollAxis();
+					});
+					
+					//grid = g;
+					
+					//g.oneShotPaint();
+					//g.startEasing();
+					//g.easeTo(400);
+					g.jumpToScrollProgress(0);
+					g.$dbug.html('')
+					
+				}
+				
+					
+				
+				
+				return {
+					init 		: init,
+					grid		: function(){return g}
+				}
+				
+			}// CheckerBoard
+		
+		
+		
+		</script>
+		
+		
+		
+
+
+		<script type="text/javascript">
+			
+						
+			$().ready(function(){
+			
+				//var checkerBoard_html = $('#cb').html();
+				var $controls = $(".controls");
+				
+				var showControlData = function(o){
+					var str = (
+						"frameCtr:"+(o.frameCtr)+"<br/>"+
+						"frameRate:"+(o.frameRate.toFixed(1))+"<br/>"+
+						//"Start:"+o.easeToStart+"<br/>"+
+						//"End:"+o.easeToEnd+"<br/>"+
+						"Diff:"+Math.round(o.easeToDiff*1000)/1000+"<br/>"+
+						"momentum:"+o.momentum+"<br/>"+
+						"easingPercent:"+Math.round((o.easingPercent)*100)/100+"<br/>"+
+						"duration:"+o.activeDuration+"<br/>"+
+						/*
+						"<hr>"+
+						"lastScrollDiff:"+o.lastScrollDiff+"<br/>"+
+						"scrollPos:"+o.scrollPos+"<br/>"+
+						"trailingEdgeScrollPos:"+Math.round(-o.trailingEdgeScrollPos)+"<br/>"+
+						"absoluteScroll:"+Math.round(o.absScrollPos)+"<br/>"+
+						"absTrailingEdgeScrollPos:"+Math.round(o.absTrailingEdgeScrollPos)+"<br/>"+
+						"scrollProgress:"+(o.scrollProgress*10000)/10000+"<br/>"+
+						*/
+						
+						
+						
+						
+												
+						"<hr>"+
+						"isFastScroll:"+o.isFastScroll+"<br/>"+
+						//"boxAxisLengths:"+o.boxAxisLengths[o.si]+"<br/>"+
+						//"trailingEdgeScrollPos:"+o.trailingEdgeScrollPos+"<br/>"+
+						"isEasing:"+o.isEasing+"<br/>"+
+						"isEasingTo:"+o.isEasingTo+"<br/>"+
+						"isInHeadMargin:"+o.isInHeadMargin+"<br/>"+
+						"isInTailMargin:"+o.isInTailMargin+"<br/>"+
+						"marginScrollWarp:"+o.marginScrollWarp+"<br/>"+
+	
+						"<hr>"+
+						"scrollDirection:"+o.scrollDirection+"<br/>"+
+						"lastSelected:"+(o.lastSelected&&o.lastSelected.index)+"<br/>"+
+						"lastOffscreen:"+(o.lastOffscreen&&o.lastOffscreen.index)+"<br/>"+
+						"saEventPos:"+o.saEventPos+"<br/>"+
+						//"isChildEasing:"+o.isChildEasing+"<br/>"+
+						"isTouching:"+o.isTouching+"<br/>"+
+						//"lastUserEvent:"+o.lastUserEvent+"<br/>"+
+						"layoutIsXing:"+o.layoutIsXing+"<br/>"
+						
+					)
+					$controls.html(str);
+					
+				}
+
+
+
+				var s1=new Slinky(),s2=new Slinky(),s3=new Slinky();
+
+				getArtData(function(d){
+
+					s1.init($('.slinkyContainer.main'),{
+						displayFlag:function(){return true},
+						//onChangePub: showControlData,//linkToS3,
+						data							: d.ImageDetails,
+						adapter						: JudyItem,
+						itemConstraint		:100,
+						itemMargins				:24,
+						staticAxisOffset	:10,//px
+						//scrollAxisOffset:100,//px
+						scrollAxis				:'x',
+						staticAxisCount		:0,
+						//isLooping					:true,
+						//surfaceMap			:xyzBezier_1,
+						itemPreloading		:true,
+						itemEasing				:true,
+						itemEasingParams	:{
+							touchCurve			:easeOutCubic,
+							swipeCurve			:easeOutCubic,
+							transitionCurve :easeOutElastic,
+							easeTime				:1000,
+							springLimit 		:20 //in px
+						}
+					},this)
+
+/*
+
+					s2.init($('.slinkyContainer.overview'),{
+						displayFlag:function(){return true},
+						onChangePub: linkToS1,
+						data: d.ImageDetails,
+						adapter: JudyItem_SQ,
+						itemConstraint:[50,50],
+						itemMargins:7,
+						staticAxisOffset:15,//px
+						//scrollAxisOffset:100,//px
+						scrollAxis:'x',
+						isLooping:false,
+						itemEasing:true,
+						swipeEasing:null,
+						touchEasing:null
+					},this)
+			
+
+
+					s3.init($('.slinkyContainer.mondo'),{
+						displayFlag:function(){return true},
+						onChangePub: linkToS2,
+						data: d.ImageDetails,
+						adapter: JudyItem,
+						itemConstraint:[350,350],
+						itemMargins:50,
+						staticAxisOffset:15,//px
+						//scrollAxisOffset:100,//px
+						scrollAxis:'x',
+						isLooping:false,
+						itemEasing:true,
+						swipeEasing:null,
+						touchEasing:null
+					},this)
+
+
+
+					var s2Grid = s2.grid();
+					function linkToS2(o){//
+						var my = s2Grid;
+						if(my && my.$e){
+							if(o.lastUserEvent.time>my.lastUserEvent.time){
+								my.setLastSelected(my.getBoxFromIndex(o.lastSelected && o.lastSelected.index))
+								my.jumpToScrollProgress(o.scrollProgress);
+							}
+						}
+						//showControlData(o);
+					}			
+					var s1Grid = s1.grid();
+					function linkToS1(o){
+						var my = s1Grid;
+						if(my && my.$e){
+							if(o.lastUserEvent.time>my.lastUserEvent.time){
+								my.setLastSelected(my.getBoxFromIndex(o.lastSelected && o.lastSelected.index))
+								my.jumpToScrollProgress(o.scrollProgress);
+							}
+						}
+					}
+					var s3Grid = s3.grid();
+					function linkToS3(o){
+						var my = s3Grid;
+						if(my && my.$e){
+							if(o.lastUserEvent.time>my.lastUserEvent.time){
+								my.setLastSelected(my.getBoxFromIndex(o.lastSelected && o.lastSelected.index))
+								my.jumpToScrollProgress(o.scrollProgress);
+							}
+						}
+					}
+*/
+
+					
+				})//getArtData
+				
+				window.s1 = s1;
+				window.s2 = s2;
+
+			});//ready
+			
+			
+			
+			
+			
+			
+			//percentComplete(0.0 to 1.0),elapsedTime,startValue,endValue,totalDuration
+			function linearOut(x,t,b,c,d){
+				return (c * (t / d) + b);
+			}
+			
+			//percentComplete(0.0 to 1.0),elapsedTime,startValue,endValue,totalDuration
+			function easeOutSine(x,t,b,c,d){
+				return c * Math.sin(t/d * (Math.PI/2)) + b;				
+			}
+			
+			function easeInOutQuad(x, t, b, c, d) {
+				t /= d/2;
+				if (t < 1) return c/2*t*t + b;
+				t--;
+				return -c/2 * (t*(t-2) - 1) + b;
+			};				
+
+			function easeOutQuart(x, t, b, c, d) {
+				return -c * ((t=t/d-1)*t*t*t - 1) + b;
+			}
+
+			
+			function easeOutCubic(x, t, b, c, d) {
+				t /= d;
+				t--;
+				return c*(t*t*t + 1) + b;
+			};
+			
+			function easeInOutCubic(x, t, b, c, d) {
+				t /= d/2;
+				if (t < 1) return c/2*t*t*t + b;
+				t -= 2;
+				return c/2*(t*t*t + 2) + b;
+			};
+
+			function easeOutElastic (x, t, b, c, d) {
+				var s=1.70158;var p=0;var a=c;
+				if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+				if (a < Math.abs(c)) { a=c; var s=p/4; }
+				else var s = p/(2*Math.PI) * Math.asin (c/a);
+				return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;
+			}
+
+			// accelerating from zero velocity
+			function easeInQuint_t(t) { return t*t*t*t*t };
+			// decelerating to zero velocity
+			function easeOutQuint_t(t) { return 1+(--t)*t*t*t*t };
+
+
+
+
+			
+		</script>
+		
+		<script type="text/javascript">		
+
+			
+			function SlinkyItem(data){
+				this.data = data;
+				this.imgUrl = data.imgUrl;
+				this.w = data.w;
+				this.h = data.h;
+			}
+			
+			function JudyItem(data){
+				this.imgUrl_SM = data.UrlInfo.ImageUrl;
+				this.imgUrl_LG = data.UrlInfo.XLargeUrl;
+				this.imgUrl_ZOOM = data.UrlInfo.ZoomUrlWithoutWatermark;
+				this.imgUrl_SQ = data.UrlInfo.CroppedSquareImageUrl;
+				
+				this.data = data;
+				this.imgUrl = this.imgUrl_SM;
+				this.w = this.width = data.ImageDimensions[2].PixelWidth;
+				this.h = this.height = data.ImageDimensions[2].PixelHeight;
+			}
+			
+			function JudyItem_SQ(data){
+				this.imgUrl_SM = data.UrlInfo.ImageUrl;
+				this.imgUrl_LG = data.UrlInfo.XLargeUrl;
+				this.imgUrl_ZOOM = data.UrlInfo.ZoomUrlWithoutWatermark;
+				this.imgUrl_SQ = data.UrlInfo.CroppedSquareImageUrl;
+				
+				this.data = data;
+				this.imgUrl = this.imgUrl_SQ;
+				this.w = this.width = 100;//data.ImageDimensions[2].PixelWidth;
+				this.h = this.height = 100;//data.ImageDimensions[2].PixelHeight;
+			}
+			
+			
+			
+			
+			
+			function xyzBezier_1(x,y){
+					
+					function factorCurveBy(cubic,xy){
+						var result = [
+							{x:cubic[0].x*xy[0],y:cubic[0].y*xy[1]},
+							{x:cubic[1].x*xy[0],y:cubic[1].y*xy[1]},
+							{x:cubic[2].x*xy[0],y:cubic[2].y*xy[1]},
+							{x:cubic[3].x*xy[0],y:cubic[3].y*xy[1]}
+						]
+						return result;
+					}
+					
+					//var xoffset = box.width / 2;
+					//var yoffset = box.height / 2;
+					var 
+						tRamp = this.waves.tailRamp,
+						hRamp = this.waves.headRamp,
+						tri = this.waves.triangle,
+						//s = 1,
+						r,
+						xo,//xo=x,//-xoffset, 
+						yo;//yo=y;//-yoffset;
+
+					var xyFactor = [
+						Math.max(500,this.parent.gridDims[0]),
+						Math.max(1000,this.parent.gridDims[1])
+					];
+					
+					var waterFallCurve = [
+						{x:0,y:0},
+						{x:.1,y:.5},
+						{x:0,y:.01},
+						{x:1,y:0}
+					];
+					
+					var cubicBezier = factorCurveBy(waterFallCurve,xyFactor);
+					
+					
+					
+					var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
+					var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
+					//u.log(p);
+					xo = p.x;
+					yo = p.y+y;
+
+
+					//this.e.style.webkitTransform = 'translate3d(' + xo + 'px,' + yo +'px, 0)';
+					//this.e.style.left = xo + 'px';
+					//this.e.style.top = yo + 'px';
+					
+					//yo+= this.waves.triangle*100
+					//s = Math.max(this.waves.triangle*2,1)
+					//xo = x;
+					//xo = 500+hRamp*-500;
+					//xo = 200+hRamp*-200;
+					//r = 50*tRamp;
+					//xo=x;
+					//yo=y;
+					
+					
+					this.e.style.webkitTransformOrigin = '50%';
+					
+					this.e.style.webkitTransform = 
+						'translate3d(' + xo + 'px,' + yo +'px, 0) '
+						+'rotateZ('+g*15+'deg)'
+						+'scale('+(tRamp*2+.4)+')';
+					
+					this.e.style.opacity = tri;
+					
+					this.pPos = [x,y];
+				};//xyzBezier_1()
+				
+				
+				
+				
+				
+				
+				function xyPlane(x,y) {
+				
+					var 
+						w = this.waves,
+						tRamp = w.tailRamp,
+						hRamp = w.headRamp,
+						tri = w.triangle,
+						xo,
+						yo;
+						
+					xo=x;
+					yo=y;
+					
+					//this.e.style.webkitTransformOrigin = '50%';
+					
+					this.e.style.webkitTransform = 
+						'translate3d(' + xo + 'px,' + yo +'px, 0) '
+						//+'rotateZ('+g*15+'deg)'
+						//+'scale('+(tRamp*2+.4)+')';
+					
+					this.e.style.opacity = 1;//tri;
+					this.pPos = [x,y];
+						
+				};//xyPlane(x,y)
+				
+			
+			
+			
+			
+			
+			
+				
+				
+				
+				function basicGridLayout(b,options){
+					var layoutId = 'basicGridLayout';
+					var grid = this;
+
+					options=(!options)?{}:options;
+					var axisCount = options.axes;
+					
+					//make sure we have at least one row (zero based)
+					if(!axisCount)axisCount=0;
+					
+					//tack an array onto the parent model to cache multiple row lenghts & last object on each axis
+					if(!grid.layout_cache) grid.layout_cache = {
+						lastLayoutOptions	: options,
+						lastLayoutId 			: layoutId,
+						axesLengthArr 		: new Array(axisCount),
+						lastAxesObjArr		:  new Array(axisCount)
+					}
+
+					//cache our app values
+					var 
+						i = b.index,
+						c = grid.itemConstraint,
+						//staticDim = b.dims[that.si_],
+						m = grid.itemMargins*2,
+						axesLengthArr = grid.layout_cache.axesLengthArr,
+						lastAxesObjArr = grid.layout_cache.lastAxesObjArr;
+					
+					
+					var shorty = getShortestAxis();//requires that.axesLength
+					
+					//tell our box what axis its on
+					b.staticAxis = shorty;
+	
+					//SNAKE PATTERN: subsequent items follow previous items
+					//NOTE: THE FIRST ITEM'S TAIL POSITION VALUE IS SET TO A POSITIVE OFFSET. 
+					//       SUBSEQUENT ITEMS ARE POSITIONED AT A NEGATIVE OFFSET.
+					//set head and tail positional values
+					if(!lastAxesObjArr[shorty]){//this is the first item in the list (it has no previous object reference)
+						//set the head point of the first object to ZERO scroll origin
+						b.headPointPos[grid.si] = 0;
+					
+					}else{
+						//this item is somewhere in the list
+						b.prevObj = lastAxesObjArr[shorty];//the previous object is this object's preceeding sibling on the same axis. 
+						b.prevObj.nextObj = b; //this object is the previous object's next object.  Like that definition? thought you would.
+
+						//cache the tail point value of the preceeding object for use in setting the scrollAxis point of this object.
+						var ltpp = b.prevObj.tailPointPos;
+						//start point of scrollAxis edge
+						b.headPointPos[grid.si] = ltpp[grid.si];//set the head point of the first object to the end point of the previous object
+
+					}//end IF
+					
+					//cache the tail staticAxis ofset point for this object.
+					var offset = c*shorty + m*shorty;
+					//start point of staticAxis edge
+					b.headPointPos[grid.si_] = offset;
+
+
+					b.tailPointPos = [ //the tail point values are equal to the start value plus the object dims plus margin
+						b.headPointPos[0]+b.w+m,
+						b.headPointPos[1]+b.h+m
+					];
+					
+					b.outerDims =[
+						b.tailPointPos[0]-b.headPointPos[0],
+						b.tailPointPos[1]-b.headPointPos[1]
+					]
+					
+					//this item will be the previous item for the next item on the same axis.
+					lastAxesObjArr[shorty] = b;
+					
+					axesLengthArr[shorty] = (axesLengthArr[shorty]||0) + b.dims[grid.si];
+					
+					
+					function getShortestAxis(){
+						var shorty = 0;
+						if (axisCount > 0){
+							for(var i = 1; i <= axisCount; i++){
+								if(!axesLengthArr[shorty]) return shorty;
+								if(!axesLengthArr[i]) return i;
+								shorty = (axesLengthArr[i] < axesLengthArr[shorty])? i : shorty;
+							}
+						}
+						return shorty;
+					}//getShortestAxis
+					
+				}//basicGridLayout
+
+				
+				
+				
+				
+				
+				
+				function stackLayout(b,options){
+					var grid = this;
+					
+					options=(!options)?{}:options;
+					var axisCount = options.axisCount;
+					
+					//cache our index
+					var
+						i = b.index,
+						m = grid.itemMargins*2;
+					
+					//SNAKE PATTERN: subsequent items follow previous items
+					//NOTE: THE FIRST ITEM'S TAIL POSITION VALUE IS SET TO A POSITIVE OFFSET == SUBSEQUENT ITEMS ARE POSITIONED AT A NEGATIVE OFFSET.
+					//set head and tail positional values
+					if(i==0){//this is the first item in the list (it has no previous object reference)
+						//set the head point of the first object to ZERO scroll origin
+						b.headPointPos = [0,0];
+					
+					}else{
+					
+						b.prevObj = grid.boxes[i-1];//the previous object is this object's preceeding sibling. Enough said.
+						b.prevObj.nextObj = b; //this object is the previous object's next object.  Like grid definition? thought you would.
+
+						//cache the tail point value of the preceeding object for use in setting the scrollAxis point of this object.
+						var l = b.prevObj.tailPointPos;
+						//start point of scrollAxis edge
+						b.headPointPos[grid.si] = l[grid.si];//set the head point of the first object to the end point of the previous object
+
+						//cache the tail point value of the preceeding object for use in setting the staticAxis point of this object.
+						var offset = l[grid.si];//0;
+						//start point of staticAxis edge
+						b.headPointPos[grid.si_] = offset;//set the head point of the first object to the end point of the previous object
+						
+					}//end IF
+
+					b.tailPointPos = [ //the tail point values are equal to the start value plus the object dims plus margin
+						20+b.headPointPos[0],//+b.w+that.itemMargins*2,
+						b.headPointPos[1]//+b.h+that.itemMargins*2
+					];
+				}//rows_1_deck()
+
+				
+				
+
+				
+	</script>
+		
+		
+		
+	<style type="text/css">
+		
+		hr{width: 200px;margin-left: 0;border:1px dotted #666;height: 1px;}
+		
+		.slinkyContainer{
+			height: 100%;
+			width: 100%;
+			position: absolute;
+			top:0px;
+			left:0px;
+			background-color: #eee;
+			overflow: hidden;
+		}
+		.slinkyContainer.overview{z-index:1;height:80px;top:0;display: none;}
+		.slinkyContainer.mondo{z-index:1;height:100%;top:300px;display: none;}
+
+		.gridBox{
+			background: #fafafa url() no-repeat center center;
+			box-shadow: 1px 0px 5px rgba(0,0,0,.2);
+			position: absolute;
+			border: white 20px solid;
+		}
+		.main .gridBox{box-shadow: 1px 0px 10px rgba(0,0,0,.3)}
+		.mondo .gridBox{box-shadow: 1px 0px 20px rgba(0,0,0,.5)}
+		.overview .gridBox{border:white 3px solid;overflow:hidden;}
+		
+		
+		.gridBox.loaded{
+			background-image: none;
+		}
+		
+		.boxLabel{
+			top:50%;
+			position: relative;
+			font-weight: 300;
+			font-size: 10px;
+			line-height: 1.2;
+			margin-top: -34px;
+			text-align: center;
+			font-family: Lato;
+			color:#999;
+		}
+		
+
+		
+		.debug{
+			-webkit-tap-highlight-color: transparent;
+			position:absolute;
+			top:350px;
+			right:0;
+			height:20px;
+			width: 40px;
+			padding: 20px;
+			background-color:#ddd;
+			font-size: 10px;
+			font-family: Helvetica;
+			z-index: 1;
+				display: none;
+		}
+
+	
+		.controls{
+			-webkit-tap-highlight-color: transparent;
+			position:absolute;
+			top:600px;
+			left:0;
+			height:100%;
+			width: 50%;
+			padding: 20px;
+			background-color:#ddd;
+			font-size: 10px;
+			font-family: Helvetica;
+			z-index: 1;
+				display: none;
+		}
+		
+		.moneyShot{
+			position:absolute;
+			top:0;
+			right:0;
+			opacity: 0;
+			-webkit-transition: opacity 1000ms;
+			-webkit-transform: scale3d(1, 1, 1);
+		}
+		.moneyShot.loaded{
+			opacity: 1;
+		}
+		
+		.buttons li{
+			width:100%;
+			height: 100%;
+			text-align: center;
+			background-color:#bbbbbb;
+			padding: 0px;
+			margin:0px;
+			border:0px;
+			float: left;
+			line-height: 50px;
+			list-style: none;
+		}
+		.buttons{
+			
+			-webkit-tap-highlight-color: transparent;
+			position:absolute;
+			top:10%;
+			right:0;
+			height:50px;
+			width: 100px;
+			padding: 0px;
+			margin:0px;
+			border:0px;
+			background-color:#ddd;
+			font-size: 13px;
+			font-family: Quicksand;
+			z-index: 1;
+				/* display: none; */
+		}
+		.buttons li:hover{
+			background-color: #999;
+		}
+
+		.buttons li:active{
+			background-color: #fff;
+		}
+
+		.debug:active{
+			background-color: white;
+		}
+		li.newSection{
+			margin-top: 5px;
+		}
+
+		.boxLabel{display:none}
+		.moneyShot.loaded{
+		 /*display: none; 	*/ /* FOR DEBUGGING */
+		}
+
+
+	</style>		
+		
+		
+		
+				
+	</head>
+	<body>
+		<div class="slinkyContainer mondo"></div>
+		<div class="slinkyContainer main"></div>
+		<div class="slinkyContainer overview"></div>
+		<div class="debug" >starting</div>
+		<div class="controls" >ctrl</div>
+		
+		<ul class="buttons" >
+			<li class="btn1">1 Axis</li>
+			<li class="btn2">2 Axes</li>
+			<li class="btn3">3 Axes</li>
+			<li class="btn4">5 Axes</li>
+			
+			<li class="btn5 newSection">stackLayout</li>
+			
+			<li class="btnL1 newSection">xyPlane</li>
+			<li class="btnL2">xyzBezier_1</li>
+			
+			<li class="toggleItemEase newSection">toggle ease</li>
+			
+			<li class="toggleScrollAxis newSection">toggle axis</li>
+			
+			<li class="toggleIsLooping newSection">toggle looping</li>
+			
+			<li class="tailScroll newSection">tail scroll</li>
+		</ul>
+	</body>
+	
+</html>

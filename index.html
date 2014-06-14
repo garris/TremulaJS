@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SlinkyJS</title>
+
+        <style type="text/css">
+					@import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+					body{
+						font-family: 'Yanone Kaffeesatz', sans-serif;
+					}
+        </style>
+        
+        <script src="libs/jquery-min.js"></script>
+        <script src="libs/hammer.js"></script>
+        <script src="libs/jsBezier-0.6.js"></script>
+        <script src="libs/raf_shim.js"></script>
+        <script src="slinkyConfig.js"></script>
+        <script data-main="src/Slinky" src="libs/require.js"></script>
+
+        <script type="text/javascript">
+        	$().ready(function(){
+        		// $('.start').click(init);
+        		setTimeout(init,1000);
+        	});
+
+
+        	function init(){
+        		console.log('starting');
+        		
+        		var slinky = new Slinky();
+        		$slinkyContainer = $('.slinkyContainer');
+        		slinky.init($slinkyContainer,large2Row,this);
+
+
+					
+						function refreshData(data,dataAdapter){
+							var s = slinky;
+							//if(!dataAdapter)dataAdapter=s.dataAdapters.JudyItem;
+							if (data.length)
+								this.setDisplayMode('hasData');			
+							s.spring.initBoxes(data,dataAdapter,false);
+							s.spring.statsCache.endOfScrollFlag = false;
+						}
+
+        		var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=50&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';
+
+        		$.getJSON(dataUrl,function(res){
+        			refreshData(res);
+        		})
+        	}
+        </script>
+
+
+    </head>
+    <body>
+        <h1>SlinkyJS</h1>
+        <!-- <button class="start">Start</button> -->
+        <div class="slinkyContainer main"></div>
+    </body>
+</html>
