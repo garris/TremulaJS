@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>SlinkyJS</title>
-
+        <link rel="stylesheet" href="src/slinky.css">
         <style type="text/css">
 					@import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
 					body{
@@ -26,26 +26,27 @@
 
         	function init(){
         		console.log('starting');
-        		
-        		var slinky = new Slinky();
+
+
+        		window.slinky = new Slinky();//does not need to be on the window -- implemented here for convienience.
+                var config = slinkyConfigs.large2Row.call(this);
+
         		$slinkyContainer = $('.slinkyContainer');
-        		slinky.init($slinkyContainer,large2Row,this);
+        		slinky.init($slinkyContainer,config,this);
 
 
-					
-						function refreshData(data,dataAdapter){
-							var s = slinky;
-							//if(!dataAdapter)dataAdapter=s.dataAdapters.JudyItem;
-							if (data.length)
-								this.setDisplayMode('hasData');			
-							s.spring.initBoxes(data,dataAdapter,false);
-							s.spring.statsCache.endOfScrollFlag = false;
-						}
+    		
+    			function refreshData(data,dataAdapter){
+    				var s = slinky;
+    				s.spring.initBoxes(data,dataAdapter,false);
+    				s.spring.statsCache.endOfScrollFlag = false;
+    			}
 
         		var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=50&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';
 
         		$.getJSON(dataUrl,function(res){
-        			refreshData(res);
+                    console.log(res)
+        			refreshData(res.ImageDetails,slinky.dataAdapters.JudyItem);
         		})
         	}
         </script>

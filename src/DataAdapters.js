@@ -63,12 +63,12 @@ define([
 		if(data.ItemPrice) 	this.itemPrice = data.ItemPrice.Price;
 		this.artistNameTitle = this.artistName+((this.artistName&&this.itemTitle)?', ':'')+this.itemTitle;
 
-		this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/> <div class="artistName">{{artistNameTitle}}</div> <div class="itemTitle">{{itemTitle}}</div> <div class="itemPrice">from {{itemPrice}}</div> <div class="saveIcon">' + heart_svg + '</div> ' + '<div class="hover"><div class="btn">' + '<div class="cartIcon">' + cart_svg + '<span class="label labelfull">Add to Cart</span><span class="label labeltrunc">Cart</span></div>' + '<div class="border"></div><div class="saveIcon">' + heart_svg + '<span class="label labelnofav">Save</span><span class="label labelfav">Saved</span></div></div>' + '</div>')
+		this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/> <div class="itemInfo">{{artistNameTitle}}{{itemTitle}}</div>')
 			.replace(/{{artistNameTitle}}/g,this.artistNameTitle)
-			.replace(/{{artistName}}/g,this.artistName)
+			//.replace(/{{artistName}}/g,this.artistName)
 			//.replace(/{{artistUrl}}/g,this.artistUrl)
 			.replace(/{{itemTitle}}/g,this.itemTitle)
-			.replace(/{{itemPrice}}/g,this.itemPrice);
+			//.replace(/{{itemPrice}}/g,this.itemPrice);
 
 		//-----------calculate stream sizeClass-----------
 		var 
@@ -86,7 +86,7 @@ define([
 				break;
 			}
 		}
-
+		//console.log(this)
 	}
 
 

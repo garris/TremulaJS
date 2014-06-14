@@ -5,6 +5,8 @@ define([],function(){
 		var layoutId = 'basicGridLayout';
 		var grid = this;
 
+console.log(grid)
+
 		options=(!options)?{}:options;
 		var axisCount = options.axes;
 		

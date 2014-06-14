@@ -46,6 +46,8 @@ define([
 		this.parent = parent;
 		this.$e = $e;
 
+console.log(options);
+
 		var defaults = {
 			onChangePub             :null,
 			adapter 				:dataAdapters.SlinkyItem,

@@ -1049,7 +1049,7 @@ define([
 				}else{
 					//if we are scrolling orthogonal to the scrollAxis
 					var D_scroll = this.parentParentE.scrollTop;
-					this.parent.parent.$e.scrollTop(D_scroll-(D_-lastD_));
+					this.parentParentE.scrollTop(D_scroll-(D_-lastD_));
 					lastD_ = D_;
 				}
 
