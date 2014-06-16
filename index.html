@@ -91,7 +91,7 @@
 					$(".btnL2").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.basicGridLayout,{axes:1},800,slinky.easings.easeOutElastic,slinky.projections.xyzBezier_1);
+							s.doTransition(slinky.basicGridLayout,{axes:1},800,slinky.easings.easeOutElastic,slinky.projections.bezier_1);
 							//s.setSurfaceMap(xyPlane)
 						}, 100)
 					})
@@ -193,7 +193,7 @@
 				<li class="btn5 group">stackLayout</li>
 				
 				<li class="btnL1">xyPlane</li>
-				<li class="btnL2">xyzBezier_1</li>
+				<li class="btnL2">bezier_1</li>
 				
 				<li class="toggleItemEase">toggle ease</li>
 				

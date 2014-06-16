@@ -9,14 +9,14 @@ requirejs.config({
 
 define([
 	'Layouts'
-	,'SurfaceMaps'
+	// ,'SurfaceMaps'
 	,'Easings'
 	,'DataAdapters'
 	,'Projections'
 	,'Spring'
 ],function(
 	layouts
-	,surfaceMaps
+	// ,surfaceMaps
 	,easings
 	,dataAdapters
 	,projections
@@ -29,7 +29,7 @@ define([
 		this.spring 		= {};
 		this.dataAdapters 	= dataAdapters;
 		this.layouts 		= layouts;
-		this.surfaceMaps	= surfaceMaps;
+		// this.surfaceMaps	= surfaceMaps;
 		this.easings 		= easings;
 		this.projections 		= projections;
 	}
@@ -54,7 +54,7 @@ define([
 			onChangePub             :null,
 			adapter 				:dataAdapters.SlinkyItem,
 			isLooping 				:false,
-			surfaceMap 				:surfaceMaps.xyPlane,
+			surfaceMap 				:projections.xyPlane,
 			itemPreloading      	:false,
 			itemEasing              :false,
 			itemEasingParams    	:{

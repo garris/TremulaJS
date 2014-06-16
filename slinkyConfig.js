@@ -14,11 +14,11 @@ slinkyConfigs = {
 			itemMargins         :[15,25],
 			staticAxisOffset    :18,//px
 			scrollAxisOffset    :20,//px
-			scrollAxis          :'y',
+			scrollAxis          :'x',
 			staticAxisCount     :1,//zero based
 			//isLooping         :true,
 			defaultLayout       :this.layouts.basicGridLayout,//<--- TODO:  this is not yet implemented.
-			surfaceMap          :this.surfaceMaps.xyPlane,
+			surfaceMap          :this.projections.xyPlane,
 			itemPreloading      :true,
 			itemEasing            :true,
 			itemEasingParams    :{
