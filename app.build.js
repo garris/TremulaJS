@@ -1,14 +1,11 @@
-({
-	//- paths are relative to this app.build.js file
-	baseUrl: "src",
-	//- this is the directory that the new files will be. it will be created if it doesn't exist
-	dir: "dist",
+// to build.  cd to this directory and run...
+// $ node r.js -o build.js
 	
 	
-//     paths: {
-//         jquery: "some/other/jquery"
-//     },
-	removeCombined: true,
-    name: "Slinky",
-//     out: "Slinky.js"
+({	
+	//- paths are relative to this build.js file
+	baseUrl: "src", //- this is the directory where the source .js goes
+	dir: "dist", //- this is the directory that the new files will be. it will be created if it doesn't exist
+	removeCombined: true, //
+    name: "Slinky", //this is the name of the new compiled js file
 })
