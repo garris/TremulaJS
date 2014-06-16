@@ -33,8 +33,13 @@ define([
 		
 		if(data.UrlInfo){
 			var srcStr		= 'http://imgc.artprintimages.com/images/P-{{w}}-{{h}}-85/' + data.UrlInfo.ImageUrl.split('/MED/')[1];
-			this.src			= srcStr.replace(/{{w}}/,'1000').replace(/{{h}}/,imgStatixAxisPx);
 			
+			if(env.sx)
+				this.src			= srcStr.replace(/{{w}}/,'1000').replace(/{{h}}/,imgStatixAxisPx);
+			else
+				this.src			= srcStr.replace(/{{h}}/,'1000').replace(/{{w}}/,imgStatixAxisPx);
+
+
 			this.w = this.width = data.ImageDimensions[2].PixelWidth;
 			this.h = this.height = data.ImageDimensions[2].PixelHeight;
 
