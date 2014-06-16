@@ -691,6 +691,9 @@ define([
 				this.boxes.push(b);
 			}
 			
+			this.e.appendChild(b.e);
+
+
 		}//END for loop
 		this.setLayout(layouts.basicGridLayout,{axes:this.staticAxisCount,isNewSet:(ptr==0)?true:false});
 	}//Grid.prototype.initBoxes

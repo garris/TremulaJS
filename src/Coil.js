@@ -125,7 +125,7 @@ define([
 
 		}
 
-		grid.e.appendChild(this.e);
+		//grid.e.appendChild(this.e); 
 
 
 	};// Coil
@@ -161,7 +161,7 @@ define([
 		this.dims[1] = this.height = this.h = h;
 		this.sizeRatio = h/w;
 		this.displayClass = this.getDisplayClass(this.sizeRatio);
-		//this.$moneyShot.css({'width':this.w,'height':this.h})
+		this.$moneyShot.css({'width':this.w,'height':this.h})
 	}
 	
 	Coil.prototype.getDisplayClass = function(ratio){
