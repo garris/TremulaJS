@@ -12,12 +12,14 @@ define([
 	,'SurfaceMaps'
 	,'Easings'
 	,'DataAdapters'
+	,'Projections'
 	,'Spring'
 ],function(
 	layouts
 	,surfaceMaps
 	,easings
 	,dataAdapters
+	,projections
 	,Spring
 ){
 
@@ -29,6 +31,7 @@ define([
 		this.layouts 		= layouts;
 		this.surfaceMaps	= surfaceMaps;
 		this.easings 		= easings;
+		this.projections 		= projections;
 	}
 
 
@@ -46,7 +49,6 @@ define([
 		this.parent = parent;
 		this.$e = $e;
 
-console.log(options);
 
 		var defaults = {
 			onChangePub             :null,
