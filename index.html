@@ -1,61 +1,210 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>SlinkyJS</title>
-        <link rel="stylesheet" href="src/slinky.css">
-        <style type="text/css">
+	<head>
+		<title>SlinkyJS</title>
+		<link rel="stylesheet" href="src/slinky.css">
+		<style type="text/css">
 					@import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
 					body{
 						font-family: 'Yanone Kaffeesatz', sans-serif;
 					}
-        </style>
-        
-        <script src="libs/jquery-min.js"></script>
-        <script src="libs/hammer.js"></script>
-        <script src="libs/jsBezier-0.6.js"></script>
-        <script src="libs/raf_shim.js"></script>
-        <script src="slinkyConfig.js"></script>
-        <script data-main="src/Slinky" src="libs/require.js"></script>
+		</style>
+		
+		<script src="libs/jquery-min.js"></script>
+		<script src="libs/hammer.js"></script>
+		<script src="libs/jsBezier-0.6.js"></script>
+		<script src="libs/raf_shim.js"></script>
 
-        <script type="text/javascript">
-        	$().ready(function(){
-        		// $('.start').click(init);
-        		setTimeout(init,1000);
-        	});
+		<script src="slinkyConfig.js"></script>
+		<script data-main="src/Slinky" src="libs/require.js"></script>
 
-
-        	function init(){
-        		console.log('starting');
-
-
-        		window.slinky = new Slinky();//does not need to be on the window -- implemented here for convienience.
-                var config = slinkyConfigs.large2Row.call(this);
-
-        		$slinkyContainer = $('.slinkyContainer');
-        		slinky.init($slinkyContainer,config,this);
+		<script type="text/javascript">
+			$().ready(function(){
+				// $('.start').click(init);
+				setTimeout(function(){
+					var slinky = slinkyInit();
+					attachSlinkyDomListeners();
+					attachDemoControls(slinky);
+					window.s=slinky;//does not need to be on the window -- implemented here for convienience.
+				},1000);
+			});
 
 
-    		
-    			function refreshData(data,dataAdapter){
-    				var s = slinky;
-    				s.spring.initBoxes(data,dataAdapter,false);
-    				s.spring.statsCache.endOfScrollFlag = false;
-    			}
-
-        		var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=50&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';
-
-        		$.getJSON(dataUrl,function(res){
-                    console.log(res)
-        			refreshData(res.ImageDetails,slinky.dataAdapters.JudyItem);
-        		})
-        	}
-        </script>
+			function slinkyInit(){
+				console.log('starting slinky');
 
 
-    </head>
-    <body>
-        <h1>SlinkyJS</h1>
-        <!-- <button class="start">Start</button> -->
-        <div class="slinkyContainer main"></div>
-    </body>
+				var slinky = new Slinky();
+				window.slinky = slinky;//not necessary -- just for demo convienience
+
+
+				var config = slinkyConfigs.large2Row.call(slinky);
+
+				$slinkyContainer = $('.slinkyContainer');
+				slinky.init($slinkyContainer,config,this);
+
+
+			
+				function refreshData(data,dataAdapter){
+					var s = slinky;
+					s.spring.initBoxes(data,dataAdapter,false);
+					s.spring.statsCache.endOfScrollFlag = false;
+				}
+
+				var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=100&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';
+
+				$.getJSON(dataUrl,function(res){
+					refreshData(res.ImageDetails,slinky.dataAdapters.JudyItem);
+				})
+
+				return slinky;
+			}
+
+			function attachSlinkyDomListeners(){
+				$('.slinkyContainer').on('slinkyItemSelect',function(gestureEvt,domEvt){
+					// console.log(gestureEvt,domEvt)
+					var 
+						$e = $(domEvt.target);
+						t = $e.closest('.gridBox')[0];
+					if(t){
+						var data = $.data(t).model.model.data;
+					}
+					console.log(data||{})
+				})
+			}
+
+		</script>
+
+
+		<script type="text/javascript">
+				function attachDemoControls(slinky){
+					var s = slinky.spring;
+
+					$(".btnL1").click(function() {
+						s.jumpToScrollProgress(0);
+						setTimeout(function(){
+							s.doTransition(slinky.basicGridLayout,{axes:2},800,slinky.easings.easeOutElastic,slinky.projections.xyPlane);
+							//s.setSurfaceMap(xyPlane)
+						}, 100)
+					})
+					
+					$(".btnL2").click(function() {
+						s.jumpToScrollProgress(0);
+						setTimeout(function(){
+							s.doTransition(slinky.basicGridLayout,{axes:1},800,slinky.easings.easeOutElastic,slinky.projections.xyzBezier_1);
+							//s.setSurfaceMap(xyPlane)
+						}, 100)
+					})
+					
+					
+					$(".tailScroll").click(function() {
+						s.setLastTouchOrigin(s.gridDims[s.si]/2);
+						s.easeTo(s.getScrollPos()-s.getScrollViewDim(),600)
+					})
+					
+					$(".btn1").click(function() {
+						s.jumpToScrollProgress(0);
+						setTimeout(function(){
+							s.doTransition(slinky.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic);
+						}, 100)
+					})
+					$(".btn2").click(function() {
+						s.jumpToScrollProgress(0);
+						setTimeout(function(){
+							s.doTransition(slinky.basicGridLayout,{axes:1},800,slinky.easings.easeOutElastic);
+						}, 100)
+					})
+					$(".btn3").click(function() {
+						s.jumpToScrollProgress(0);
+						setTimeout(function(){
+							s.doTransition(slinky.basicGridLayout,{axes:2},800,slinky.easings.easeOutElastic);
+						}, 100)
+					})
+					$(".btn4").click(function() {
+						s.jumpToScrollProgress(0);
+						setTimeout(function(){
+							s.doTransition(slinky.basicGridLayout,{axes:4},800,slinky.easings.easeOutElastic);
+						}, 100)
+					})
+					$(".btn5").click(function() {
+						s.doTransition(slinky.stackLayout,{axes:1},800,slinky.easings.easeOutElastic);//easeInOutQuad
+					})
+					
+					$(".toggleItemEase").click(function() {
+						s.setItemEasing(!s.itemEasing);//easeInOutQuad
+					})
+					
+					
+					$(".toggleScrollAxis").click(function() {
+						s.toggleScrollAxis();
+					})
+					
+					
+					$(".toggleIsLooping").click(function() {
+						s.toggleIsLooping();
+					})
+				}
+
+
+		</script>
+
+	</head>
+	<body>
+		<style type="text/css">
+			.controls{
+				position: absolute;
+				bottom: 0px;
+				left: 0px;
+				width: 100%;
+				background-color: #fff;
+				margin: 0px;
+				padding: 0px;
+			}
+			.buttons{
+				list-style-type: none;
+				margin: 0;
+				padding: 2em;			
+			}
+			.buttons li{
+				display: inline-block;
+				padding: .5em;
+				background: #9e9;
+				margin: 1.5ex 1em -1ex -1em;
+				cursor: pointer;
+			}
+			.group{
+				display: inline-block;
+				margin-right:3em;
+				position: relative;
+			}
+		</style>
+		
+		<h1>SlinkyJS</h1>
+		<div class="slinkyContainer main"></div>
+		<div class="controls">
+			<ul class="buttons" >
+				<div class="group">
+					<li class="btn1">1 Axis</li>
+					<li class="btn2">2 Axes</li>
+					<li class="btn3">3 Axes</li>
+					<li class="btn4">5 Axes</li>
+				</div>
+
+				<li class="btn5 group">stackLayout</li>
+				
+				<li class="btnL1">xyPlane</li>
+				<li class="btnL2">xyzBezier_1</li>
+				
+				<li class="toggleItemEase">toggle ease</li>
+				
+				<li class="toggleScrollAxis">toggle axis</li>
+				
+				<li class="toggleIsLooping">toggle looping</li>
+				
+				<li class="tailScroll">tail scroll</li>
+			</ul>
+		
+		</div>
+
+	</body>
 </html>
