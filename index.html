@@ -108,6 +108,14 @@
 						}, 100)
 					})
 					
+					$(".btnL4").click(function() {
+						s.jumpToScrollProgress(0);
+						setTimeout(function(){
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic,slinky.projections.sunrise);
+							s.setItemEasing(false);
+						}, 100)
+					})
+					
 					
 					$(".tailScroll").click(function() {
 						s.setLastTouchOrigin(s.gridDims[s.si]/2);
@@ -224,6 +232,7 @@
 					<li class="btnL1">xyPlane</li>
 					<li class="btnL2">turntable</li>
 					<li class="btnL3">enterTheDragon</li>
+					<li class="btnL4">sunrise</li>
 				</div>
 
 				

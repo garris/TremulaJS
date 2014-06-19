@@ -823,7 +823,7 @@ define([
 
 	Spring.prototype.doTransition = function(layout,options,ms,easing,surfaceMap){
 		options=(!options)?{}:options;
-		var axes = options.axes;
+		// var axes = options.axes;
 		
 		if(isNaN(ms))ms=0;
 		

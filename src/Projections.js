@@ -15,12 +15,12 @@ define([],function(){
 
 	var sunriseCurve = [
 		{x:0,y:0},
-		{x:.05,y:.5},
-		{x:.5,y:.7},
+		{x:.25,y:.75},
+		{x:.75,y:.75},
 		{x:1,y:0}
 	];
 
-	var linear = [
+	var softKnee = [
 		{x:0,y:.5},
 		{x:.45,y:.5},
 		{x:.55,y:.5},
@@ -45,7 +45,7 @@ define([],function(){
 
 	function turntable(x,y){
 
-		var curve = linear;
+		var curve = softKnee;
 
 
 		//var xoffset = box.width / 2;
@@ -61,33 +61,26 @@ define([],function(){
 		xo,//xo=x,//-xoffset, 
 		yo;//yo=y;//-yoffset;
 
-			var xyFactor = [
-				grid0, //Math.max(0,grid0),
-				grid1 //Math.max(0,grid1)
-			];
+		var xyFactor = [
+			grid0, //Math.max(0,grid0),
+			grid1 //Math.max(0,grid1)
+		];
 			
+		var cubicBezier = factorCurveBy(curve,xyFactor);
+			
+		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
+		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
-			var cubicBezier = factorCurveBy(curve,xyFactor);
-			
-			
-			
-			var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
-			var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
-
-		xo = (grid0-this.outerDims[0]*.5)-p.x;
-		yo = (grid1-this.outerDims[1]*.5)-p.y;
-		xo = (grid0-this.outerDims[0]*.5)-p.x;
-		yo = (grid1-this.outerDims[1]*.5)-p.y;
-		
+		var xo = (grid0-this.outerDims[0]*.5)-p.x;
+		var yo = (grid1-this.outerDims[1]*.5)-p.y;
+		var zo = Math.min(-400,((1-tri)*-1000));		
 		
 		this.e.style.webkitTransformOrigin = '50%';
 		this.e.style.MozTransformOrigin = '50%';
 		
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
-			'translate3d(' + xo + 'px,' + yo +'px, '+ Math.min(-400,((1-tri)*-1000)) +'px)'
-			+' rotateY('+((tRamp*180)-90)+'deg)'
-			// +' scale('+(tri*2)+')';
-			//+' scale('+Math.min(1,(tri*120)/12)+')';
+			'translate3d(' + xo + 'px,' + yo +'px, '+ zo +'px)'
+			+' rotateY('+((tRamp*180)-90)+'deg)';
 		
 		this.e.style.opacity = Math.min(1,((tri*2)-.5));
 		
@@ -103,7 +96,7 @@ define([],function(){
 
 	function enterTheDragon(x,y){
 
-		var curve = linear;
+		var curve = softKnee;
 
 
 		//var xoffset = box.width / 2;
@@ -119,30 +112,25 @@ define([],function(){
 		xo,//xo=x,//-xoffset, 
 		yo;//yo=y;//-yoffset;
 
-			var xyFactor = [
-				grid0, //Math.max(0,grid0),
-				grid1 //Math.max(0,grid1)
-			];
+		var xyFactor = [
+			grid0, //Math.max(0,grid0),
+			grid1 //Math.max(0,grid1)
+		];
 			
+		var cubicBezier = factorCurveBy(curve,xyFactor);
+			
+		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
+		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
-			var cubicBezier = factorCurveBy(curve,xyFactor);
-			
-			
-			
-			var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
-			var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
-
-		xo = (grid0-this.outerDims[0]*.5)-p.x;
-		yo = (grid1-this.outerDims[1]*.5)-p.y;
-		xo = (grid0-this.outerDims[0]*.5)-p.x;
-		yo = (grid1-this.outerDims[1]*.5)-p.y;
-		
+		var xo = (grid0-this.outerDims[0]*.5)-p.x;
+		var yo = (grid1-this.outerDims[1]*.5)-p.y;
+		var zo = Math.max(-800,((tri)*-1000));
 		
 		this.e.style.webkitTransformOrigin = '50%';
 		this.e.style.MozTransformOrigin = '50%';
 		
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
-			'translate3d(' + xo + 'px,' + yo +'px, '+ Math.max(-800,((tri)*-1000)) +'px)'
+			'translate3d(' + xo + 'px,' + yo +'px, '+ zo +'px)'
 			+' rotateY('+((hRamp*180)-90)+'deg)'
 			// +' scale('+(tri*2)+')';
 			//+' scale('+Math.min(1,(tri*120)/12)+')';
@@ -159,7 +147,7 @@ define([],function(){
 
 
 
-	function bezier_2(x,y){
+	function sunrise(x,y){
 
 		var curve = sunriseCurve;
 
@@ -167,30 +155,32 @@ define([],function(){
 		//var xoffset = box.width / 2;
 		//var yoffset = box.height / 2;
 		var 
+		grid0 = this.parent.gridDims[0],
+		grid1 = this.parent.gridDims[1],
 		tRamp = this.waves.tailRamp,
 		hRamp = this.waves.headRamp,
 		tri = this.waves.triangle,
-			//s = 1,
-			r,
-			xo,//xo=x,//-xoffset, 
-			yo;//yo=y;//-yoffset;
+		//s = 1,
+		r,
+		xo,//xo=x,//-xoffset, 
+		yo;//yo=y;//-yoffset;
 
-			var xyFactor = [
-				Math.max(500,this.parent.gridDims[0]),
-				Math.max(1000,this.parent.gridDims[1])
-			];
-			
+		var xyFactor = [
+			grid0, //Math.max(0,grid0),
+			grid1 //Math.max(0,grid1)
+		];
 
-			var cubicBezier = factorCurveBy(curve,xyFactor);
-			
-			
-			
-			var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
-			var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
-		//u.log(p);
-		xo = p.x;
-		// yo = p.y+y;
-		yo = 450-p.y;
+		var cubicBezier = factorCurveBy(curve,xyFactor);
+		
+		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
+		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
+
+		// xo = p.x;
+		// // yo = p.y+y;
+		// yo = 450-p.y;
+
+		var xo = (grid0-this.outerDims[0]*.5)-p.x;
+		var yo = (grid1-this.outerDims[1]*.5)-p.y;
 
 
 		//this.e.style.webkitTransform = 'translate3d(' + xo + 'px,' + yo +'px, 0)';
@@ -212,14 +202,14 @@ define([],function(){
 		
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
 		'translate3d(' + xo + 'px,' + yo +'px, 0)'//
-		+' rotateZ('+g*15+'deg)';
+		+' rotateZ('+g*60+'deg)';
 		//+' scale('+(tri*1+.4)+')';
 		
 		//this.e.style.opacity = tri;
 		
 		this.pPos = [x,y];
-	}//bezier_2()
-	exports.bezier_2 = bezier_2;
+	}//sunrise()
+	exports.sunrise = sunrise;
 
 
 
