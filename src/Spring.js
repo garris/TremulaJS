@@ -222,10 +222,11 @@ define([
 
 	}//END grid object
 	
-	Spring.prototype.updateConfig = function(config){
+	Spring.prototype.updateConfig = function(config,torf){
+		
 		$.extend(this,config);
 		this.resetAllItemConstraints();
-		this.setLayout(null,config);
+		if(torf)this.setLayout(null,config);
 	}
 
 
@@ -838,10 +839,15 @@ define([
 			that.ltTimer = null;
 		}, ms+100)//TODO: document& init this
 		
-		this.setLayout(layout,options);
+		if(options.axis)options.staticAxisCount = options.axis;
 		
 		if(surfaceMap)
 			this.setSurfaceMap(surfaceMap)
+
+		this.updateConfig(options);
+		
+		this.setLayout(layout,options);
+		
 		
 		//oneShotPaint(value) value is the axis position (i.e. the origin or where the touch event would be) of the transition event. NOTE: zero doesn't work
 		this.oneShotPaint(1);//this.getScrollDimCenter()

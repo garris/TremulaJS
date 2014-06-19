@@ -87,15 +87,14 @@
 					$(".btnL1").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:2},800,slinky.easings.easeOutElastic,slinky.projections.xyPlane);
-							//s.setSurfaceMap(xyPlane)
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:200},800,slinky.easings.easeOutElastic,slinky.projections.xyPlane);
 						}, 100)
 					})
 					
 					$(".btnL2").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic,slinky.projections.turntable);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:350},800,slinky.easings.easeOutElastic,slinky.projections.turntable);
 							s.setItemEasing(false);
 						}, 100)
 					})
@@ -103,7 +102,7 @@
 					$(".btnL3").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic,slinky.projections.enterTheDragon);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:350},800,slinky.easings.easeOutElastic,slinky.projections.enterTheDragon);
 							s.setItemEasing(false);
 						}, 100)
 					})
@@ -111,7 +110,15 @@
 					$(".btnL4").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic,slinky.projections.sunrise);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:100},800,slinky.easings.easeOutElastic,slinky.projections.sunrise);
+							s.setItemEasing(false);
+						}, 100)
+					})
+					
+					$(".btnL5").click(function() {
+						s.jumpToScrollProgress(0);
+						setTimeout(function(){
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:200},800,slinky.easings.easeOutElastic,slinky.projections.expandedCenter);
 							s.setItemEasing(false);
 						}, 100)
 					})
@@ -125,30 +132,33 @@
 					$(".btn1").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:300},800,slinky.easings.easeOutElastic);
 						}, 100)
 					})
+
 					$(".btn2").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:1},800,slinky.easings.easeOutElastic);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:1,itemConstraint:100},800,slinky.easings.easeOutElastic);
 						}, 100)
 					})
 					$(".btn3").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:2},800,slinky.easings.easeOutElastic);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:2,itemConstraint:100},800,slinky.easings.easeOutElastic);
 						}, 100)
 					})
-					$(".btn4").click(function() {
-						s.jumpToScrollProgress(0);
-						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:4},800,slinky.easings.easeOutElastic);
-						}, 100)
-					})
-					$(".btn5").click(function() {
-						s.doTransition(slinky.layouts.stackLayout,{axes:1},800,slinky.easings.easeOutElastic);//easeInOutQuad
-					})
+					// $(".btn4").click(function() {
+					// 	s.jumpToScrollProgress(0);
+					// 	setTimeout(function(){
+					// 		s.doTransition(slinky.layouts.basicGridLayout,{axes:4},800,slinky.easings.easeOutElastic);
+					// 	}, 100)
+					// })
+
+
+					// $(".btn5").click(function() {
+					// 	s.doTransition(slinky.layouts.stackLayout,{axes:1},800,slinky.easings.easeOutElastic);//easeInOutQuad
+					// })
 					
 					$(".toggleItemEase").click(function() {
 						s.setItemEasing(!s.itemEasing);//easeInOutQuad
@@ -219,7 +229,7 @@
 					<li class="btn1">1 Axis</li>
 					<li class="btn2">2 Axes</li>
 					<li class="btn3">3 Axes</li>
-					<li class="btn4">5 Axes</li>
+<!-- 					<li class="btn4">5 Axes</li> -->
 				</div>
 				<div class="group">
 					<li class="size1">sm</li>
@@ -233,6 +243,7 @@
 					<li class="btnL2">turntable</li>
 					<li class="btnL3">enterTheDragon</li>
 					<li class="btnL4">sunrise</li>
+					<li class="btnL5">sunrise</li>
 				</div>
 
 				
