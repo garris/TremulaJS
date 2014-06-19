@@ -43,7 +43,7 @@ define([],function(){
 
 	//===== bezier projections ========
 
-	function bezier_1(x,y){
+	function turntable(x,y){
 
 		var curve = linear;
 
@@ -92,8 +92,66 @@ define([],function(){
 		this.e.style.opacity = Math.min(1,((tri*2)-.5));
 		
 		this.pPos = [x,y];
-	}//bezier_1()
-	exports.bezier_1 = bezier_1;
+	}//turntable()
+	exports.turntable = turntable;
+
+
+
+
+
+
+
+	function enterTheDragon(x,y){
+
+		var curve = linear;
+
+
+		//var xoffset = box.width / 2;
+		//var yoffset = box.height / 2;
+		var
+		grid0 = this.parent.gridDims[0],
+		grid1 = this.parent.gridDims[1],
+		tRamp = this.waves.tailRamp,
+		hRamp = this.waves.headRamp,
+		tri = this.waves.triangle,
+		//s = 1,
+		r,
+		xo,//xo=x,//-xoffset, 
+		yo;//yo=y;//-yoffset;
+
+			var xyFactor = [
+				grid0, //Math.max(0,grid0),
+				grid1 //Math.max(0,grid1)
+			];
+			
+
+			var cubicBezier = factorCurveBy(curve,xyFactor);
+			
+			
+			
+			var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
+			var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
+
+		xo = (grid0-this.outerDims[0]*.5)-p.x;
+		yo = (grid1-this.outerDims[1]*.5)-p.y;
+		xo = (grid0-this.outerDims[0]*.5)-p.x;
+		yo = (grid1-this.outerDims[1]*.5)-p.y;
+		
+		
+		this.e.style.webkitTransformOrigin = '50%';
+		this.e.style.MozTransformOrigin = '50%';
+		
+		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
+			'translate3d(' + xo + 'px,' + yo +'px, '+ Math.max(-800,((tri)*-1000)) +'px)'
+			+' rotateY('+((hRamp*180)-90)+'deg)'
+			// +' scale('+(tri*2)+')';
+			//+' scale('+Math.min(1,(tri*120)/12)+')';
+		
+		this.e.style.opacity = Math.min(1,((tri*2)-.5));
+		
+		this.pPos = [x,y];
+	}//enterTheDragon()
+	exports.enterTheDragon = enterTheDragon;
 
 
 

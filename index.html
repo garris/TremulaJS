@@ -95,7 +95,15 @@
 					$(".btnL2").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic,slinky.projections.bezier_1);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic,slinky.projections.turntable);
+							s.setItemEasing(false);
+						}, 100)
+					})
+					
+					$(".btnL3").click(function() {
+						s.jumpToScrollProgress(0);
+						setTimeout(function(){
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic,slinky.projections.enterTheDragon);
 							s.setItemEasing(false);
 						}, 100)
 					})
@@ -150,6 +158,18 @@
 				}
 
 
+// slinky.spring.updateConfig({itemConstraint:100,itemEasing:false});	
+// setTimeout(function(){
+// 	s.doTransition(slinky.layouts.basicGridLayout,{axes:2},800,slinky.easings.easeOutElastic);
+// }, 500)
+
+// slinky.spring.updateConfig({itemConstraint:300,itemEasing:false,staticAxisCount:2});	
+// setTimeout(function(){
+// 	s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic);
+// }, 500)
+
+
+
 		</script>
 
 	</head>
@@ -193,19 +213,28 @@
 					<li class="btn3">3 Axes</li>
 					<li class="btn4">5 Axes</li>
 				</div>
+				<div class="group">
+					<li class="size1">sm</li>
+					<li class="size2">med</li>
+					<li class="size3">lg</li>
+				</div>
 
-				<li class="btn5 group">stackLayout</li>
 				
-				<li class="btnL1">xyPlane</li>
-				<li class="btnL2">bezier_1</li>
+				<div class="group">
+					<li class="btnL1">xyPlane</li>
+					<li class="btnL2">turntable</li>
+					<li class="btnL3">enterTheDragon</li>
+				</div>
+
 				
-				<li class="toggleItemEase">toggle ease</li>
-				
-				<li class="toggleScrollAxis">toggle axis</li>
-				
-				<li class="toggleIsLooping">toggle looping</li>
-				
-				<li class="tailScroll">tail scroll</li>
+				<div class="group">
+					<li class="toggleItemEase">toggle ease</li>
+					<li class="toggleScrollAxis">toggle axis</li>
+					<li class="toggleIsLooping">toggle looping</li>
+					<li class="tailScroll">tail scroll</li>
+				</div>
+
+
 			</ul>
 		
 		</div>
