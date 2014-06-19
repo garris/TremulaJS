@@ -222,6 +222,13 @@ define([
 
 	}//END grid object
 	
+	Spring.prototype.updateConfig = function(config){
+		$.extend(this,config);
+		this.resetAllItemConstraints();
+		this.setLayout(null,config);
+	}
+
+
 	Spring.prototype.toggleScrollAxis = function(axis){
 		this.jumpToScrollProgress(0);
 		
@@ -733,7 +740,7 @@ define([
 		if(!options)options = this.lastLayoutOptions.options;
 		this.lastLayoutOptions = {layout:layout,options:options};
 		
-		var axes = options.axes;
+		// var axes = options.axes;
 
 		if(this.layout_cache) delete this.layout_cache;//clean up work files from last time a layout was run. layout.call() will 
 

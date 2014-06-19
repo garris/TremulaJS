@@ -9,6 +9,11 @@
 						font-family: 'Yanone Kaffeesatz', sans-serif;
 					}
 		</style>
+		<style type="text/css">
+			.itemInfo{-webkit-transform: translateZ(0);}
+			.gridBox{-webkit-box-reflect :below 18px -webkit-gradient(linear, left bottom, left top, from(rgba(255,255,255,0.25)), color-stop(0.3, transparent)); }
+
+		</style>
 		
 		<script src="libs/jquery-min.js"></script>
 		<script src="libs/hammer.js"></script>
@@ -37,8 +42,7 @@
 				var slinky = new Slinky();
 				window.slinky = slinky;//not necessary -- just for demo convienience
 
-
-				var config = slinkyConfigs.large2Row.call(slinky);
+				var config = slinkyConfigs.large1Row.call(slinky);
 
 				$slinkyContainer = $('.slinkyContainer');
 				slinky.init($slinkyContainer,config,this);
@@ -83,7 +87,7 @@
 					$(".btnL1").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.basicGridLayout,{axes:2},800,slinky.easings.easeOutElastic,slinky.projections.xyPlane);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:2},800,slinky.easings.easeOutElastic,slinky.projections.xyPlane);
 							//s.setSurfaceMap(xyPlane)
 						}, 100)
 					})
@@ -91,7 +95,7 @@
 					$(".btnL2").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic,slinky.projections.bezier_1);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic,slinky.projections.bezier_1);
 							s.setItemEasing(false);
 						}, 100)
 					})
@@ -105,29 +109,29 @@
 					$(".btn1").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic);
 						}, 100)
 					})
 					$(".btn2").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.basicGridLayout,{axes:1},800,slinky.easings.easeOutElastic);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:1},800,slinky.easings.easeOutElastic);
 						}, 100)
 					})
 					$(".btn3").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.basicGridLayout,{axes:2},800,slinky.easings.easeOutElastic);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:2},800,slinky.easings.easeOutElastic);
 						}, 100)
 					})
 					$(".btn4").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.basicGridLayout,{axes:4},800,slinky.easings.easeOutElastic);
+							s.doTransition(slinky.layouts.basicGridLayout,{axes:4},800,slinky.easings.easeOutElastic);
 						}, 100)
 					})
 					$(".btn5").click(function() {
-						s.doTransition(slinky.stackLayout,{axes:1},800,slinky.easings.easeOutElastic);//easeInOutQuad
+						s.doTransition(slinky.layouts.stackLayout,{axes:1},800,slinky.easings.easeOutElastic);//easeInOutQuad
 					})
 					
 					$(".toggleItemEase").click(function() {

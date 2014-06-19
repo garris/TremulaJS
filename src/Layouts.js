@@ -6,8 +6,8 @@ define([],function(){
 		var grid = this;
 
 		options=(!options)?{}:options;
-		var axisCount = options.axes;
-		
+		var axisCount = options.axes||options.staticAxisCount;
+
 		//make sure we have at least one row (zero based)
 		if(!axisCount)axisCount=0;
 		

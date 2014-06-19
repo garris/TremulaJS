@@ -73,36 +73,23 @@ define([],function(){
 			
 			var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
 			var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
-		//u.log(p);
+
 		xo = (grid0-this.outerDims[0]*.5)-p.x;
-		// yo = p.y+y;
 		yo = (grid1-this.outerDims[1]*.5)-p.y;
-
-
-		//this.e.style.webkitTransform = 'translate3d(' + xo + 'px,' + yo +'px, 0)';
-		//this.e.style.left = xo + 'px';
-		//this.e.style.top = yo + 'px';
-		
-		//yo+= this.waves.triangle*100
-		//s = Math.max(this.waves.triangle*2,1)
-		//xo = x;
-		//xo = 500+hRamp*-500;
-		//xo = 200+hRamp*-200;
-		//r = 50*tRamp;
-		//xo=x;
-		//yo=y;
+		xo = (grid0-this.outerDims[0]*.5)-p.x;
+		yo = (grid1-this.outerDims[1]*.5)-p.y;
 		
 		
 		this.e.style.webkitTransformOrigin = '50%';
 		this.e.style.MozTransformOrigin = '50%';
 		
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
-			'translate3d(' + xo + 'px,' + yo +'px, '+ Math.min(-300,((1-tri)*-1000)) +'px)'
+			'translate3d(' + xo + 'px,' + yo +'px, '+ Math.min(-400,((1-tri)*-1000)) +'px)'
 			+' rotateY('+((tRamp*180)-90)+'deg)'
 			// +' scale('+(tri*2)+')';
 			//+' scale('+Math.min(1,(tri*120)/12)+')';
 		
-		this.e.style.opacity = tri;
+		this.e.style.opacity = Math.min(1,((tri*2)-.5));
 		
 		this.pPos = [x,y];
 	}//bezier_1()

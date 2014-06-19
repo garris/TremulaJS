@@ -1,5 +1,5 @@
 .slinkyContainer{
-	-webkit-perspective:800;
+	-webkit-perspective:1000;
 	perspective:800;
 	height:80%;
 	width:100%;
@@ -9,21 +9,27 @@
 	background-color:#ddd;
 	overflow:hidden
 }
-.gridBox{background:#fafafa url() no-repeat center center;box-shadow:1px 0 5px rgba(0,0,0,0.2);position:absolute;border:#fff 10px solid}
+.gridBox{
+	background:#fafafa url() no-repeat center center;
+	box-shadow:1px 0 5px rgba(0,0,0,0.2);
+	position:absolute;
+	border:#fff 10px solid;
+}
 .gridBox.loaded{background-image:none}
 .gridBox.isLastContentBlock{border: none;background: none;box-shadow: none;}
 .boxLabel{top:50%;position:relative;font-weight:300;font-size:10px;line-height:1.2;margin-top:-34px;text-align:center;font-family:inherit;color:#999}
 .moneyShot{position:absolute;top:0;right:0;opacity:0;-webkit-transition:opacity 900ms;-moz-transition:opacity 900ms;-o-transition:opacity 900ms;transition:opacity 900ms;-webkit-transform:scale3d(1, 1, 1);-moz-transform:scale3d(1, 1, 1);-ms-transform:scale3d(1, 1, 1);-o-transform:scale3d(1, 1, 1);transform:scale3d(1, 1, 1)}
 .moneyShot.loaded{opacity:1}
+
 .itemInfo {
-position: absolute;
-bottom: -35px;
-/* background-color: rgba(255,255,255,.7); */
-padding: 0.3em;
-width: calc(100% - 15px);
-white-space: nowrap;
-overflow: hidden;
-text-overflow: ellipsis;
-left: -1px;
-font-size: 15px;
+	position: absolute;
+	bottom: -35px;
+	padding: 0.3em;
+	width: calc(100% - 15px);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	left: -1px;
+	font-size: 15px;
+	/* background-color: rgba(255,255,255,.7); */
 }
