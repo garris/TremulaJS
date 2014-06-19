@@ -91,8 +91,8 @@
 					$(".btnL2").click(function() {
 						s.jumpToScrollProgress(0);
 						setTimeout(function(){
-							s.doTransition(slinky.basicGridLayout,{axes:1},800,slinky.easings.easeOutElastic,slinky.projections.bezier_1);
-							//s.setSurfaceMap(xyPlane)
+							s.doTransition(slinky.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic,slinky.projections.bezier_1);
+							s.setItemEasing(false);
 						}, 100)
 					})
 					

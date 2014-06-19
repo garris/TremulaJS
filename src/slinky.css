@@ -1,4 +1,14 @@
-.slinkyContainer{height:100%;width:100%;position:absolute;top:0;left:0;background-color:#ddd;overflow:hidden}
+.slinkyContainer{
+	-webkit-perspective:800;
+	perspective:800;
+	height:80%;
+	width:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	background-color:#ddd;
+	overflow:hidden
+}
 .gridBox{background:#fafafa url() no-repeat center center;box-shadow:1px 0 5px rgba(0,0,0,0.2);position:absolute;border:#fff 10px solid}
 .gridBox.loaded{background-image:none}
 .gridBox.isLastContentBlock{border: none;background: none;box-shadow: none;}

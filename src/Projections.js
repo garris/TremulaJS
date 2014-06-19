@@ -20,11 +20,11 @@ define([],function(){
 		{x:1,y:0}
 	];
 
-	var sunsetCurve = [
-		{x:0,y:0},
-		{x:.5,y:.05},
-		{x:.1,y:0},
-		{x:1,y:0}
+	var linear = [
+		{x:0,y:.5},
+		{x:.45,y:.5},
+		{x:.55,y:.5},
+		{x:1,y:.5}
 	];
 
 
@@ -32,10 +32,10 @@ define([],function(){
 
 	function factorCurveBy(cubic,xy){
 		var result = [
-			{x:cubic[0].x*xy[0],y:cubic[0].y*xy[1]},
-			{x:cubic[1].x*xy[0],y:cubic[1].y*xy[1]},
+			{x:cubic[3].x*xy[0],y:cubic[3].y*xy[1]},
 			{x:cubic[2].x*xy[0],y:cubic[2].y*xy[1]},
-			{x:cubic[3].x*xy[0],y:cubic[3].y*xy[1]}
+			{x:cubic[1].x*xy[0],y:cubic[1].y*xy[1]},
+			{x:cubic[0].x*xy[0],y:cubic[0].y*xy[1]}
 		]
 		return result;
 	}
@@ -45,23 +45,25 @@ define([],function(){
 
 	function bezier_1(x,y){
 
-		var curve = sunsetCurve;
+		var curve = linear;
 
 
 		//var xoffset = box.width / 2;
 		//var yoffset = box.height / 2;
-		var 
+		var
+		grid0 = this.parent.gridDims[0],
+		grid1 = this.parent.gridDims[1],
 		tRamp = this.waves.tailRamp,
 		hRamp = this.waves.headRamp,
 		tri = this.waves.triangle,
-			//s = 1,
-			r,
-			xo,//xo=x,//-xoffset, 
-			yo;//yo=y;//-yoffset;
+		//s = 1,
+		r,
+		xo,//xo=x,//-xoffset, 
+		yo;//yo=y;//-yoffset;
 
 			var xyFactor = [
-				Math.max(500,this.parent.gridDims[0]),
-				Math.max(1000,this.parent.gridDims[1])
+				grid0, //Math.max(0,grid0),
+				grid1 //Math.max(0,grid1)
 			];
 			
 
@@ -72,9 +74,9 @@ define([],function(){
 			var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
 			var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 		//u.log(p);
-		xo = p.x;
+		xo = (grid0-this.outerDims[0]*.5)-p.x;
 		// yo = p.y+y;
-		yo = 450-p.y;
+		yo = (grid1-this.outerDims[1]*.5)-p.y;
 
 
 		//this.e.style.webkitTransform = 'translate3d(' + xo + 'px,' + yo +'px, 0)';
@@ -95,12 +97,12 @@ define([],function(){
 		this.e.style.MozTransformOrigin = '50%';
 		
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
-		'translate3d(' + xo + 'px,' + yo +'px, 0)'//
-		//+' rotateZ('+g*15+'deg)';
-		// +' scale('+(tri*2)+')';
-		+' scale('+(tRamp*2)+')';
+			'translate3d(' + xo + 'px,' + yo +'px, '+ Math.min(-300,((1-tri)*-1000)) +'px)'
+			+' rotateY('+((tRamp*180)-90)+'deg)'
+			// +' scale('+(tri*2)+')';
+			//+' scale('+Math.min(1,(tri*120)/12)+')';
 		
-		this.e.style.opacity = tRamp;
+		this.e.style.opacity = tri;
 		
 		this.pPos = [x,y];
 	}//bezier_1()
