@@ -27,11 +27,18 @@ define([],function(){
 		{x:1,y:.5}
 	];
 
-	var expandedCenterPath = [
-		{x:-.25,y:.5},
-		{x:.5,y:.5},
-		{x:.5,y:.5},
-		{x:1.25,y:.5}
+	var wideKnee = [
+		{x:-.05,y:.5},
+		{x:.20,y:.5},
+		{x:.80,y:.5},
+		{x:1.05,y:.5}
+	];
+
+	var enterTheDragonPath = [
+		{x:-.1,y:.5},
+		{x:.6,y:.5},
+		{x:.4,y:.5},
+		{x:1.1,y:.5}
 	];
 
 
@@ -103,7 +110,7 @@ define([],function(){
 
 	function enterTheDragon(x,y){
 
-		var curve = softKnee;
+		var curve = enterTheDragonPath;
 
 
 		//var xoffset = box.width / 2;
@@ -225,11 +232,8 @@ define([],function(){
 
 	function expandedCenter(x,y){
 
-		var curve = expandedCenterPath;
+		var curve = wideKnee;
 
-
-		//var xoffset = box.width / 2;
-		//var yoffset = box.height / 2;
 		var 
 		grid0 = this.parent.gridDims[0],
 		grid1 = this.parent.gridDims[1],
@@ -251,36 +255,16 @@ define([],function(){
 		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
 		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
-		// xo = p.x;
-		// // yo = p.y+y;
-		// yo = 450-p.y;
-
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
 		var yo = y+this.itemMargins[1]+(grid1-this.outerDims[1]*.5)-p.y;
+		var zo = 0;//Math.max(50,((tri)*100));
 
-
-		//this.e.style.webkitTransform = 'translate3d(' + xo + 'px,' + yo +'px, 0)';
-		//this.e.style.left = xo + 'px';
-		//this.e.style.top = yo + 'px';
-		
-		//yo+= this.waves.triangle*100
-		//s = Math.max(this.waves.triangle*2,1)
-		//xo = x;
-		//xo = 500+hRamp*-500;
-		//xo = 200+hRamp*-200;
-		//r = 50*tRamp;
-		//xo=x;
-		//yo=y;
-		
-		
 		this.e.style.webkitTransformOrigin = '50%';
 		this.e.style.MozTransformOrigin = '50%';
 		
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
-		'translate3d(' + xo + 'px,' + yo +'px, 0)'//
-		//+' rotateZ('+g*60+'deg)';
-		//+' scale('+(tri*1+.4)+')';
-		
+		'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)'
+
 		//this.e.style.opacity = tri;
 		
 		this.pPos = [x,y];

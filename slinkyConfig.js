@@ -20,7 +20,7 @@ slinkyConfigs = {
 			defaultLayout       :this.layouts.basicGridLayout,//<--- TODO:  this is not yet implemented.
 			surfaceMap          :this.projections.expandedCenter,
 			itemPreloading      :true,
-			itemEasing            :false,
+			itemEasing           :false,
 			itemEasingParams    :{
 				touchCurve          :this.easings.easeOutCubic,
 				swipeCurve          :this.easings.easeOutCubic,
