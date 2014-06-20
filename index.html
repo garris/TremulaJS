@@ -21,6 +21,7 @@
 		<script src="libs/raf_shim.js"></script>
 
 		<script src="slinkyConfig.js"></script>
+		<script src="slinkyControls.js"></script>
 		<script data-main="src/Slinky" src="libs/require.js"></script>
 
 		<script type="text/javascript">
@@ -55,8 +56,8 @@
 					s.spring.statsCache.endOfScrollFlag = false;
 				}
 
-				var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=100&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';
-
+				// var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=100&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';
+				var dataUrl = 'decorProductSearch.json';
 				$.getJSON(dataUrl,function(res){
 					refreshData(res.ImageDetails,slinky.dataAdapters.JudyItem);
 				})
@@ -80,115 +81,6 @@
 		</script>
 
 
-		<script type="text/javascript">
-				function attachDemoControls(slinky){
-					var s = slinky.spring;
-
-					$(".btnL1").click(function() {
-						s.jumpToScrollProgress(0);
-						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:200},800,slinky.easings.easeOutElastic,slinky.projections.xyPlane);
-						}, 100)
-					})
-					
-					$(".btnL2").click(function() {
-						s.jumpToScrollProgress(0);
-						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:350},800,slinky.easings.easeOutElastic,slinky.projections.turntable);
-							s.setItemEasing(false);
-						}, 100)
-					})
-					
-					$(".btnL3").click(function() {
-						s.jumpToScrollProgress(0);
-						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:350},800,slinky.easings.easeOutElastic,slinky.projections.enterTheDragon);
-							s.setItemEasing(false);
-						}, 100)
-					})
-					
-					$(".btnL4").click(function() {
-						s.jumpToScrollProgress(0);
-						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:100},800,slinky.easings.easeOutElastic,slinky.projections.sunrise);
-							s.setItemEasing(false);
-						}, 100)
-					})
-					
-					$(".btnL5").click(function() {
-						s.jumpToScrollProgress(0);
-						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:200},800,slinky.easings.easeOutElastic,slinky.projections.expandedCenter);
-							s.setItemEasing(false);
-						}, 100)
-					})
-					
-					
-					$(".tailScroll").click(function() {
-						s.setLastTouchOrigin(s.gridDims[s.si]/2);
-						s.easeTo(s.getScrollPos()-s.getScrollViewDim(),600)
-					})
-					
-					$(".btn1").click(function() {
-						s.jumpToScrollProgress(0);
-						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:300},800,slinky.easings.easeOutElastic);
-						}, 100)
-					})
-
-					$(".btn2").click(function() {
-						s.jumpToScrollProgress(0);
-						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:1,itemConstraint:100},800,slinky.easings.easeOutElastic);
-						}, 100)
-					})
-					$(".btn3").click(function() {
-						s.jumpToScrollProgress(0);
-						setTimeout(function(){
-							s.doTransition(slinky.layouts.basicGridLayout,{axes:2,itemConstraint:100},800,slinky.easings.easeOutElastic);
-						}, 100)
-					})
-					// $(".btn4").click(function() {
-					// 	s.jumpToScrollProgress(0);
-					// 	setTimeout(function(){
-					// 		s.doTransition(slinky.layouts.basicGridLayout,{axes:4},800,slinky.easings.easeOutElastic);
-					// 	}, 100)
-					// })
-
-
-					// $(".btn5").click(function() {
-					// 	s.doTransition(slinky.layouts.stackLayout,{axes:1},800,slinky.easings.easeOutElastic);//easeInOutQuad
-					// })
-					
-					$(".toggleItemEase").click(function() {
-						s.setItemEasing(!s.itemEasing);//easeInOutQuad
-					})
-					
-					
-					$(".toggleScrollAxis").click(function() {
-						s.toggleScrollAxis();
-					})
-					
-					
-					$(".toggleIsLooping").click(function() {
-						s.toggleIsLooping();
-					})
-				}
-
-
-// slinky.spring.updateConfig({itemConstraint:100,itemEasing:false});	
-// setTimeout(function(){
-// 	s.doTransition(slinky.layouts.basicGridLayout,{axes:2},800,slinky.easings.easeOutElastic);
-// }, 500)
-
-// slinky.spring.updateConfig({itemConstraint:300,itemEasing:false,staticAxisCount:2});	
-// setTimeout(function(){
-// 	s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic);
-// }, 500)
-
-
-
-		</script>
 
 	</head>
 	<body>
@@ -210,9 +102,17 @@
 			.buttons li{
 				display: inline-block;
 				padding: .5em;
-				background: #9e9;
+				background: #999;
 				margin: 1.5ex 1em -1ex -1em;
 				cursor: pointer;
+			}
+			.buttons li:hover{
+				background: #333;
+				color:#eee;
+			}
+			.buttons li:active{
+				background: #eee;
+				color:#333;
 			}
 			.group{
 				display: inline-block;
@@ -237,20 +137,30 @@
 					<li class="size3">lg</li>
 				</div>
 
+				<div class="group">
+					<li class="margin1">margin sm</li>
+					<li class="margin2">margin med</li>
+					<li class="margin3">margin lg</li>
+				</div>
+
 				
 				<div class="group">
 					<li class="btnL1">xyPlane</li>
 					<li class="btnL2">turntable</li>
 					<li class="btnL3">enterTheDragon</li>
 					<li class="btnL4">sunrise</li>
-					<li class="btnL5">sunrise</li>
+					<li class="btnL5">expandedCenter</li>
 				</div>
 
 				
 				<div class="group">
 					<li class="toggleItemEase">toggle ease</li>
-					<li class="toggleScrollAxis">toggle axis</li>
 					<li class="toggleIsLooping">toggle looping</li>
+					<li class="toggleScrollAxis">toggle axis</li>
+				</div>
+
+				<div class="group">
+					<li class="headScroll">head scroll</li>
 					<li class="tailScroll">tail scroll</li>
 				</div>
 

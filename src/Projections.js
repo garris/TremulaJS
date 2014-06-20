@@ -187,7 +187,7 @@ define([],function(){
 		// yo = 450-p.y;
 
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
-		var yo = (grid1-this.outerDims[1]*.5)-p.y;
+		var yo = y+this.itemMargins[1]+(grid1-this.outerDims[1]*.5)-p.y;
 
 
 		//this.e.style.webkitTransform = 'translate3d(' + xo + 'px,' + yo +'px, 0)';
@@ -256,7 +256,7 @@ define([],function(){
 		// yo = 450-p.y;
 
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
-		var yo = (grid1-this.outerDims[1]*.5)-p.y;
+		var yo = y+this.itemMargins[1]+(grid1-this.outerDims[1]*.5)-p.y;
 
 
 		//this.e.style.webkitTransform = 'translate3d(' + xo + 'px,' + yo +'px, 0)';

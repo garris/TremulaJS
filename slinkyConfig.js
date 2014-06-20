@@ -10,7 +10,7 @@ slinkyConfigs = {
 			maxWidthClassMap		: {mini:50,small:143,medium:244,large:2000},//large will apply to anything over medium limit
 			lastContentBlock 		: {template :'<div class="lastContentItem"></div>',layoutType :'slinkyBlockItem',noScaling:true,w:300,h:390,isLastContentBlock:true},
 			adapter             : this.dataAdapters.JudyItem,
-			itemConstraint      :300,
+			itemConstraint      :200,
 			itemMargins         :[30,30],
 			staticAxisOffset    :18,//px
 			scrollAxisOffset    :20,//px
@@ -18,9 +18,9 @@ slinkyConfigs = {
 			staticAxisCount     :0,//zero based
 			//isLooping         :true,
 			defaultLayout       :this.layouts.basicGridLayout,//<--- TODO:  this is not yet implemented.
-			surfaceMap          :this.projections.xyPlane,
+			surfaceMap          :this.projections.expandedCenter,
 			itemPreloading      :true,
-			itemEasing            :true,
+			itemEasing            :false,
 			itemEasingParams    :{
 				touchCurve          :this.easings.easeOutCubic,
 				swipeCurve          :this.easings.easeOutCubic,

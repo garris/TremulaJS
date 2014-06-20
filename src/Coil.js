@@ -20,6 +20,7 @@ define([
 		this.getLayoutIsXing = function(){return this.parent.layoutIsXing;}
 		this.getLayoutXingMs = function(){return this.parent.layoutXansMs;}
 		this.springLimit = this.parent.springLimit;
+		this.itemMargins = this.parent.itemMargins;
 		//this.setSurfaceMap(this.parent.options.surfaceMap);
 		//this.surfaceMap = this.parent.surfaceMap;
 
