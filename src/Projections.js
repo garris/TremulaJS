@@ -171,6 +171,7 @@ define([],function(){
 		var 
 		grid0 = this.parent.gridDims[0],
 		grid1 = this.parent.gridDims[1],
+		// axisLength = this.parent.currentGridContentDims,
 		tRamp = this.waves.tailRamp,
 		hRamp = this.waves.headRamp,
 		tri = this.waves.triangle,
@@ -195,6 +196,7 @@ define([],function(){
 
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
 		var yo = y+this.itemMargins[1]+(grid1-this.outerDims[1]*.5)-p.y;
+		// var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
 
 
 		//this.e.style.webkitTransform = 'translate3d(' + xo + 'px,' + yo +'px, 0)';
@@ -237,6 +239,7 @@ define([],function(){
 		var 
 		grid0 = this.parent.gridDims[0],
 		grid1 = this.parent.gridDims[1],
+		axisLength = this.parent.currentGridContentDims,
 		tRamp = this.waves.tailRamp,
 		hRamp = this.waves.headRamp,
 		tri = this.waves.triangle,
@@ -244,6 +247,9 @@ define([],function(){
 		r,
 		xo,//xo=x,//-xoffset, 
 		yo;//yo=y;//-yoffset;
+
+
+// console.log(axisLength)
 
 		var xyFactor = [
 			grid0, //Math.max(0,grid0),
@@ -256,7 +262,7 @@ define([],function(){
 		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
-		var yo = y+this.itemMargins[1]+(grid1-this.outerDims[1]*.5)-p.y;
+		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
 		var zo = 0;//Math.max(50,((tri)*100));
 
 		this.e.style.webkitTransformOrigin = '50%';

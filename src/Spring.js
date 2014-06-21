@@ -34,9 +34,11 @@ define([
 		this.springLimit 			= options.itemEasingParams.springLimit; //depth of item level movement when itemEasing is enabled
 
 		this.boxAxisLengths 		= [0,0]; //The total H&W axis lengths after evaluating data (including item margin -- but does not include axis margin)
-		//this.boxAxisLessScrollMargin	= [0,0]; //The total H&W axis lengths after evaluating data (including item margin -- but does not include axis margin)
-		this.trailingEdgeScrollPos 	= null; //this is the scroll value in which the last data element is displayed with it's tail edge at the very end of the visible scroll axis
+		this.currentGridContentDims		= [0,0]; //NOTE:  boxAxisLengths is used as an aggregator during layout and will not always reflect the correct state -- use this value instead for inter-module publishing
 		
+		//this.boxAxisLessScrollMargin	= [0,0]; //The total H&W axis lengths after evaluating data (including item margin -- but does not include axis margin)
+		
+		this.trailingEdgeScrollPos 	= null; //this is the scroll value in which the last data element is displayed with it's tail edge at the very end of the visible scroll axis
 		//used to keep code readable -- used in axisOffset.x & axisOffset.y
 		this.scrollAxisOffset 		= options.scrollAxisOffset; //default value (may be modified by this.setScrollAxis())
 		this.staticAxisOffset 		= options.staticAxisOffset; //default value (may be modified by this.setScrollAxis())
@@ -223,7 +225,7 @@ define([
 	}//END grid object
 	
 	Spring.prototype.updateConfig = function(config,torf){
-		
+		if(config.hasOwnProperty('axes'))config.staticAxisCount=config.axes;//need to map this...
 		$.extend(this,config);
 		this.resetAllItemConstraints();
 		if(torf)this.setLayout(null,config);
@@ -731,15 +733,16 @@ define([
 	}
 	
 	Spring.prototype.setLayout = function(layout,options){
-		//options=(!options)?{}:options;
-		
+		//options=(!options)?{}:options;	
+		var options_ = this.lastLayoutOptions&&this.lastLayoutOptions.options||{};
 		//if there are absolutely no layout specs then just bump out of here because we're not ready to draw yet...
 		if(!layout && (!this.lastLayoutOptions || !this.lastLayoutOptions.layout)){return};
 		if(!options  && (!this.lastLayoutOptions || !this.lastLayoutOptions.options)){return};
 
 		if(!layout)layout = this.lastLayoutOptions.layout;
-		if(!options)options = this.lastLayoutOptions.options;
-		this.lastLayoutOptions = {layout:layout,options:options};
+		//if(!options)options = this.lastLayoutOptions.options;
+		$.extend(options_,options);
+		this.lastLayoutOptions = {layout:layout,options:options_};
 		
 		// var axes = options.axes;
 
@@ -757,7 +760,7 @@ define([
 			b.index=i;//moved here from initBoxes -- doing it here creates a sequential index regardless of calling insert or append.  watch out because index value will dynamicly change. 
 
 			//this.layouts[layout](b,this,axes);
-			layout.call(this,b,options);
+			layout.call(this,b,options_);
 			
 			//we are currently basing scrollMargin on the first item h or w (per si)
 			//if this is the first item then we should get the calculated values for h,w and position
@@ -810,8 +813,11 @@ define([
 			this.boxAxisLengths[this.si]=gridDimsSiPlusScrollMargin;
 		}
 
+		this.currentGridContentDims[this.si]=this.boxAxisLengths[this.si];
+		this.currentGridContentDims[this.si_]=(this.staticAxisCount+1)*(this.itemConstraint+(this.itemMargins[this.si_]*2));//+(this.itemMargins[this.si_]*2)  <add this back
+
 		//set scroll to top if this is a new set of items
-		if(options.isNewSet)
+		if(options_.isNewSet)
 			this.setAbsScrollPos(1);
 
 		this.oneShotPaint(1);
@@ -839,7 +845,7 @@ define([
 			that.ltTimer = null;
 		}, ms+100)//TODO: document& init this
 		
-		if(options.axis)options.staticAxisCount = options.axis;
+		//if(options.axis)options.staticAxisCount = options.axis;<=== this was moved to updateConfig()
 		
 		if(surfaceMap)
 			this.setSurfaceMap(surfaceMap)
