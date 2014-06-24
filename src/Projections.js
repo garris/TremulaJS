@@ -27,12 +27,6 @@ define([],function(){
 		{x:1,y:.5}
 	];
 
-	var wideKnee = [
-		{x:-.05,y:.5},
-		{x:.20,y:.5},
-		{x:.80,y:.5},
-		{x:1.05,y:.5}
-	];
 
 	var enterTheDragonPath = [
 		{x:-.1,y:.5},
@@ -230,6 +224,14 @@ define([],function(){
 
 
 
+
+
+	var wideKnee = [
+		{x:-.1,y:.5},
+		{x:.10,y:.5},
+		{x:.90,y:.5},
+		{x:1.1,y:.5}
+	];
 
 
 	function expandedCenter(x,y){
