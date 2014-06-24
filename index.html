@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>SlinkyJS</title>
-		<link rel="stylesheet" href="src/slinky.css">
+		<title>TremulaJS</title>
+		<link rel="stylesheet" href="src/tremula.css">
 		<style type="text/css">
 					@import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
 					body{
@@ -20,38 +20,38 @@
 		<script src="libs/jsBezier-0.6.js"></script>
 		<script src="libs/raf_shim.js"></script>
 
-		<script src="slinkyConfig.js"></script>
-		<script src="slinkyControls.js"></script>
-		<script data-main="src/Slinky" src="libs/require.js"></script>
+		<script src="tremulaConfig.js"></script>
+		<script src="tremulaControls.js"></script>
+		<script data-main="src/Tremula" src="libs/require.js"></script>
 
 		<script type="text/javascript">
 			$().ready(function(){
 				// $('.start').click(init);
 				setTimeout(function(){
-					var slinky = slinkyInit();
-					attachSlinkyDomListeners();
-					attachDemoControls(slinky);
-					window.s=slinky;//does not need to be on the window -- implemented here for convienience.
+					var tremula = tremulaInit();
+					attachTremulaDomListeners();
+					attachDemoControls(tremula);
+					window.s=tremula;//does not need to be on the window -- implemented here for convienience.
 				},1000);
 			});
 
 
-			function slinkyInit(){
-				console.log('starting slinky');
+			function tremulaInit(){
+				console.log('starting tremula');
 
 
-				var slinky = new Slinky();
-				window.slinky = slinky;//not necessary -- just for demo convienience
+				var tremula = new Tremula();
+				window.tremula = tremula;//not necessary -- just for demo convienience
 
-				var config = slinkyConfigs.large1Row.call(slinky);
+				var config = tremulaConfigs.large1Row.call(tremula);
 
-				$slinkyContainer = $('.slinkyContainer');
-				slinky.init($slinkyContainer,config,this);
+				$tremulaContainer = $('.tremulaContainer');
+				tremula.init($tremulaContainer,config,this);
 
 
 			
 				function refreshData(data,dataAdapter){
-					var s = slinky;
+					var s = tremula;
 					s.spring.initBoxes(data,dataAdapter,false);
 					s.spring.statsCache.endOfScrollFlag = false;
 				}
@@ -59,14 +59,14 @@
 				// var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=100&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';
 				var dataUrl = 'decorProductSearch.json';
 				$.getJSON(dataUrl,function(res){
-					refreshData(res.ImageDetails,slinky.dataAdapters.JudyItem);
+					refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);
 				})
 
-				return slinky;
+				return tremula;
 			}
 
-			function attachSlinkyDomListeners(){
-				$('.slinkyContainer').on('slinkyItemSelect',function(gestureEvt,domEvt){
+			function attachTremulaDomListeners(){
+				$('.tremulaContainer').on('tremulaItemSelect',function(gestureEvt,domEvt){
 					// console.log(gestureEvt,domEvt)
 					var 
 						$e = $(domEvt.target);
@@ -121,8 +121,8 @@
 			}
 		</style>
 		
-		<h1>SlinkyJS</h1>
-		<div class="slinkyContainer main"></div>
+		<h1>TremulaJS</h1>
+		<div class="tremulaContainer main"></div>
 		<div class="controls">
 			<ul class="buttons" >
 				<div class="group">

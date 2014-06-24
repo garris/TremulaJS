@@ -78,7 +78,7 @@
 			
 
 
-			var Slinky = function(options){
+			var Tremula = function(options){
 				var that = this;
 				
 				
@@ -1509,7 +1509,7 @@
 
 					var defaults = {
 						onChangePub				:null,
-						adapter						:SlinkyItem,
+						adapter						:TremulaItem,
 						isLooping					:false,
 						surfaceMap				:xyPlane,
 						itemPreloading		:false,
@@ -1715,7 +1715,7 @@
 
 
 
-				var s1=new Slinky(),s2=new Slinky(),s3=new Slinky();
+				var s1=new Tremula(),s2=new Tremula(),s3=new Tremula();
 
 				getArtData(function(d){
 
@@ -1884,7 +1884,7 @@
 		<script type="text/javascript">		
 
 			
-			function SlinkyItem(data){
+			function TremulaItem(data){
 				this.data = data;
 				this.imgUrl = data.imgUrl;
 				this.w = data.w;

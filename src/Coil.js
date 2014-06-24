@@ -102,7 +102,7 @@ define([
 
 
 			//set local display properties with defaults for missing nodes 
-			this.layoutType = obj.layoutType || 'slinkyInLine';
+			this.layoutType = obj.layoutType || 'tremulaInLine';
 			this.noScaling = obj.noScaling || false;
 
 			//set DOM template and references ==> currently no support for template change -- because dom references seem to break...
@@ -227,7 +227,7 @@ define([
 	
 	
 	/**
-	* slinky is based on layouts that are [horizontally|vertically] offset by a master scroll value
+	* tremula is based on layouts that are [horizontally|vertically] offset by a master scroll value
 	* as the master scroll value changes, each box item is assigned an updated position
 	* each box updates its own x&y position through setAbsPos()
 	* if item easing is enabled position updating happens over time

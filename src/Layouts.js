@@ -29,11 +29,11 @@ define([],function(){
 			lastAxesObjArr = grid.layout_cache.lastAxesObjArr,
 			layoutType = b.layoutType;
 		
-		var targetAxis = (layoutType=='slinkyBlockItem')?getLongestAxis():getShortestAxis();//requires that.axesLength
+		var targetAxis = (layoutType=='tremulaBlockItem')?getLongestAxis():getShortestAxis();//requires that.axesLength
 		
 		//tell our box what axis its on
 		b.staticAxis = targetAxis;
-		// b.staticAxis = (b.layoutType=='slinkyBlockItem')?0:targetAxis;
+		// b.staticAxis = (b.layoutType=='tremulaBlockItem')?0:targetAxis;
 
 		//SNAKE PATTERN: subsequent items follow previous items
 		//NOTE: THE FIRST ITEM'S TAIL POSITION VALUE IS SET TO A POSITIVE OFFSET. 
@@ -51,7 +51,7 @@ define([],function(){
 			//cache the tail point value of the preceeding object for use in setting the scrollAxis point of this object.
 			//if this is a block item then use the last item of the longest axis
 			var ltpp = b.prevObj.tailPointPos;
-			// var ltpp = (b.layoutType=='slinkyBlockItem')? UPDATETHIS :b.prevObj.tailPointPos;
+			// var ltpp = (b.layoutType=='tremulaBlockItem')? UPDATETHIS :b.prevObj.tailPointPos;
 
 			//start point of scrollAxis edge
 			b.headPointPos[grid.si] = ltpp[grid.si];//set the head point of the first object to the end point of the previous object
@@ -59,7 +59,7 @@ define([],function(){
 		}//end IF
 		
 		//cache the tail staticAxis ofset point for this object.
-		var offset = (layoutType=='slinkyBlockItem') ? 0 : c*targetAxis + m[grid.si_]*targetAxis;
+		var offset = (layoutType=='tremulaBlockItem') ? 0 : c*targetAxis + m[grid.si_]*targetAxis;
 		//start point of staticAxis edge
 		b.headPointPos[grid.si_] = offset;
 

@@ -1,5 +1,5 @@
 //SLINKY CONFIG
-slinkyConfigs = {
+tremulaConfigs = {
 	
 	large1Row: function(){ 
 		return ({
@@ -8,7 +8,7 @@ slinkyConfigs = {
 			onChangePub			: this.doScrollEvents,
 			data                : null,
 			maxWidthClassMap		: {mini:50,small:143,medium:244,large:2000},//large will apply to anything over medium limit
-			lastContentBlock 		: {template :'<div class="lastContentItem"></div>',layoutType :'slinkyBlockItem',noScaling:true,w:300,h:390,isLastContentBlock:true},
+			lastContentBlock 		: {template :'<div class="lastContentItem"></div>',layoutType :'tremulaBlockItem',noScaling:true,w:300,h:390,isLastContentBlock:true},
 			adapter             : this.dataAdapters.JudyItem,
 			itemConstraint      :200,
 			itemMargins         :[30,30],
@@ -39,7 +39,7 @@ slinkyConfigs = {
 			onChangePub			: this.doScrollEvents,
 			data                : null,
 			maxWidthClassMap		: {mini:50,small:143,medium:244,large:2000},//large will apply to anything over medium limit
-			lastContentBlock 		: {template :'<div class="lastContentItem"></div>',layoutType :'slinkyBlockItem',noScaling:true,w:300,h:390,isLastContentBlock:true},
+			lastContentBlock 		: {template :'<div class="lastContentItem"></div>',layoutType :'tremulaBlockItem',noScaling:true,w:300,h:390,isLastContentBlock:true},
 			adapter             : this.dataAdapters.JudyItem,
 			itemConstraint      :80,
 			itemMargins         :[30,30],

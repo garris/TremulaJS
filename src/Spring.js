@@ -267,7 +267,7 @@ define([
 	
 	Spring.prototype.setLastTouchOrigin = function(evt){
 		
-		//run only if we're doing item-level slinky action
+		//run only if we're doing item-level tremula action
 		if(!this.itemEasing)return;
 		
 		//if we're in the margins don't change anything
@@ -640,7 +640,7 @@ define([
  *
  * @method initBoxes
  * @param {object} data - the data to add
- * @param {callback} adapter - a method that is called on each data iteration -- returns slinky formatted data object for each item node
+ * @param {callback} adapter - a method that is called on each data iteration -- returns tremula formatted data object for each item node
  * @param {boolean} append - passing a true value will append new data to existing data set
  */
  
@@ -773,7 +773,7 @@ define([
 		}//END for loop
 		if(!b){
 			this.hasData = false;
-			if(console && console.error){console.error('slinky: no data found')}
+			if(console && console.error){console.error('tremula: no data found')}
 			return
 		}else{
 			this.hasData = true;
@@ -1145,7 +1145,7 @@ define([
 				//test for last event being a touch AND being OVER x ms ago.  Also make sure we're not in the middle of easing.
 				var lastTouchMs = new Date() - this.lastUserEvent.time;
 				if(!this.isEasing && this.lastUserEvent.evt.type == 'touch' && lastTouchMs < 1000){
-					this.$e.trigger('slinkyItemSelect',ev);
+					this.$e.trigger('tremulaItemSelect',ev);
 				}
 
 

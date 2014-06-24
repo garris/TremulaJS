@@ -8,7 +8,7 @@ define([
 // 	,cart_svg
 ){
 	
-	function SlinkyItem(data){
+	function TremulaItem(data){
 		this.data = data;
 		this.imgUrl = data.imgUrl;//optional
 		this.w = data.w;
@@ -22,7 +22,7 @@ define([
 		this.data = data;
 
 		this.isLastContentBlock = data.isLastContentBlock;
-		this.layoutType = this.data.layoutType||'slinkyInline';// ['slinkyInline' | 'slinkyBlockItem']
+		this.layoutType = this.data.layoutType||'tremulaInline';// ['tremulaInline' | 'tremulaBlockItem']
 		this.noScaling = this.data.noScaling||false;
 
 		this.isFavorite = data.isFavorite;
@@ -114,7 +114,7 @@ define([
 
 
 	return{
-		SlinkyItem:SlinkyItem
+		TremulaItem:TremulaItem
 		,JudyItem:JudyItem
 		,JudyItem_SQ:JudyItem_SQ
 	}

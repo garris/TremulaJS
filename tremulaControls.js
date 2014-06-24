@@ -1,18 +1,18 @@
-function attachDemoControls(slinky){
+function attachDemoControls(tremula){
 
-	var s = slinky.spring;
+	var s = tremula.spring;
 
 	$(".btnL1").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:200},800,slinky.easings.easeOutElastic,slinky.projections.xyPlane);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200},800,tremula.easings.easeOutElastic,tremula.projections.xyPlane);
 		}, 100)
 	})
 	
 	$(".btnL2").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:350},800,slinky.easings.easeOutElastic,slinky.projections.turntable);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:350},800,tremula.easings.easeOutElastic,tremula.projections.turntable);
 			s.setItemEasing(false);
 		}, 100)
 	})
@@ -20,7 +20,7 @@ function attachDemoControls(slinky){
 	$(".btnL3").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:350},800,slinky.easings.easeOutElastic,slinky.projections.enterTheDragon);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:350},800,tremula.easings.easeOutElastic,tremula.projections.enterTheDragon);
 			s.setItemEasing(false);
 		}, 100)
 	})
@@ -28,7 +28,7 @@ function attachDemoControls(slinky){
 	$(".btnL4").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:100},800,slinky.easings.easeOutElastic,slinky.projections.sunrise);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:100},800,tremula.easings.easeOutElastic,tremula.projections.sunrise);
 			s.setItemEasing(false);
 		}, 100)
 	})
@@ -36,7 +36,7 @@ function attachDemoControls(slinky){
 	$(".btnL5").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(slinky.layouts.basicGridLayout,{axes:0,itemConstraint:100,itemMargins:[5,5]},800,slinky.easings.easeOutElastic,slinky.projections.expandedCenter);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:100,itemMargins:[5,5]},800,tremula.easings.easeOutElastic,tremula.projections.expandedCenter);
 			s.setItemEasing(false);
 		}, 100)
 	})
@@ -45,7 +45,7 @@ function attachDemoControls(slinky){
 	$(".btn1").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0},800,tremula.easings.easeOutElastic);
 			s.setItemEasing(false);
 		}, 100)
 	})
@@ -53,14 +53,14 @@ function attachDemoControls(slinky){
 	$(".btn2").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(slinky.layouts.basicGridLayout,{axes:1},800,slinky.easings.easeOutElastic);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:1},800,tremula.easings.easeOutElastic);
 			s.setItemEasing(false);
 		}, 100)
 	})
 	$(".btn3").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(slinky.layouts.basicGridLayout,{axes:2},800,slinky.easings.easeOutElastic);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:2},800,tremula.easings.easeOutElastic);
 			s.setItemEasing(false);
 		}, 100)
 	})
@@ -148,14 +148,14 @@ function attachDemoControls(slinky){
 
 
 
-	// slinky.spring.updateConfig({itemConstraint:100,itemEasing:false});	
+	// tremula.spring.updateConfig({itemConstraint:100,itemEasing:false});	
 	// setTimeout(function(){
-	// 	s.doTransition(slinky.layouts.basicGridLayout,{axes:2},800,slinky.easings.easeOutElastic);
+	// 	s.doTransition(tremula.layouts.basicGridLayout,{axes:2},800,tremula.easings.easeOutElastic);
 	// }, 500)
 
-	// slinky.spring.updateConfig({itemConstraint:300,itemEasing:false,staticAxisCount:2});	
+	// tremula.spring.updateConfig({itemConstraint:300,itemEasing:false,staticAxisCount:2});	
 	// setTimeout(function(){
-	// 	s.doTransition(slinky.layouts.basicGridLayout,{axes:0},800,slinky.easings.easeOutElastic);
+	// 	s.doTransition(tremula.layouts.basicGridLayout,{axes:0},800,tremula.easings.easeOutElastic);
 	// }, 500)
 
 

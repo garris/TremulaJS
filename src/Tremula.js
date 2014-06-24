@@ -24,7 +24,7 @@ define([
 ){
 
 
-	var Slinky = function(){
+	var Tremula = function(){
 
 		this.spring 		= {};
 		this.dataAdapters 	= dataAdapters;
@@ -35,15 +35,15 @@ define([
 	}
 
 
-	Slinky.prototype.resize = function(evt){
-		if(this.$e[0].offsetWidth==0) return;//if the slinky container does not have any width then there is no need to do any resizing
+	Tremula.prototype.resize = function(evt){
+		if(this.$e[0].offsetWidth==0) return;//if the Tremula container does not have any width then there is no need to do any resizing
 		this.spring.setScrollAxis();
 		this.spring.setLayout();
 		this.spring.oneShotPaint();
 	}	
 
 
-	Slinky.prototype.init = function($e,options,parent){
+	Tremula.prototype.init = function($e,options,parent){
 
 		var that = this;
 		this.parent = parent;
@@ -52,7 +52,7 @@ define([
 
 		var defaults = {
 			onChangePub             :null,
-			adapter 				:dataAdapters.SlinkyItem,
+			adapter 				:dataAdapters.TremulaItem,
 			isLooping 				:false,
 			surfaceMap 				:projections.xyPlane,
 			itemPreloading      	:false,
@@ -111,8 +111,8 @@ define([
 	if(!window.imageLoaded)
 		window.imageLoaded = imageLoaded;
 
-	window.Slinky = Slinky;
-	return Slinky;
+	window.Tremula = Tremula;
+	return Tremula;
 
 })
 
