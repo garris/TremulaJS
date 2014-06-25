@@ -68,7 +68,7 @@ define([
 		if(data.ItemPrice) 	this.itemPrice = data.ItemPrice.Price;
 		this.artistNameTitle = this.artistName+((this.artistName&&this.itemTitle)?', ':'')+this.itemTitle;
 
-		this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/> <div class="itemInfo">{{artistNameTitle}}{{itemTitle}}</div>')
+		this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/> <div class="boxLabel">{{artistNameTitle}}</div>')
 			.replace(/{{artistNameTitle}}/g,this.artistNameTitle)
 			//.replace(/{{artistName}}/g,this.artistName)
 			//.replace(/{{artistUrl}}/g,this.artistUrl)
@@ -133,8 +133,8 @@ define([
 		this.itemTitle = data.title||'';
 		// this.itemPrice = '';
 
-		this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/> <div class="itemInfo">{{itemTitle}}</div>')
-			.replace(/{{itemTitle}}/g,this.itemTitle)
+		this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/> <div class="boxLabel">{{itemTitle}}</div>')
+			.replace(/{{itemTitle}}/g,'')//this.itemTitle
 			//.replace(/{{artistNameTitle}}/g,this.artistNameTitle)
 			//.replace(/{{artistName}}/g,this.artistName)
 			//.replace(/{{artistUrl}}/g,this.artistUrl)

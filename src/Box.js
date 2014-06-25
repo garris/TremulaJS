@@ -63,19 +63,7 @@ define([
 	  // if(this.Draggable)
 	  //   this.draggable = new this.Draggable(this);//see:onDragConfigure() for options
                     
-		// this.e.innerHTML = '<div class="boxLabel">X</div><img class="moneyShot" onload="imageLoaded(this)" src=""/>';//moved to set model
-		//this.$moneyShot = $('.moneyShot',this.$e);//moved to set model
-		//this.moneyShot = this.$moneyShot[0];
-		//this.$moneyShot.css({'width':this.w,'height':this.h})
-		
-		// this.$e.data('model',this);//moved to set model
-		
-		//this.$e.addClass('gridBox');
-		// this.$c = $('.boxLabel',this.e);//moved to set model
 
-		//this.resetItemEasing();
-
-		//grid.e.appendChild(this.e);//moved to set model
 	
 		this.model = {};
 		

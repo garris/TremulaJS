@@ -1004,7 +1004,7 @@ define([
 
 	Grid.prototype.handleGesture = function(ev){
 
-		if(window.isDragging) return;
+		// if(window.isDragging) return;
 		
 		switch(ev.type) {
 

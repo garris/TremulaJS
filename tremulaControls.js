@@ -36,7 +36,7 @@ function attachDemoControls(tremula){
 	$(".btnL5").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:100,itemMargins:[5,5]},800,tremula.easings.easeOutElastic,tremula.projections.expandedCenter);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:100,itemMargins:[5,5]},800,tremula.easings.easeOutElastic,tremula.projections.headExpansion);
 			s.setItemEasing(false);
 		}, 100)
 	})
@@ -155,17 +155,6 @@ function attachDemoControls(tremula){
 		}
 		console.log(data||{})
 	})
-
-
-	// tremula.Grid.updateConfig({itemConstraint:100,itemEasing:false});	
-	// setTimeout(function(){
-	// 	s.doTransition(tremula.layouts.basicGridLayout,{axes:2},800,tremula.easings.easeOutElastic);
-	// }, 500)
-
-	// tremula.Grid.updateConfig({itemConstraint:300,itemEasing:false,staticAxisCount:2});	
-	// setTimeout(function(){
-	// 	s.doTransition(tremula.layouts.basicGridLayout,{axes:0},800,tremula.easings.easeOutElastic);
-	// }, 500)
 
 
 

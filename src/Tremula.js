@@ -25,11 +25,9 @@ define([
 
 
 	var Tremula = function(){
-
 		this.Grid 		= {};
 		this.dataAdapters 	= dataAdapters;
 		this.layouts 		= layouts;
-		// this.surfaceMaps	= surfaceMaps;
 		this.easings 		= easings;
 		this.projections 		= projections;
 		this.cache = {};//for instance parameters
@@ -43,36 +41,51 @@ define([
 		this.Grid.oneShotPaint();
 	}	
 
+	Tremula.prototype.appendData = function(data,dataAdapter){
+		this.Grid.initBoxes(data,dataAdapter,true);
+		this.cache.endOfScrollFlag = false;
+	}
+
+	Tremula.prototype.insertData = function(data,dataAdapter){
+		this.Grid.initBoxes(data,dataAdapter,'insert');
+		this.cache.endOfScrollFlag = false;
+	}
+
+	Tremula.prototype.refreshData = function(data,dataAdapter){
+		this.Grid.initBoxes(data,dataAdapter,false);
+		this.cache.endOfScrollFlag = false;
+	}
+
 
 	Tremula.prototype.init = function($e,options,parent){
 
 		var that = this;
-		this.parent = parent;
-		this.$e = $e;
+		this.parent = parent||null;
+		if($e) this.$e = $e||null;
 
 
 		var defaults = {
 			onChangePub             :null,
-			adapter 				:dataAdapters.TremulaItem,
-			isLooping 				:false,
-			surfaceMap 				:projections.xyPlane,
-			itemPreloading      	:false,
+			adapter 								:dataAdapters.TremulaItem,
+			isLooping 							:false,
+			surfaceMap 							:projections.xyPlane,
+			itemPreloading      		:false,
 			itemEasing              :false,
-			itemEasingParams    	:{
-				touchCurve  			:easings.easeOutCubic,
-				swipeCurve  			:easings.easeOutCubic,
-				transitionCurve			:easings.easeOutCubic,
-				easeTime        		:500,
-				springLimit 			:20 //in px
-			},
-			scrollAxis 				:'x',
-			itemConstraint 			:null,
-			staticAxisCount 		:0
+			itemEasingParams    		:{
+				touchCurve  						:easings.easeOutCubic,
+				swipeCurve  						:easings.easeOutCubic,
+				transitionCurve					:easings.easeOutCubic,
+				easeTime        				:500,
+				springLimit 						:20 //in px
+															 },
+			scrollAxis 							:'x',
+			itemConstraint 					:null,
+			staticAxisCount 				:0
 		}
 		
-		var springOptions = $.extend({},defaults,options||{})
+		var gridOptions = $.extend({},defaults,options||{})
 		
-		this.Grid = new Grid($e,springOptions,parent)
+		this.Grid = new Grid($e,gridOptions,parent)
 		
 		if(options&&options.data)
 			this.Grid.initBoxes(options.data,options.adapter);

@@ -226,17 +226,17 @@ define([],function(){
 
 
 
-	var wideKnee = [
-		{x:-.1,y:.5},
+	var headExpansionPath = [
+		{x:0,y:.5},
 		{x:.10,y:.5},
-		{x:.90,y:.5},
-		{x:1.1,y:.5}
+		{x:.10,y:.5},
+		{x:1,y:.5}
 	];
 
 
-	function expandedCenter(x,y){
+	function headExpansion(x,y){
 
-		var curve = wideKnee;
+		var curve = headExpansionPath;
 
 		var 
 		grid0 = this.parent.gridDims[0],
@@ -273,11 +273,16 @@ define([],function(){
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
 		'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)'
 
-		//this.e.style.opacity = tri;
-		
+		var z = 1000000-this.index;
+		this.e.style.zIndex = z;
+
+		// var opacity = (tri<0)?1+(tri-.9):1;
+		// this.e.style.opacity = opacity;
+		// this.$c.html(Math.round(opacity * 100) / 100);
+
 		this.pPos = [x,y];
-	}//expandedCenter()
-	exports.expandedCenter = expandedCenter;
+	}//headExpansion()
+	exports.headExpansion = headExpansion;
 
 
 

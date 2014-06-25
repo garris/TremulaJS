@@ -10,7 +10,7 @@
 					}
 		</style>
 		<style type="text/css">
-			.itemInfo{-webkit-transform: translateZ(0);}
+			.boxLabel{-webkit-transform: translateZ(0);}
 			.gridBox{-webkit-box-reflect :below 18px -webkit-gradient(linear, left bottom, left top, from(rgba(255,255,255,0.25)), color-stop(0.3, transparent)); }
 
 		</style>
@@ -25,6 +25,9 @@
 		<script data-main="src/Tremula" src="libs/require.js"></script>
 
 		<script type="text/javascript">
+
+
+
 			$().ready(function(){
 				setTimeout(function(){
 					var tremula = tremulaInit();
@@ -37,48 +40,34 @@
 			function tremulaInit(){
 				console.log('starting tremula');
 
+				$tremulaContainer = $('.tremulaContainer');
+
 
 				var tremula = new Tremula();
+				var config = tremulaConfigs.large1Row.call(tremula);
 
-				//please note: doScrollEvents() is running 
-				tremula.doScrollEvents = function(o){
-					//console.log(o)
+				tremula.doScrollEvents = doScrollEvents;
+				tremula.init($tremulaContainer,config,this);
+
+
+
+				function doScrollEvents(o){
 					if(o.scrollProgress>.7){
 						if(!tremula.cache.endOfScrollFlag){
 							tremula.cache.endOfScrollFlag = true;
 							console.log('END OF SCROLL!')
 						}
 					}
-				}
-
-				var config = tremulaConfigs.large1Row.call(tremula);
-
-				$tremulaContainer = $('.tremulaContainer');
-				tremula.init($tremulaContainer,config,this);
+				}//doScrollEvents()
 
 
-
-				function appendData(data,dataAdapter){
-					tremula.Grid.initBoxes(data,dataAdapter,true);
-					tremula.cache.endOfScrollFlag = false;
-				}
-
-				function insertData(data,dataAdapter){
-					tremula.Grid.initBoxes(data,dataAdapter,'insert');
-					tremula.cache.endOfScrollFlag = false;
-				}
-			
-				function refreshData(data,dataAdapter){
-					tremula.Grid.initBoxes(data,dataAdapter,false);
-					tremula.cache.endOfScrollFlag = false;
-				}
 
 
 				// var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=100&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';	
 
 				// var dataUrl = 'decorProductSearch.json';
 				// $.getJSON(dataUrl,function(res){
-				// 	refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
+				// 	tremula.refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
 				// }).fail(function(){console.log('getJSON problem.')});
 				
 				var dataUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=sky%2C+night&format=json&page=1&extras=url_z';
@@ -89,7 +78,7 @@
 				})
 				.done(function(res){
 					console.log(res);
-					refreshData(res.photos.photo,tremula.dataAdapters.flickrSearch);//flicker
+					tremula.refreshData(res.photos.photo,tremula.dataAdapters.flickrSearch);//flicker
 				})
 				.fail( function(d,config,err){ console.log('API FAIL. '+err) })
 
@@ -170,7 +159,7 @@
 					<li class="btnL2">turntable</li>
 					<li class="btnL3">enterTheDragon</li>
 					<li class="btnL4">sunrise</li>
-					<li class="btnL5">expandedCenter</li>
+					<li class="btnL5">headExpansion</li>
 				</div>
 
 				

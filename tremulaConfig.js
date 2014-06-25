@@ -17,7 +17,7 @@ tremulaConfigs = {
 			staticAxisCount     :0,//zero based
 			//isLooping         :true,
 			defaultLayout       :this.layouts.basicGridLayout,//<--- TODO:  this is not yet implemented.
-			surfaceMap          :this.projections.expandedCenter,
+			surfaceMap          :this.projections.headExpansion,
 			itemPreloading      :true,
 			itemEasing           :false,
 			itemEasingParams    :{
