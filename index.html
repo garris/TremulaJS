@@ -26,12 +26,10 @@
 
 		<script type="text/javascript">
 			$().ready(function(){
-				// $('.start').click(init);
 				setTimeout(function(){
 					var tremula = tremulaInit();
-					attachTremulaDomListeners();
 					attachDemoControls(tremula);
-					window.s=tremula;//does not need to be on the window -- implemented here for convienience.
+					window.tremula=tremula;//does not need to be on the window -- implemented here for convienience.
 				},1000);
 			});
 
@@ -41,9 +39,6 @@
 
 
 				var tremula = new Tremula();
-				window.tremula = tremula;//not necessary -- just for demo convienience
-
-
 
 				//please note: doScrollEvents() is running 
 				tremula.doScrollEvents = function(o){
@@ -82,41 +77,30 @@
 				}
 
 
-				// var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=100&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';				
-				var dataUrl = 'decorProductSearch.json';
+				// var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=100&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';	
+
+				// var dataUrl = 'decorProductSearch.json';
+				// $.getJSON(dataUrl,function(res){
+				// 	refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
+				// }).fail(function(){console.log('getJSON problem.')});
 				
-				$.getJSON(dataUrl,function(res){
-					refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
-				}).fail(function(){console.log('getJSON problem.')});
-				
-				// var dataUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=sky%2C+night&format=json&page=1&extras=url_z';
-				// $.ajax({
-				// 	url:dataUrl
-				// 	,dataType: 'jsonp'
-				// 	,jsonp: 'jsoncallback' 
-				// })
-				// .done(function(res){
-				// 	console.log(res);
-				// 	refreshData(res.photos.photo,tremula.dataAdapters.flickrSearch);//flicker
-				// })
-				// .fail( function(d,config,err){ console.log('API FAIL. '+err) })
+				var dataUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=sky%2C+night&format=json&page=1&extras=url_z';
+				$.ajax({
+					url:dataUrl
+					,dataType: 'jsonp'
+					,jsonp: 'jsoncallback' 
+				})
+				.done(function(res){
+					console.log(res);
+					refreshData(res.photos.photo,tremula.dataAdapters.flickrSearch);//flicker
+				})
+				.fail( function(d,config,err){ console.log('API FAIL. '+err) })
 
 
 				return tremula;
 			}
 
-			function attachTremulaDomListeners(){
-				$('.tremulaContainer').on('tremulaItemSelect',function(gestureEvt,domEvt){
-					// console.log(gestureEvt,domEvt)
-					var 
-						$e = $(domEvt.target);
-						t = $e.closest('.gridBox')[0];
-					if(t){
-						var data = $.data(t).model.model.data;
-					}
-					console.log(data||{})
-				})
-			}
+
 
 		</script>
 

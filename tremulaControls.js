@@ -145,7 +145,16 @@ function attachDemoControls(tremula){
 	})
 
 
-
+	$('.tremulaContainer').on('tremulaItemSelect',function(gestureEvt,domEvt){
+		// console.log(gestureEvt,domEvt)
+		var 
+			$e = $(domEvt.target);
+			t = $e.closest('.gridBox')[0];
+		if(t){
+			var data = $.data(t).model.model.data;
+		}
+		console.log(data||{})
+	})
 
 
 	// tremula.spring.updateConfig({itemConstraint:100,itemEasing:false});	
