@@ -94,6 +94,70 @@ define([
 		//console.log(this)
 	}
 
+//min props required for custom template content: template.
+	
+
+
+	//https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=sky%2C+night%2C+day&format=json&page=2
+	function flickrSearch(data,env){
+		this.data = data;
+
+
+		//meta options
+		this.isLastContentBlock = data.isLastContentBlock||false;
+		this.layoutType = this.data.layoutType||'tremulaInline';// ['tremulaInline' | 'tremulaBlockItem']
+		this.noScaling = this.data.noScaling||false;
+		this.isFavorite = data.isFavorite||false;
+		this.auxClassList = data.auxClassList||'';
+		
+
+		//this is the static axis constraint of a stream image -- in px.
+		var imgStatixAxisPx = env.options.itemConstraint;
+		
+
+		//if this data item has an expected URL parameter then it is an image -- otherwise it is probably an arbitrary html layout
+		if(data.url_z){
+			this.src = data.url_z
+			this.w = this.width = data.width_z;
+			this.h = this.height = data.height_z;
+			this.imgUrl = this.src;
+			this.auxClassList = "flickrRS " + this.auxClassList;//stamp each resultSet item with judyResultSet so it is easier to select by casper.js during testing
+		}else{
+			this.w = this.width = (this.data.w||100);
+			this.h = this.height = (this.data.h||100);
+			this.imgUrl = '';
+		}
+
+		// this.artistName = '';
+		// this.artistUrl = '';
+		this.itemTitle = data.title||'';
+		// this.itemPrice = '';
+
+		this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/> <div class="itemInfo">{{itemTitle}}</div>')
+			.replace(/{{itemTitle}}/g,this.itemTitle)
+			//.replace(/{{artistNameTitle}}/g,this.artistNameTitle)
+			//.replace(/{{artistName}}/g,this.artistName)
+			//.replace(/{{artistUrl}}/g,this.artistUrl)
+			//.replace(/{{itemPrice}}/g,this.itemPrice);
+
+		//-----------calculate stream sizeClass-----------
+		// var 
+		// 	staticAxisDim       = env.options.itemConstraint,				//cache the constraint value (for the static axis)
+		// 	constraintRatio     = staticAxisDim / this[env.saDim_], //how much we will enlarge/reduce the scroll axis to scale 1:1 with our staticAxis constraint
+		// 	scrollAxisDim       = this[env.saDim]*constraintRatio,  //calculate the scroll axis value
+		// 	scaledDimentionsArr	 = [scrollAxisDim,staticAxisDim];		//save as relative matrix for setDimentions(w,h)
+
+
+		// var hash = env.options.maxWidthClassMap;
+		// if(hash)
+		// for(key in hash){
+		// 	if(scaledDimentionsArr[0]<hash[key]){
+		// 		this.auxClassList = this.auxClassList + " " + key;
+		// 		break;
+		// 	}
+		// }
+	}
+
 
 
 	function JudyItem_SQ(data){
@@ -115,6 +179,7 @@ define([
 
 	return{
 		TremulaItem:TremulaItem
+		,flickrSearch:flickrSearch
 		,JudyItem:JudyItem
 		,JudyItem_SQ:JudyItem_SQ
 	}

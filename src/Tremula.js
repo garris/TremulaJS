@@ -13,14 +13,14 @@ define([
 	,'Easings'
 	,'DataAdapters'
 	,'Projections'
-	,'Spring'
+	,'Grid'
 ],function(
 	layouts
 	// ,surfaceMaps
 	,easings
 	,dataAdapters
 	,projections
-	,Spring
+	,Grid
 ){
 
 
@@ -32,6 +32,7 @@ define([
 		// this.surfaceMaps	= surfaceMaps;
 		this.easings 		= easings;
 		this.projections 		= projections;
+		this.cache = {};//for instance parameters
 	}
 
 
@@ -71,7 +72,7 @@ define([
 		
 		var springOptions = $.extend({},defaults,options||{})
 		
-		this.spring = new Spring($e,springOptions,parent)
+		this.spring = new Grid($e,springOptions,parent)
 		
 		if(options&&options.data)
 			this.spring.initBoxes(options.data,options.adapter);
@@ -93,19 +94,21 @@ define([
 				evt.stopPropagation();
 			//}
 		})
+	}//init()
 
 
 
 
-	}
-		
+
+
+
 
 
 	function imageLoaded(e){
 		var $e = $(e);
 		if($e.hasClass('loaded'))return;
 		$e.addClass('loaded');
-		setTimeout(function(){$e.parents('.gridBox').addClass('loaded')},1500);//this is a little ape-y but works.  TODO: see Coil.prototype.doOnScreen() method for why this actually makes partial sense.
+		setTimeout(function(){$e.parents('.gridBox').addClass('loaded')},1500);//this is a little ape-y but whatever. see Box.prototype.doOnScreen() method for some context.
 	}
 
 	if(!window.imageLoaded)

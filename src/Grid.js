@@ -1,15 +1,15 @@
 define([
 	'Easings'
-	,'Coil'
+	,'Box'
 	,'Layouts'
 ],function(
 	easings
-	,Coil
+	,Box
 	,layouts
 ){
 
 
-	var Spring = function($target,options,parent){
+	var Grid = function($target,options,parent){
 		this.physicsLoopRAF = null;
 
 		this.options = options;
@@ -224,7 +224,7 @@ define([
 
 	}//END grid object
 	
-	Spring.prototype.updateConfig = function(config,torf){
+	Grid.prototype.updateConfig = function(config,torf){
 		if(config.hasOwnProperty('axes'))config.staticAxisCount=config.axes;//need to map this...
 		$.extend(this,config);
 		this.resetAllItemConstraints();
@@ -232,7 +232,7 @@ define([
 	}
 
 
-	Spring.prototype.toggleScrollAxis = function(axis){
+	Grid.prototype.toggleScrollAxis = function(axis){
 		this.jumpToScrollProgress(0);
 		
 		if(!axis){
@@ -255,7 +255,7 @@ define([
 		//this.oneShotPaint();
 	}
 	
-	Spring.prototype.toggleIsLooping = function(torf){
+	Grid.prototype.toggleIsLooping = function(torf){
 		if (typeof torf === "undefined") {
 			torf = !this.isLooping;
 		}
@@ -265,7 +265,7 @@ define([
 	//evt can be the event object or an integer value (representing the scroll axis event position)
 	// this thing sets saEventPos & saEventPosProgress
 	
-	Spring.prototype.setLastTouchOrigin = function(evt){
+	Grid.prototype.setLastTouchOrigin = function(evt){
 		
 		//run only if we're doing item-level tremula action
 		if(!this.itemEasing)return;
@@ -297,7 +297,7 @@ define([
 
 
 
-	Spring.prototype.getScrollFrame = function(){
+	Grid.prototype.getScrollFrame = function(){
 		//increment frame counter
 		this.frameCtr++;
 		
@@ -495,7 +495,7 @@ define([
 	}// getScrollFrame()
 	
 
-	Spring.prototype.startPhysicsLoop = function(){
+	Grid.prototype.startPhysicsLoop = function(){
 		this.lastSPL = new Date;//track when the last call to startPhysicsLoop
 		if(!this.physicsLoopRAF){
 			var that = this;
@@ -503,14 +503,14 @@ define([
 		}
 	}
 	
-	Spring.prototype.stopPhysicsLoop = function(){
+	Grid.prototype.stopPhysicsLoop = function(){
 		if(this.physicsLoopRAF){
 			cancelAnimationFrame(this.physicsLoopRAF);
 			this.physicsLoopRAF = null;
 		}
 	}
 
-	Spring.prototype.oneShotPaint = function(ev){
+	Grid.prototype.oneShotPaint = function(ev){
 		//this.stopPhysicsLoop();
 		if(!ev) return;
 		
@@ -523,13 +523,13 @@ define([
 		this.startPhysicsLoop();
 	}
 	
-	Spring.prototype.getPageSA_evt = function(evt){
+	Grid.prototype.getPageSA_evt = function(evt){
 		//u.log(evt)
 		if(!evt || !evt.gesture) return null;
 		return evt.gesture.center['page'+this.SA];
 	}
 
-	Spring.prototype.jumpObjTo = function(p,obj,origin){//object or index of object
+	Grid.prototype.jumpObjTo = function(p,obj,origin){//object or index of object
 		
 		this.resetEasing();
 		
@@ -554,7 +554,7 @@ define([
 	}
 	
 	//@param p = 0..1
-	Spring.prototype.jumpToScrollProgress = function(p){
+	Grid.prototype.jumpToScrollProgress = function(p){
 		if(p>1)p=0.999;
 		if(p<0)p=0.001;
 		//u.log(this.trailingEdgeScrollPos*p)
@@ -565,7 +565,7 @@ define([
 
 
 
-	Spring.prototype.easeTo = function(p,ms,eFn){
+	Grid.prototype.easeTo = function(p,ms,eFn){
 		ms = (ms==undefined)?this.easeToDuration:ms;
 		
 		if(eFn)
@@ -600,7 +600,7 @@ define([
 		this.startPhysicsLoop();
 	}
 	
-	Spring.prototype.resetEasing = function(){
+	Grid.prototype.resetEasing = function(){
 		//easingFn = easeInOutCubic;
 		easingFn = easings.easeOutCubic;
 
@@ -615,7 +615,7 @@ define([
 	}
 
 
-	Spring.prototype.startEasing = function(m,ev){
+	Grid.prototype.startEasing = function(m,ev){
 		if(m) m=Math.pow(m,3) * 20;
 
 		if(this.isInHeadMargin || this.isInTailMargin){
@@ -644,7 +644,9 @@ define([
  * @param {boolean} append - passing a true value will append new data to existing data set
  */
  
-	Spring.prototype.initBoxes = function(data,adapter,options){
+	Grid.prototype.initBoxes = function(data,adapter,options){
+		try{data.length}catch(e){return console&&console.log('initBoxes(): No data found.');};
+
 		if(!adapter)adapter=this.options.adapter;
 
 		var LCB = this.options.lastContentBlock;
@@ -670,7 +672,7 @@ define([
 		
 		//loop through data and create new objects
 		for(var i = ptr; i < c; i++){
-			var b = new Coil(this);
+			var b = new Box(this);
 			
 			//each box gets a serial id
 			//b.index = i;//this is moved because insert function shuffles the deck in a non-desirable way
@@ -708,7 +710,7 @@ define([
 		this.setLayout(layouts.basicGridLayout,{axes:this.staticAxisCount,isNewSet:(ptr==0)?true:false});
 	}//Grid.prototype.initBoxes
 	
-	Spring.prototype.resetAllItemConstraints = function(){
+	Grid.prototype.resetAllItemConstraints = function(){
 		var c = this.boxCount;
 		
 		for (var i = 0; i < c; i++) {
@@ -723,7 +725,7 @@ define([
 		}   
 	}
 	
-	Spring.prototype.getConstrainedItemDims = function(b){
+	Grid.prototype.getConstrainedItemDims = function(b){
 			var 
 				staticAxisDim       = this.itemConstraint,                                  //cache the constraint value (for the static axis)
 				constraintRatio     = staticAxisDim / b.model[this.saDim_], //how much we will enlarge/reduce the scroll axis to scale 1:1 with our staticAxis constraint
@@ -732,7 +734,7 @@ define([
 			return scrollAxis_staticAxis_arr;
 	}
 	
-	Spring.prototype.setLayout = function(layout,options){
+	Grid.prototype.setLayout = function(layout,options){
 		//options=(!options)?{}:options;	
 		var options_ = this.lastLayoutOptions&&this.lastLayoutOptions.options||{};
 		//if there are absolutely no layout specs then just bump out of here because we're not ready to draw yet...
@@ -828,7 +830,7 @@ define([
 	
 	
 
-	Spring.prototype.doTransition = function(layout,options,ms,easing,surfaceMap){
+	Grid.prototype.doTransition = function(layout,options,ms,easing,surfaceMap){
 		options=(!options)?{}:options;
 		// var axes = options.axes;
 		
@@ -863,14 +865,14 @@ define([
 
 	
 
-	Spring.prototype.getTrailingEdgeScrollPos = function(){
+	Grid.prototype.getTrailingEdgeScrollPos = function(){
 		//cache the location of the trailing edge of the stream
 		return -this.boxAxisLengths[this.si]+this.firstItemPos+this.gridDims[this.si];
 	}
 	
 
 
-	Spring.prototype.assignBoxObjects = function(){
+	Grid.prototype.assignBoxObjects = function(){
 		function isOnFirstPage(b) {
 			return ( b[this.sa] >= sMargin[si] && b[this.sa] <= (this.boxAxisLengths[si] + sMargin[si]) )?true:false;
 		}
@@ -962,7 +964,7 @@ define([
 			this.physicsLoopRAF = requestAnimationFrame( function(){that.assignBoxObjects()} );
 		}
 		
-	}//Spring.prototype.assignBoxObjects
+	}//Grid.prototype.assignBoxObjects
 	
 	
 
@@ -1000,7 +1002,7 @@ define([
 	}//_mw()
 
 
-	Spring.prototype.handleGesture = function(ev){
+	Grid.prototype.handleGesture = function(ev){
 
 		if(window.isDragging) return;
 		
@@ -1161,7 +1163,7 @@ define([
 
 
 
-	return Spring
+	return Grid
 
 });
 

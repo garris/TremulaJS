@@ -1,15 +1,15 @@
 
-slinky.css
+Tremula.css
 ----------------
-slinky.css
+Tremula.css
 
-Slinky.js
+Tremula.js
 ----------------
 Layouts.js
-SurfaceMaps.js
 Easings.js
 DataAdapters.js
+Projections.js
 Animator.js
 Coil.js
 Spring.js
-Slinky.js
+Tremula.js

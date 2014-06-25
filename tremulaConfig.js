@@ -1,4 +1,3 @@
-//SLINKY CONFIG
 tremulaConfigs = {
 	
 	large1Row: function(){ 

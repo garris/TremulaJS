@@ -8,7 +8,7 @@ define([
     //var Draggable = draggable.Draggable;
     
 
-	var Coil = function (grid) {
+	var Box = function (grid) {
 		
 		this.parent = grid;
 		var that = this;
@@ -56,7 +56,7 @@ define([
 		this.element = this.e = document.createElement('div');
 		// this.element = this.e;
 		this.$e = $(this.e);
-		this.element.classList.add("Coil");
+		// this.element.classList.add("Box");
 		this.element.classList.add("gridBox");
 		this.e.style.display='none';
 
@@ -129,13 +129,13 @@ define([
 		//grid.e.appendChild(this.e); 
 
 
-	};// Coil
+	};// Box
 	
 
 
 
                 
-	Coil.prototype.updateContent = function(){
+	Box.prototype.updateContent = function(){
 		if(this.$c.length){
 			//push mapped index value into DOM
 			this.$c.html( 
@@ -155,7 +155,7 @@ define([
 		}
 	}//end updateContent()
 	
-	Coil.prototype.setDimensions = function( w, h ) {
+	Box.prototype.setDimensions = function( w, h ) {
 		this.e.style.width = w + 'px';
 		this.e.style.height = h + 'px';
 		this.dims[0] = this.width = this.w = w;
@@ -165,7 +165,7 @@ define([
 		this.$moneyShot.css({'width':this.w,'height':this.h})
 	}
 	
-	Coil.prototype.getDisplayClass = function(ratio){
+	Box.prototype.getDisplayClass = function(ratio){
 		if(ratio > 1.1){
 			return 'portrait';
 		}else if(ratio < .9){
@@ -175,15 +175,15 @@ define([
 		}
 	}
 	
-	Coil.prototype.paintToSurfaceMap = function(x,y){
+	Box.prototype.paintToSurfaceMap = function(x,y){
 		this.parent.surfaceMap.call(this,x,y);
 	};
 	
-	Coil.prototype.remove = function() {
+	Box.prototype.remove = function() {
 		this.parent.e.removeChild( this.e );
 	}
 
-	Coil.prototype.doOnScreen = function(torf) {
+	Box.prototype.doOnScreen = function(torf) {
 		if(torf!=undefined && this.isOnScreen !== torf){
 			this.isOnScreen=torf;
 			if(torf && !this.isLoaded)this.$moneyShot.attr('src',this.model.imgUrl);
@@ -204,12 +204,12 @@ define([
 		return this.isOnScreen;
 	}
 	
-	Coil.prototype.setWaveforms = function(o) {
+	Box.prototype.setWaveforms = function(o) {
 		this.waves = o;
 	}
 	
 	
-	Coil.prototype.getSaEvtStats = function(){
+	Box.prototype.getSaEvtStats = function(){
 		var 
 			si=this.parent.si, 
 			pPos = this.pPos[si],
@@ -239,7 +239,7 @@ define([
 	*/
 	
 	
-	Coil.prototype.setAbsPos = function( x, y ) {
+	Box.prototype.setAbsPos = function( x, y ) {
 		
 		
 		//if this is the last selected item then disable easing
@@ -394,7 +394,7 @@ define([
 	};//setAbsPos()
 
 	
-	return Coil
+	return Box
 
 });
 

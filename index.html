@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>TremulaJS</title>
-		<link rel="stylesheet" href="src/tremula.css">
+		<link rel="stylesheet" href="src/Tremula.css">
 		<style type="text/css">
 					@import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
 					body{
@@ -43,24 +43,64 @@
 				var tremula = new Tremula();
 				window.tremula = tremula;//not necessary -- just for demo convienience
 
+
+
+				//please note: doScrollEvents() is running 
+				tremula.doScrollEvents = function(o){
+					//console.log(o)
+					if(o.scrollProgress>.7){
+						if(!tremula.cache.endOfScrollFlag){
+							tremula.cache.endOfScrollFlag = true;
+							console.log('END OF SCROLL!')
+						}
+					}
+				}
+
 				var config = tremulaConfigs.large1Row.call(tremula);
 
 				$tremulaContainer = $('.tremulaContainer');
 				tremula.init($tremulaContainer,config,this);
 
 
+
+				function appendData(data,dataAdapter){
+					var s = tremula;
+					s.spring.initBoxes(data,dataAdapter,true);
+					s.cache.endOfScrollFlag = false;
+				}
+
+				function insertData(data,dataAdapter){
+					var s = tremula;
+					s.spring.initBoxes(data,dataAdapter,'insert');
+					s.cache.endOfScrollFlag = false;
+				}
 			
 				function refreshData(data,dataAdapter){
 					var s = tremula;
 					s.spring.initBoxes(data,dataAdapter,false);
-					s.spring.statsCache.endOfScrollFlag = false;
+					s.cache.endOfScrollFlag = false;
 				}
 
-				// var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=100&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';
+
+				// var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=100&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';				
 				var dataUrl = 'decorProductSearch.json';
+				
 				$.getJSON(dataUrl,function(res){
-					refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);
-				})
+					refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
+				}).fail(function(){console.log('getJSON problem.')});
+				
+				// var dataUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=sky%2C+night&format=json&page=1&extras=url_z';
+				// $.ajax({
+				// 	url:dataUrl
+				// 	,dataType: 'jsonp'
+				// 	,jsonp: 'jsoncallback' 
+				// })
+				// .done(function(res){
+				// 	console.log(res);
+				// 	refreshData(res.photos.photo,tremula.dataAdapters.flickrSearch);//flicker
+				// })
+				// .fail( function(d,config,err){ console.log('API FAIL. '+err) })
+
 
 				return tremula;
 			}
