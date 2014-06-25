@@ -1,6 +1,6 @@
 function attachDemoControls(tremula){
 
-	var s = tremula.spring;
+	var s = tremula.Grid;
 
 	$(".btnL1").click(function() {
 		s.jumpToScrollProgress(0);
@@ -157,12 +157,12 @@ function attachDemoControls(tremula){
 	})
 
 
-	// tremula.spring.updateConfig({itemConstraint:100,itemEasing:false});	
+	// tremula.Grid.updateConfig({itemConstraint:100,itemEasing:false});	
 	// setTimeout(function(){
 	// 	s.doTransition(tremula.layouts.basicGridLayout,{axes:2},800,tremula.easings.easeOutElastic);
 	// }, 500)
 
-	// tremula.spring.updateConfig({itemConstraint:300,itemEasing:false,staticAxisCount:2});	
+	// tremula.Grid.updateConfig({itemConstraint:300,itemEasing:false,staticAxisCount:2});	
 	// setTimeout(function(){
 	// 	s.doTransition(tremula.layouts.basicGridLayout,{axes:0},800,tremula.easings.easeOutElastic);
 	// }, 500)

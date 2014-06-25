@@ -26,7 +26,7 @@ define([
 
 	var Tremula = function(){
 
-		this.spring 		= {};
+		this.Grid 		= {};
 		this.dataAdapters 	= dataAdapters;
 		this.layouts 		= layouts;
 		// this.surfaceMaps	= surfaceMaps;
@@ -38,9 +38,9 @@ define([
 
 	Tremula.prototype.resize = function(evt){
 		if(this.$e[0].offsetWidth==0) return;//if the Tremula container does not have any width then there is no need to do any resizing
-		this.spring.setScrollAxis();
-		this.spring.setLayout();
-		this.spring.oneShotPaint();
+		this.Grid.setScrollAxis();
+		this.Grid.setLayout();
+		this.Grid.oneShotPaint();
 	}	
 
 
@@ -72,10 +72,10 @@ define([
 		
 		var springOptions = $.extend({},defaults,options||{})
 		
-		this.spring = new Grid($e,springOptions,parent)
+		this.Grid = new Grid($e,springOptions,parent)
 		
 		if(options&&options.data)
-			this.spring.initBoxes(options.data,options.adapter);
+			this.Grid.initBoxes(options.data,options.adapter);
 		
 		
 		$(window).on('resize',function(evt){
@@ -83,13 +83,13 @@ define([
 		});
 		
 		var fanEvents =new Hammer($e[0],{prevent_default: true});
-		fanEvents.on('dragdown dragup dragleft dragright swipeleft swipeup swipedown swiperight touch release tap',function(evt){that.spring.handleGesture(evt)});
+		fanEvents.on('dragdown dragup dragleft dragright swipeleft swipeup swipedown swiperight touch release tap',function(evt){that.Grid.handleGesture(evt)});
 		
 		$e.on('mousewheel wheel DOMMouseScroll', function(evt){
 			//test for a scroll signifigantly perpendicular to the SA -- if that is true then pass it up the DOM to scroll the layer 
-			//note: prolly need to do this to the drag == potentially doing the whole thing in that.spring.handleGesture()
+			//note: prolly need to do this to the drag == potentially doing the whole thing in that.Grid.handleGesture()
 			//if(true){
-				that.spring.handleGesture(evt)
+				that.Grid.handleGesture(evt)
 				evt.preventDefault();
 				evt.stopPropagation();
 			//}

@@ -59,21 +59,18 @@
 
 
 				function appendData(data,dataAdapter){
-					var s = tremula;
-					s.spring.initBoxes(data,dataAdapter,true);
-					s.cache.endOfScrollFlag = false;
+					tremula.Grid.initBoxes(data,dataAdapter,true);
+					tremula.cache.endOfScrollFlag = false;
 				}
 
 				function insertData(data,dataAdapter){
-					var s = tremula;
-					s.spring.initBoxes(data,dataAdapter,'insert');
-					s.cache.endOfScrollFlag = false;
+					tremula.Grid.initBoxes(data,dataAdapter,'insert');
+					tremula.cache.endOfScrollFlag = false;
 				}
 			
 				function refreshData(data,dataAdapter){
-					var s = tremula;
-					s.spring.initBoxes(data,dataAdapter,false);
-					s.cache.endOfScrollFlag = false;
+					tremula.Grid.initBoxes(data,dataAdapter,false);
+					tremula.cache.endOfScrollFlag = false;
 				}
 
 

@@ -24,7 +24,7 @@ define([
 		//this.setSurfaceMap(this.parent.options.surfaceMap);
 		//this.surfaceMap = this.parent.surfaceMap;
 
-		this.index=null;//will be set by spring.js
+		this.index=null;//will be set by Grid.js
 
 		this.x = this.y = 0;//init these -- incase needed prior to first stashPosition() 
 		this.dims = [0,0];
