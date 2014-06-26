@@ -16,6 +16,7 @@
 		</style>
 		
 		<script src="libs/jquery-min.js"></script>
+		<script src="libs/jquery.ba-throttle-debounce.min.js"></script>
 		<script src="libs/hammer.js"></script>
 		<script src="libs/jsBezier-0.6.js"></script>
 		<script src="libs/raf_shim.js"></script>
@@ -51,7 +52,7 @@
 
 
 
-				function doScrollEvents(o){
+				var doScrollEvents = function(o){
 					if(o.scrollProgress>.7){
 						if(!tremula.cache.endOfScrollFlag){
 							tremula.cache.endOfScrollFlag = true;
@@ -60,6 +61,29 @@
 					}
 				}//doScrollEvents()
 
+
+				function justifyColumnCount(t){
+					var
+						g = t.Grid
+						,saDim_ = g.saDim_
+						,si_ = g.si_
+						,currentCount = g.staticAxisCount
+						,eStaticAxis = t.$e[saDim_]()
+						,constraint = g.itemConstraint+g.itemMargins[si_]*2
+						,newCount = Math.max(0,Math.floor(eStaticAxis/constraint)-1);
+
+					console.log(currentCount,newCount)
+					if(newCount!=currentCount){
+						g.updateConfig({axes:newCount},true);
+						console.log('NEW COLUMN SETTING')
+					}
+
+
+				}
+
+		
+				$(window).on('resize', $.debounce(250, function(){ justifyColumnCount(tremula) }) );
+		
 
 
 
@@ -95,6 +119,9 @@
 	</head>
 	<body>
 		<style type="text/css">
+			.tremulaContainer{
+				box-shadow: inset 0 0 50px rgba(0,0,0,0.2);
+			}
 			.controls{
 				position: absolute;
 				bottom: 0px;
@@ -104,78 +131,80 @@
 				margin: 0px;
 				padding: 0px;
 			}
+			.group{
+				display: inline-block;
+				margin:5px;
+				position: relative;
+			}
 			.buttons{
 				list-style-type: none;
 				margin: 0;
-				padding: 2em;			
+				padding: 5px;			
 			}
-			.buttons li{
+			.buttons .group li{
 				display: inline-block;
 				padding: .5em;
 				background: #999;
-				margin: 1.5ex 1em -1ex -1em;
+				margin: 5px;
 				cursor: pointer;
 			}
-			.buttons li:hover{
+			.buttons .group li:hover{
 				background: #333;
 				color:#eee;
 			}
-			.buttons li:active{
+			.buttons .group li:active{
 				background: #eee;
 				color:#333;
-			}
-			.group{
-				display: inline-block;
-				margin-right:3em;
-				position: relative;
 			}
 		</style>
 		
 		<h1>TremulaJS</h1>
 		<div class="tremulaContainer main"></div>
+
 		<div class="controls">
-			<ul class="buttons" >
-				<div class="group">
+			<div class="buttons" >
+
+				<ul class="group">
 					<li class="btn1">1 Axis</li>
 					<li class="btn2">2 Axes</li>
 					<li class="btn3">3 Axes</li>
-<!-- 					<li class="btn4">5 Axes</li> -->
-				</div>
-				<div class="group">
+				</ul>
+
+				<ul class="group">
 					<li class="size1">sm</li>
 					<li class="size2">med</li>
 					<li class="size3">lg</li>
-				</div>
+				</ul>
 
-				<div class="group">
+				<ul class="group">
 					<li class="margin1">margin sm</li>
 					<li class="margin2">margin med</li>
 					<li class="margin3">margin lg</li>
-				</div>
+				</ul>
 
 				
-				<div class="group">
+				<ul class="group">
 					<li class="btnL1">xyPlane</li>
 					<li class="btnL2">turntable</li>
 					<li class="btnL3">enterTheDragon</li>
 					<li class="btnL4">sunrise</li>
 					<li class="btnL5">headExpansion</li>
-				</div>
+				</ul>
 
 				
-				<div class="group">
+				<ul class="group">
 					<li class="toggleItemEase">toggle ease</li>
 					<li class="toggleIsLooping">toggle looping</li>
 					<li class="toggleScrollAxis">toggle axis</li>
-				</div>
+				</ul>
 
-				<div class="group">
+				<ul class="group">
 					<li class="headScroll">head scroll</li>
 					<li class="tailScroll">tail scroll</li>
-				</div>
+				</ul>
 
 
-			</ul>
+			</div>
 		
 		</div>
 
