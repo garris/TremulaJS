@@ -19,7 +19,7 @@
 
 		<script src="tremulaConfig.js"></script>
 		<script src="tremulaControls.js"></script>
-		<script src="dist/Tremula.js"></script>
+		<script data-main="src/Tremula" src="libs/require.js"></script>
 
 		<script type="text/javascript">
 
@@ -115,15 +115,23 @@
 				top:0;
 				left:0;
 			}
+
+
 			.controls{
 				position: absolute;
-				bottom: 0px;
+				bottom: 0%;
 				left: 0px;
 				width: 100%;
 				background-color: rgba(255, 255, 255, 0.67);
 				margin: 0px;
 				padding: 0px;
 				box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+				-webkit-transform: translateY(100%);
+				-webkit-transition: 175ms ease-in-out;
+				z-index: 2;
+			}
+			.showControls .controls{
+				-webkit-transform: translateY(0%);
 			}
 			.group{
 				display: inline-block;
@@ -134,13 +142,14 @@
 			.buttons{
 				list-style-type: none;
 				margin: 0;
-				padding: 5px;			
+				padding: 5px;
+				text-align: center;	
 			}
 			.buttons .group li{
 				/* display: inline-block; */
 				list-style: none;
 				padding: .5em;
-				background: transparent;
+				background: rgba(255,255,255,0.5);
 				margin: -1px;
 				cursor: pointer;
 				border: solid 1px #999;
@@ -156,6 +165,28 @@
 				background: #eee;
 				color:#333;
 			}
+
+			.tab{position: absolute;
+				bottom: 100%;
+				background: inherit;
+				padding: 10px;
+				right: 10px;
+				box-shadow: 0 -2px 11px rgba(0,0,0,0.2);
+			}
+			h1{
+				color: #333;
+				position: absolute;
+				z-index: 1;
+				left: 0;
+				bottom: 0;
+				/* -webkit-transform: translateX(0) translateY(0%) rotateZ(-90deg); */
+				font-size: 70px;
+				line-height: 0.5em;
+				padding: 25px;
+				margin: 0;
+				/* margin-left: -70px; */
+				/* background-color: rgba(255,255,255,.7); */
+			}
 		</style>
 
 
@@ -164,9 +195,11 @@
 	<body class="doReflect">
 
 		<h1>TremulaJS</h1>
+
 		<div class="tremulaContainer main"></div>
 
 		<div class="controls">
+			<div class="tab">settings</div>
 			<div class="buttons" >
 				
 				<ul class="group">

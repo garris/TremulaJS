@@ -130,6 +130,12 @@ function attachDemoControls(tremula){
 
 	
 
+	$(".controls").on('click','.tab',function() {
+		console.log('CONTROL')
+		$('body').toggleClass('showControls');//easeInOutQuad
+	})
+	
+
 	$(".toggleReflect").click(function() {
 		$('body').toggleClass('doReflect');//easeInOutQuad
 	})
