@@ -21,6 +21,7 @@ define([
 		this.getLayoutXingMs = function(){return this.parent.layoutXansMs;}
 		this.springLimit = this.parent.springLimit;
 		this.itemMargins = this.parent.itemMargins;
+		this.staticAxisCount = this.parent.staticAxisCount;
 		//this.setSurfaceMap(this.parent.options.surfaceMap);
 		//this.surfaceMap = this.parent.surfaceMap;
 

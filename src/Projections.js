@@ -251,7 +251,7 @@ define([],function(){
 		yo;//yo=y;//-yoffset;
 
 
-// console.log(axisLength)
+		// console.log(axisLength)
 
 		var xyFactor = [
 			grid0, //Math.max(0,grid0),
@@ -265,6 +265,7 @@ define([],function(){
 
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
 		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
+		// var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-(this.dims[1]+this.itemMargins[1]*(this.staticAxisCount+1)))*.5);// - this.itemMargins[1];
 		var zo = 0;//Math.max(50,((tri)*100));
 
 		this.e.style.webkitTransformOrigin = '50%';
