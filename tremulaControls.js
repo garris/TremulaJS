@@ -156,6 +156,12 @@ function attachDemoControls(tremula){
 	})
 
 
+	refreshData = true;
+	$(".toggleRefreshData").click(function() {
+		refreshData = !refreshData
+	})
+
+
 
 
 	$(".tailScroll").click(function() {
@@ -238,6 +244,43 @@ function attachDemoControls(tremula){
 	$(".autoCount").click(function() {resizeFn = autoColumnCount; resizeFn(tremula); })
 	$(".autoDisable").click(diableAuto)
 	$(window).on('resize', $.debounce(250, function(){ resizeFn(tremula) }) );
+
+	$(".loadArtDotCom").click(loadArtDotCom)
+	$(".loadFlickr").click(loadFlickr)
+
+
+
+	function loadArtDotCom(){
+		// var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=100&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';	
+
+		var dataUrl = 'decorProductSearch.json';
+		$.getJSON(dataUrl,function(res){
+			if(refreshData)
+				tremula.refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
+			else
+				tremula.appendData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
+			
+		}).fail(function(){console.log('getJSON problem.')});
+	}
+	
+	function loadFlickr(){
+		var dataUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=sky%2C+night&format=json&page=1&extras=url_z';
+		$.ajax({
+			url:dataUrl
+			,dataType: 'jsonp'
+			,jsonp: 'jsoncallback' 
+		})
+		.done(function(res){
+			console.log(res);
+			if(refreshData)
+				tremula.refreshData(res.photos.photo,tremula.dataAdapters.flickrSearch);//flicker
+			else
+				tremula.appendData(res.photos.photo,tremula.dataAdapters.flickrSearch);//flicker
+		})
+		.fail( function(d,config,err){ console.log('API FAIL. '+err) })
+	}
+
+
 
 
 }

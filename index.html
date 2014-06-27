@@ -62,26 +62,6 @@
 
 
 
-				// var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=100&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';	
-
-				var dataUrl = 'decorProductSearch.json';
-				$.getJSON(dataUrl,function(res){
-					tremula.refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
-				}).fail(function(){console.log('getJSON problem.')});
-				
-				// var dataUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=sky%2C+night&format=json&page=1&extras=url_z';
-				// $.ajax({
-				// 	url:dataUrl
-				// 	,dataType: 'jsonp'
-				// 	,jsonp: 'jsoncallback' 
-				// })
-				// .done(function(res){
-				// 	console.log(res);
-				// 	tremula.refreshData(res.photos.photo,tremula.dataAdapters.flickrSearch);//flicker
-				// })
-				// .fail( function(d,config,err){ console.log('API FAIL. '+err) })
-
-
 				return tremula;
 			}
 
@@ -180,6 +160,11 @@
 				padding: 10px;
 				right: 10px;
 				box-shadow: 0 -2px 11px rgba(0,0,0,0.2);
+				cursor: pointer;
+			}
+			.tab:hover{
+				background-color: #333;
+				color: #eee;
 			}
 			h1{
 				color: #333;
@@ -219,21 +204,21 @@
 				</ul>
 
 				<ul class="group">
-					<li class="btn1">1 Axis</li>
-					<li class="btn2">2 Axes</li>
-					<li class="btn3">3 Axes</li>
-				</ul>
-
-				<ul class="group">
 					<li class="autoSize">autoSize</li>
 					<li class="autoCount">autoCount</li>
 					<li class="autoDisable">autoDisable</li>
 				</ul>
 
 				<ul class="group">
-					<li class="size1">sm</li>
-					<li class="size2">med</li>
-					<li class="size3">lg</li>
+					<li class="btn1">1 Axis</li>
+					<li class="btn2">2 Axes</li>
+					<li class="btn3">3 Axes</li>
+				</ul>
+
+				<ul class="group">
+					<li class="size1">sm size</li>
+					<li class="size2">med size</li>
+					<li class="size3">lg size</li>
 				</ul>
 
 				<ul class="group">
@@ -252,6 +237,12 @@
 				<ul class="group">
 					<li class="headScroll">head scroll</li>
 					<li class="tailScroll">tail scroll</li>
+				</ul>
+
+				<ul class="group">
+					<li class="loadArtDotCom">loadArtDotCom</li>
+					<li class="loadFlickr">loadFlickr</li>
+					<li class="toggleRefreshData">toggle refresh</li>
 				</ul>
 
 
