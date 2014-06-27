@@ -21,6 +21,7 @@ function attachDemoControls(tremula){
 	$(".btnL2").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
+			$body.addClass('doReflect');
 			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:350},800,tremula.easings.easeOutElastic,tremula.projections.turntable);
 			s.setItemEasing(false);
 			resizeFn(tremula)
@@ -48,7 +49,7 @@ function attachDemoControls(tremula){
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
 			$body.addClass('doReflect');
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200,itemMargins:[10,10]},800,tremula.easings.easeOutElastic,tremula.projections.mountain);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:300,itemMargins:[10,10]},800,tremula.easings.easeOutElastic,tremula.projections.mountain);
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}, 100)
@@ -183,6 +184,8 @@ function attachDemoControls(tremula){
 
 
 	refreshData = false;//setting this to true will replace data with new results; false will append data.
+	$(".toggleRefreshData").text('appending');
+
 	$(".toggleRefreshData").click(function() {
 		refreshData = !refreshData
 		var label

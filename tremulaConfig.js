@@ -12,7 +12,7 @@ tremulaConfigs = {
 			itemConstraint      :200,
 			itemMargins         :[30,30],
 			staticAxisOffset    :0,//px
-			scrollAxisOffset    :200,//px
+			scrollAxisOffset    :20,//px
 			scrollAxis          :'x',
 			staticAxisCount     :0,//zero based
 			//isLooping         :true,
