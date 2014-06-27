@@ -259,7 +259,7 @@ function attachDemoControls(tremula){
 				tremula.refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
 			else
 				tremula.appendData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
-			
+
 		}).fail(function(){console.log('getJSON problem.')});
 	}
 	
@@ -281,7 +281,7 @@ function attachDemoControls(tremula){
 	}
 
 
-
+	loadArtDotCom()//uncomment to load something automaticly on launch
 
 }
 
