@@ -2,6 +2,14 @@ function attachDemoControls(tremula){
 
 	var s = tremula.Grid;
 
+	$(".centerLinear").click(function() {
+		s.jumpToScrollProgress(0);
+		setTimeout(function(){
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200},800,tremula.easings.easeOutElastic,tremula.projections.centerLinear);
+			resizeFn(tremula)
+		}, 100)
+	})
+
 	$(".btnL1").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
@@ -36,11 +44,21 @@ function attachDemoControls(tremula){
 			resizeFn(tremula)
 		}, 100)
 	})
+	$(".mountain").click(function() {
+		s.jumpToScrollProgress(0);
+		setTimeout(function(){
+			$body.addClass('doReflect');
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200,itemMargins:[10,10]},800,tremula.easings.easeOutElastic,tremula.projections.mountain);
+			s.setItemEasing(false);
+			resizeFn(tremula)
+		}, 100)
+	})
 	
 	$(".btnL5").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:100,itemMargins:[5,5]},800,tremula.easings.easeOutElastic,tremula.projections.headExpansion);
+			$body.removeClass('doReflect');
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200,itemMargins:[5,5]},800,tremula.easings.easeOutElastic,tremula.projections.headExpansion);
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}, 100)
@@ -128,21 +146,29 @@ function attachDemoControls(tremula){
 
 
 
-	
+	$body = $("body");
 
-	$(".controls").on('click','.tab',function() {
-		console.log('CONTROL')
-		$('body').toggleClass('showControls');//easeInOutQuad
+	$body.on('click',function() {
+		$body.removeClass('showControls');
+	})
+
+	$(".controls").on('click','.tab',function(evt) {
+		evt.stopPropagation();
+		$body.toggleClass('showControls');
+	})
+
+	$(".controls").on('click',function(evt) {
+		evt.stopPropagation();
 	})
 	
 
 	$(".toggleReflect").click(function() {
-		$('body').toggleClass('doReflect');//easeInOutQuad
+		$body.toggleClass('doReflect');
 	})
 	
 
 	$(".toggleItemEase").click(function() {
-		s.setItemEasing(!s.itemEasing);//easeInOutQuad
+		s.setItemEasing(!s.itemEasing);
 	})
 	
 	
@@ -156,9 +182,15 @@ function attachDemoControls(tremula){
 	})
 
 
-	refreshData = true;
+	refreshData = false;//setting this to true will replace data with new results; false will append data.
 	$(".toggleRefreshData").click(function() {
 		refreshData = !refreshData
+		var label
+		if(refreshData)
+			label = 'replacing'
+		else
+			label = 'appending'
+		$(".toggleRefreshData").text(label);
 	})
 
 

@@ -11,13 +11,13 @@ tremulaConfigs = {
 			adapter             : this.dataAdapters.JudyItem,
 			itemConstraint      :200,
 			itemMargins         :[30,30],
-			staticAxisOffset    :18,//px
-			scrollAxisOffset    :20,//px
+			staticAxisOffset    :0,//px
+			scrollAxisOffset    :200,//px
 			scrollAxis          :'x',
 			staticAxisCount     :0,//zero based
 			//isLooping         :true,
 			defaultLayout       :this.layouts.basicGridLayout,//<--- TODO:  this is not yet implemented.
-			surfaceMap          :this.projections.headExpansion,
+			surfaceMap          :this.projections.centerLinear,
 			itemPreloading      :true,
 			itemEasing           :false,
 			itemEasingParams    :{
