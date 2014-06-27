@@ -309,9 +309,10 @@ define([],function(){
 		xo=x;
 		yo=y;
 		
-		//this.e.style.webkitTransformOrigin = '50%';
-		
-		this.e.style.webkitTransform = 
+		this.e.style.webkitTransformOrigin = '50%';
+		this.e.style.MozTransformOrigin = '50%';
+				
+		this.e.style.transform = 
 			'translate3d(' + xo + 'px,' + yo +'px, 0) '
 			//+'rotateZ('+g*15+'deg)'
 			//+'scale('+(tRamp*2+.4)+')';
