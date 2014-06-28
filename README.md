@@ -18,8 +18,12 @@ TremulaJS was developed by Garris Shipon at Art.com Labs.
 
 1. Take a look at the demo <http://garris.github.com/TremulaJS>
 2. Download or Clone TremulaJS <https://github.com/garris/TremulaJS.git>
-3. Mess around with it and see if it's for you.
+3. More info + tutorials to come.
 
 
-More info + tutorials to come.
+*Dependencies:
+- iOS Safari, chrome, OS X Safari, FF, IE
+- jQuery
+- HammerJS
+- JsBezier* 
 
