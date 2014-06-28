@@ -9,7 +9,7 @@ tremulaConfigs = {
 			maxWidthClassMap		: {mini:50,small:143,medium:244,large:2000},//large will apply to anything over medium limit
 			lastContentBlock 		: {template :'<div class="lastContentItem"></div>',layoutType :'tremulaBlockItem',noScaling:true,w:300,h:390,isLastContentBlock:true},
 			adapter             : this.dataAdapters.JudyItem,
-			itemConstraint      :200,
+			itemConstraint      :300,
 			itemMargins         :[30,30],
 			staticAxisOffset    :0,//px
 			scrollAxisOffset    :20,//px

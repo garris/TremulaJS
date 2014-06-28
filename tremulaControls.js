@@ -5,7 +5,8 @@ function attachDemoControls(tremula){
 	$(".centerLinear").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200},800,tremula.easings.easeOutElastic,tremula.projections.centerLinear);
+			var targetSize = tremula.$e.height()*.5;
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize},800,tremula.easings.easeOutElastic,tremula.projections.centerLinear);
 			resizeFn(tremula)
 		}, 100)
 	})
@@ -22,8 +23,8 @@ function attachDemoControls(tremula){
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
 			$body.addClass('doReflect');
-
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:350},800,tremula.easings.easeOutElastic,tremula.projections.turntable);
+			var targetSize = tremula.$e.height()*.7;
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize},800,tremula.easings.easeOutElastic,tremula.projections.turntable);
 			s.setItemEasing(false);
 
 
@@ -53,7 +54,8 @@ function attachDemoControls(tremula){
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
 			$body.addClass('doReflect');
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:300,itemMargins:[10,10]},800,tremula.easings.easeOutElastic,tremula.projections.mountain);
+			var targetSize = tremula.$e.height()*.5;
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize,itemMargins:[10,10]},800,tremula.easings.easeOutElastic,tremula.projections.mountain);
 			s.setItemEasing(false);
 			diableAuto();
 			refreshData=false;
