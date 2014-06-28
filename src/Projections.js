@@ -196,6 +196,8 @@ define([],function(){
 		'translate3d(' + xo + 'px,' + yo +'px, 0)'//
 		+' rotateZ('+g*60+'deg)';
 		
+		this.e.style.opacity = 1;
+
 		this.pPos = [x,y];
 	}//sunrise()
 	exports.sunrise = sunrise;
@@ -238,6 +240,8 @@ define([],function(){
 		'translate3d(' + xo + 'px,' + yo +'px, 0)'//
 		+' rotateZ('+g*60+'deg)';
 		
+		this.e.style.opacity = 1;
+
 		this.pPos = [x,y];
 	}//mountain()
 	exports.mountain = mountain;
@@ -298,6 +302,8 @@ define([],function(){
 		var z = 1000000-this.index;
 		this.e.style.zIndex = z;
 
+		this.e.style.opacity = 1;
+
 		this.pPos = [x,y];
 	}//headExpansion()
 	exports.headExpansion = headExpansion;
@@ -354,6 +360,8 @@ define([],function(){
 		var z = 1000000-this.index;
 		this.e.style.zIndex = z;
 
+		this.e.style.opacity = 1;
+
 		this.pPos = [x,y];
 	}//centerLinear()
 	exports.centerLinear = centerLinear;
@@ -387,7 +395,7 @@ define([],function(){
 
 		this.e.style.opacity = 1;//tri;
 		this.pPos = [x,y];
-			
+
 	} //xyPlane(x,y)
 		
 	exports.xyPlane = xyPlane;
