@@ -132,20 +132,24 @@
 				transform: translateY(0%);
 			}
 			.group{
-				display: inline-block;
+				display: none;
 				margin:5px;
 				padding: 0;
 				position: relative;
 			}
-			.group:first-child{
+			.showTweaks .group{
+				display: inline-block;
+			}
+			.group.main{
 				background: white;
 				box-shadow: 0 0 8px #999;
+				display: inline-block;
 			}
 			.buttons{
 				list-style-type: none;
 				margin: 0;
 				padding: 5px;
-				text-align: center;	
+				text-align: left;	
 			}
 			.buttons .group li{
 				/* display: inline-block; */
@@ -184,7 +188,7 @@
 				color: #333;
 				position: absolute;
 				z-index: 2;
-				left: 0;
+				right: 80px;
 				bottom: 0;
 				/* -webkit-transform: translateX(0) translateY(0%) rotateZ(-90deg); */
 				font-size: 70px;
@@ -209,13 +213,17 @@
 			<div class="tab">settings</div>
 			<div class="buttons" >
 				
-				<ul class="group">
+				<ul class="group main">
 					<li class="centerLinear">centerLinear</li>
 					<!-- <li class="btnL1">xyPlane</li> -->
 					<li class="btnL2">turntable</li>
 					<li class="mountain">mountain</li>
 					<li class="btnL3">enterTheDragon</li>
 					<li class="btnL5">headExpansion</li>
+				</ul>
+
+				<ul class="group main">
+					<li class="more">more...</li>
 				</ul>
 
 				<ul class="group">

@@ -164,6 +164,12 @@ function attachDemoControls(tremula){
 		$body.toggleClass('showControls');
 	})
 
+	$(".more").on('click',function(evt) {
+		evt.stopPropagation();
+		$body.addClass('showTweaks')
+		$(".more").remove();
+	})
+
 	$(".controls").on('click',function(evt) {
 		evt.stopPropagation();
 	})
