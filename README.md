@@ -10,7 +10,7 @@ TremulaJS (trem-yoo-la) is a client-side javascript UI component providing Bézi
 
 The TremulaJS project began as an exercise in reverse engineering Apple's momentum-scrolling for Javascript. More specifically, I wanted a component which would deliver silky smooth scrolling when used with a touch device, a mouse or an Apple trackpad.  The project eventually grew into a tool able to synthesize live visual content feeds into compelling path-based interactions.
 
-TremulaJS was developed by Garris Shipon at Art.com Labs.
+TremulaJS was developed by [Garris Shipon](http://garriss.wordpress.com/) at [Art.com Labs](http://art.com/).
 
 **@garris** 
 
@@ -21,9 +21,10 @@ TremulaJS was developed by Garris Shipon at Art.com Labs.
 3. More info + tutorials to come.
 
 
-*Dependencies:
+###Dependencies:
+
 - iOS Safari, chrome, OS X Safari, FF, IE
 - jQuery
 - HammerJS
-- JsBezier* 
+- JsBezier
 
