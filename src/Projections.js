@@ -21,10 +21,10 @@ define([],function(){
 	];
 
 	var mountainCurve = [
-		{x:0,y:0},
-		{x:.25,y:.75},
-		{x:.75,y:.75},
-		{x:1,y:0}
+		{x:0,y:1},
+		{x:.25,y:.35},
+		{x:.75,y:.35},
+		{x:1,y:1}
 	];
 
 	var softKnee = [
@@ -68,6 +68,7 @@ define([],function(){
 		var
 		grid0 = this.parent.gridDims[0],
 		grid1 = this.parent.gridDims[1],
+		axisLength = this.parent.currentGridContentDims,
 		tRamp = this.waves.tailRamp,
 		hRamp = this.waves.headRamp,
 		tri = this.waves.triangle,
@@ -87,7 +88,8 @@ define([],function(){
 		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
-		var yo = (grid1-this.outerDims[1]*.5)-p.y;
+		// var yo = (grid1-this.outerDims[1]*.5)-p.y;
+		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
 		var zo = Math.min(-400,((1-tri)*-1000));		
 		
 		this.e.style.webkitTransformOrigin = '50%';
@@ -119,6 +121,7 @@ define([],function(){
 		var
 		grid0 = this.parent.gridDims[0],
 		grid1 = this.parent.gridDims[1],
+		axisLength = this.parent.currentGridContentDims,
 		tRamp = this.waves.tailRamp,
 		hRamp = this.waves.headRamp,
 		tri = this.waves.triangle,
@@ -138,7 +141,8 @@ define([],function(){
 		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
-		var yo = (grid1-this.outerDims[1]*.5)-p.y;
+		// var yo = (grid1-this.outerDims[1]*.5)-p.y;
+		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
 		var zo = Math.max(-800,((tri)*-1000));
 		
 		this.e.style.webkitTransformOrigin = '50%';
@@ -213,6 +217,7 @@ define([],function(){
 		var 
 			grid0 = this.parent.gridDims[0],
 			grid1 = this.parent.gridDims[1],
+				axisLength = this.parent.currentGridContentDims,
 			tRamp = this.waves.tailRamp,
 			hRamp = this.waves.headRamp,
 			tri = this.waves.triangle,
@@ -231,14 +236,15 @@ define([],function(){
 		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
-		var yo = y+this.itemMargins[1]+(grid1-this.outerDims[1]*.5)-p.y;
+		// var yo = y+this.itemMargins[1]+(grid1-this.outerDims[1]*.5)-p.y;
+		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
 		
 		this.e.style.webkitTransformOrigin = '50%';
 		this.e.style.MozTransformOrigin = '50%';
 		
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
 		'translate3d(' + xo + 'px,' + yo +'px, 0)'//
-		+' rotateZ('+g*60+'deg)';
+		+' rotateZ('+g*-60+'deg)';
 		
 		this.e.style.opacity = 1;
 
