@@ -52,17 +52,18 @@ body{
 
 .controls{
 	position: absolute;
-	bottom: 0%;
+	bottom: 0;
 	left: 0px;
 	width: 100%;
+	height:220px;
 	background-color: rgba(255, 255, 255, 0.67);
 	margin: 0px;
 	padding: 0px;
 	box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
-	-webkit-transform: translateY(100%);
-	-moz-transform: translateY(100%);
-	-ms-transform: translateY(100%);
-	transform: translateY(100%);
+	-webkit-transform: translateY(220px);
+	-moz-transform: translateY(220px);
+	-ms-transform: translateY(220px);
+	transform: translateY(220px);
 	-webkit-transition: 175ms ease-in-out;
 	-moz-transition: 175ms ease-in-out;
 	-ms-transition: 175ms ease-in-out;
@@ -122,13 +123,15 @@ margin-left: 38px;
 	position: absolute;
 	bottom: 100%;
 	background: inherit;
-	padding: 6px 20px;
+	padding: 6px 20px 10px;
 	left: 20px;
 	box-shadow: 0 -2px 11px rgba(0,0,0,0.2);
 	cursor: pointer;
-	font-size: 37px;
+	font-size: 40px;
 	font-weight: 700;
 	color: #333;
+	height: 70px;
+	/*line-height: 70px*/
 }
 .tab:hover{
 	background-color: #333;
@@ -141,9 +144,9 @@ z-index: 2;
 right: 0px;
 bottom: 0;
 /* -webkit-transform: translateX(0) translateY(0%) rotateZ(-90deg); */
-font-size: 70px;
-line-height: 0.5em;
-padding: 25px;
+font-size: 100px;
+/*line-height: 0.5em;*/
+padding: 15px;
 margin: 0;
 /* margin-left: -70px; */
 /* background-color: rgba(255,255,255,.7); */
