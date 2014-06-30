@@ -313,7 +313,7 @@ function attachDemoControls(tremula){
 	}
 	
 	function loadFlickr(){
-		var dataUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=sky%2C+night&format=json&page=1&extras=url_z';
+		var dataUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=street+art&format=json&page=1&extras=url_z';
 		$.ajax({
 			url:dataUrl
 			,dataType: 'jsonp'
