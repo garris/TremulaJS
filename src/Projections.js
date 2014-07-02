@@ -43,6 +43,27 @@ define([],function(){
 	];
 
 
+
+
+
+
+	var centerLinearPath = [
+		{x:0,y:.5},
+		{x:.33,y:.5},
+		{x:.66,y:.5},
+		{x:1,y:.5}
+	];
+
+
+
+	var pinterestPath = [
+		{x:.5,y:0},
+		{x:.5,y:.33},
+		{x:.5,y:.66},
+		{x:.5,y:1}
+	];
+
+
 	//====== curve helper =======
 
 	function factorCurveBy(cubic,xy){
@@ -214,16 +235,20 @@ define([],function(){
 
 		var curve = mountainCurve;
 
-		var 
+		var
+			minViewPortSa = 1000,
 			grid0 = this.parent.gridDims[0],
 			grid1 = this.parent.gridDims[1],
-				axisLength = this.parent.currentGridContentDims,
+			viewOffset = (grid0>minViewPortSa)?0:(minViewPortSa-grid0)*.5,
+			axisLength = this.parent.currentGridContentDims,
 			tRamp = this.waves.tailRamp,
 			hRamp = this.waves.headRamp,
 			tri = this.waves.triangle,
 			r,
 			xo,//xo=x,//-xoffset, 
 			yo;//yo=y;//-yoffset;
+
+		grid0 = Math.max(minViewPortSa,grid0);  //
 
 		var xyFactor = [
 			grid0, //Math.max(0,grid0),
@@ -236,6 +261,7 @@ define([],function(){
 		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
+		xo = xo -viewOffset;
 		// var yo = y+this.itemMargins[1]+(grid1-this.outerDims[1]*.5)-p.y;
 		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
 		
@@ -316,15 +342,6 @@ define([],function(){
 
 
 
-	var centerLinearPath = [
-		{x:0,y:.5},
-		{x:.33,y:.5},
-		{x:.66,y:.5},
-		{x:1,y:.5}
-	];
-
-
-
 
 
 
@@ -374,6 +391,57 @@ define([],function(){
 		this.pPos = [x,y];
 	}//centerLinear()
 	exports.centerLinear = centerLinear;
+
+
+
+
+
+
+	function pinterest(x,y){
+
+		var curve = pinterestPath;
+
+		var 
+		gridDims = this.parent.gridDims,
+		axisLength = this.parent.currentGridContentDims,
+		tRamp = this.waves.tailRamp,
+		hRamp = this.waves.headRamp,
+		tri = this.waves.triangle,
+		//s = 1,
+		r,
+		xo,//xo=x,//-xoffset, 
+		yo;//yo=y;//-yoffset;
+
+
+		// console.log(axisLength)
+
+		var xyFactor = [
+			gridDims[0], //Math.max(0,gridDims[0]),
+			gridDims[1] //Math.max(0,gridDims[1])
+		];
+
+		var cubicBezier = factorCurveBy(curve,xyFactor);
+		
+		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
+		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
+
+		var xo = p.x-(this.dims[0]*.5)+x - ((axisLength[0]-this.dims[0])*.5);// - this.itemMargins[0]*-1;
+		var yo = (gridDims[1]-this.outerDims[1]*.5)-p.y;
+		var zo = 0;//Math.max(50,((tri)*100));
+
+		this.e.style.webkitTransformOrigin = this.e.style.MozTransformOrigin = '50%';
+		
+		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
+		'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)'
+
+		var z = 1000000-this.index;
+		this.e.style.zIndex = z;
+
+		this.e.style.opacity = 1;
+
+		this.pPos = [x,y];
+	}//pinterest()
+	exports.pinterest = pinterest;
 
 
 

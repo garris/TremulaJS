@@ -55,15 +55,15 @@ body{
 	bottom: 0;
 	left: 0px;
 	width: 100%;
-	height:220px;
+	height:150px;
 	background-color: rgba(255, 255, 255, 0.67);
 	margin: 0px;
 	padding: 0px;
 	box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
-	-webkit-transform: translateY(220px);
-	-moz-transform: translateY(220px);
-	-ms-transform: translateY(220px);
-	transform: translateY(220px);
+	-webkit-transform: translateY(150px);
+	-moz-transform: translateY(150px);
+	-ms-transform: translateY(150px);
+	transform: translateY(150px);
 	-webkit-transition: 175ms ease-in-out;
 	-moz-transition: 175ms ease-in-out;
 	-ms-transition: 175ms ease-in-out;
@@ -86,8 +86,8 @@ body{
 	display: inline-block;
 }
 .group.main {
-background: rgba(255, 255, 255, 0.2);
-box-shadow: 0 0 8px #999;
+/*background: rgba(255, 255, 255, 0.2);
+box-shadow: 0 0 8px #999;*/
 display: inline-block;
 margin-left: 38px;
 }
@@ -97,9 +97,24 @@ margin-left: 38px;
 	margin: 0;
 	padding: 5px;
 	text-align: left;	
+	overflow: auto;
+	white-space: nowrap;
 }
-.buttons .group li{
-	/* display: inline-block; */
+
+.group.main.presets {
+	width: 238px;
+	white-space: normal;
+}
+
+.group.main.presets li{
+	width: 98px;
+	display: inline-block;
+	margin: 1px;
+} 
+
+
+.buttons .group li {
+	
 	list-style: none;
 	padding: .5em;
 	/* background: rgba(255,255,255,0.5); */
@@ -144,7 +159,7 @@ z-index: 2;
 right: 0px;
 bottom: 0;
 /* -webkit-transform: translateX(0) translateY(0%) rotateZ(-90deg); */
-font-size: 100px;
+font-size: 60px;
 /*line-height: 0.5em;*/
 padding: 15px;
 margin: 0;

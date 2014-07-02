@@ -3,10 +3,22 @@ function attachDemoControls(tremula){
 	var s = tremula.Grid;
 
 	$(".centerLinear").click(function() {
-		s.jumpToScrollProgress(0);
+		// s.jumpToScrollProgress(0);
+		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			var targetSize = tremula.$e.height()*.5;
 			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize},800,tremula.easings.easeOutElastic,tremula.projections.centerLinear);
+			resizeFn(tremula)
+		}, 100)
+	})
+
+	$(".pinterest").click(function() {
+		// s.jumpToScrollProgress(0);
+		s.toggleScrollAxis('y');
+		setTimeout(function(){
+			$body.removeClass('doReflect');
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:3,itemConstraint:200,itemMargins:[25,25]},800,tremula.easings.easeOutElastic,tremula.projections.pinterest);
+			resizeFn = autoColumnCount;
 			resizeFn(tremula)
 		}, 100)
 	})
@@ -20,7 +32,8 @@ function attachDemoControls(tremula){
 	})
 	
 	$(".btnL2").click(function() {
-		s.jumpToScrollProgress(0);
+		// s.jumpToScrollProgress(0);
+		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			$body.addClass('doReflect');
 			var targetSize = tremula.$e.height()*.7;
@@ -33,7 +46,8 @@ function attachDemoControls(tremula){
 	})
 	
 	$(".btnL3").click(function() {
-		s.jumpToScrollProgress(0);
+		// s.jumpToScrollProgress(0);
+		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:350},800,tremula.easings.easeOutElastic,tremula.projections.enterTheDragon);
 			s.setItemEasing(false);
@@ -42,7 +56,7 @@ function attachDemoControls(tremula){
 	})
 	
 	$(".btnL4").click(function() {
-		s.jumpToScrollProgress(0);
+		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:100},800,tremula.easings.easeOutElastic,tremula.projections.sunrise);
 			s.setItemEasing(false);
@@ -51,7 +65,7 @@ function attachDemoControls(tremula){
 	})
 	
 	$(".mountain").click(function() {
-		s.jumpToScrollProgress(0);
+		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			$body.addClass('doReflect');
 			var targetSize = tremula.$e.height()*.5;
@@ -64,7 +78,7 @@ function attachDemoControls(tremula){
 	})
 	
 	$(".btnL5").click(function() {
-		s.jumpToScrollProgress(0);
+		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			$body.removeClass('doReflect');
 			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200,itemMargins:[5,5]},800,tremula.easings.easeOutElastic,tremula.projections.headExpansion);
