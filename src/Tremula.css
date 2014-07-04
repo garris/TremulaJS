@@ -14,7 +14,7 @@
 	background:#fafafa url() no-repeat center center;
 	box-shadow:1px 0 5px rgba(0,0,0,0.2);
 	position:absolute;
-	border:#fff 10px solid;
+	
 }
 .gridBox.loaded{background-image:none}
 .gridBox.isLastContentBlock{border: none;background: none;box-shadow: none;}

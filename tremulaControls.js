@@ -175,7 +175,7 @@ function attachDemoControls(tremula){
 		$body.removeClass('showControls');
 	})
 
-	$(".controls").on('click','.tab',function(evt) {
+	$('.tab').on('click',function(evt) {
 		evt.stopPropagation();
 		$body.toggleClass('showControls');
 	})
