@@ -402,6 +402,7 @@ define([],function(){
 		var curve = pinterestPath;
 
 		var 
+		count = this.parent.staticAxisCount+1,
 		gridDims = this.parent.gridDims,
 		axisLength = this.parent.currentGridContentDims,
 		tRamp = this.waves.tailRamp,
@@ -425,7 +426,7 @@ define([],function(){
 		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
 		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
-		var xo = p.x-(this.dims[0]*.5)+x - ((axisLength[0]-this.dims[0])*.5);// - this.itemMargins[0]*-1;
+		var xo = p.x-(this.dims[0]*.5)*count +x - this.parent.itemMargins[0]*this.parent.staticAxisCount //- ((axisLength[0]-this.dims[0])*.5) +  count*(this.itemMargins[0]*.5) - this.itemMargins[0]*.5;
 		var yo = (gridDims[1]-this.outerDims[1]*.5)-p.y;
 		var zo = 0;//Math.max(50,((tri)*100));
 
