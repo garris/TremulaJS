@@ -2,6 +2,7 @@
 
 body{
 	font-family: 'Yanone Kaffeesatz', sans-serif;
+	background-color: #ddd;
 }
 
 *{
@@ -180,7 +181,7 @@ margin-left: 38px;
 h1{
 color: rgba(0, 0, 0, 0.19);
 position: absolute;
-z-index: 2;
+z-index: 0;
 right: 0px;
 bottom: 0;
 /* -webkit-transform: translateX(0) translateY(0%) rotateZ(-90deg); */

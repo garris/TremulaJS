@@ -171,7 +171,7 @@ function attachDemoControls(tremula){
 
 	$body = $("body");
 
-	$body.on('click',function() {
+	$body.on('click tremulaItemSelect',function() {
 		$body.removeClass('showControls');
 	})
 

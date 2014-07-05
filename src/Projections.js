@@ -13,18 +13,27 @@ define([],function(){
 		{x:1,y:0}
 	];
 
+
+	var sunriseCurvePhone = [
+		{x:0,y:.57},
+		{x:.33,y:.50},
+		{x:.66,y:.50},
+		{x:1,y:.57}
+	];
+
+
 	var sunriseCurve = [
-		{x:0,y:.55},
-		{x:.35,y:.35},
-		{x:.65,y:.35},
-		{x:1,y:.55}
+		{x:0,y:.65},
+		{x:.33,y:.50},
+		{x:.66,y:.50},
+		{x:1,y:.65}
 	];
 
 	var mountainCurve = [
-		{x:0,y:1},
-		{x:.25,y:.35},
-		{x:.75,y:.35},
-		{x:1,y:1}
+		{x:0,y:.80},
+		{x:.33,y:.50},
+		{x:.66,y:.50},
+		{x:1,y:.80}
 	];
 
 	var softKnee = [
@@ -235,10 +244,10 @@ define([],function(){
 
 
 		var
-			minViewPortSa = 600,
+			minViewPortSa = 1000,
 			grid0 = this.parent.gridDims[0],
 			grid1 = this.parent.gridDims[1],
-			viewOffset = (grid0>minViewPortSa)?0:(minViewPortSa-grid0)*.5,
+			// viewOffset = grid0+10,//(grid0>minViewPortSa)?0:(minViewPortSa-grid0)*.5,
 			axisLength = this.parent.currentGridContentDims,
 			tRamp = this.waves.tailRamp,
 			hRamp = this.waves.headRamp,
@@ -248,14 +257,15 @@ define([],function(){
 			yo;//yo=y;//-yoffset;
 
 		//compensation vvvvv
-		grid0 = Math.max(minViewPortSa,grid0);
+		//grid0 = Math.max(minViewPortSa,grid0);
+		// grid0=grid0+viewOffset
 
 		var xyFactor = [
 			grid0, //Math.max(0,grid0),
 			grid1 //Math.max(0,grid1)
 		];
 
-		var curve = (grid0<800)?sunriseCurve:mountainCurve;
+		var curve = (grid0<minViewPortSa)?(grid0<641)?sunriseCurvePhone:sunriseCurve:mountainCurve;
 		var cubicBezier = factorCurveBy(curve,xyFactor);
 		
 		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
@@ -264,7 +274,7 @@ define([],function(){
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
 
 		//compensation vvvvv
-		xo = xo -viewOffset;
+		// xo = xo -viewOffset;
 
 		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
 		
