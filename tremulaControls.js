@@ -319,9 +319,9 @@ function attachDemoControls(tremula){
 		var dataUrl = 'decorProductSearch.json';
 		$.getJSON(dataUrl,function(res){
 			if(refreshData)
-				tremula.refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
+				tremula.refreshData(res.ImageDetails);//art.com
 			else
-				tremula.appendData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
+				tremula.appendData(res.ImageDetails);//art.com
 
 		}).fail(function(){console.log('getJSON problem.')});
 	}
@@ -336,9 +336,9 @@ function attachDemoControls(tremula){
 		.done(function(res){
 			console.log(res);
 			if(refreshData)
-				tremula.refreshData(res.photos.photo,tremula.dataAdapters.flickrSearch);//flicker
+				tremula.refreshData(res.photos.photo,flickrSearch);//flicker
 			else
-				tremula.appendData(res.photos.photo,tremula.dataAdapters.flickrSearch);//flicker
+				tremula.appendData(res.photos.photo,flickrSearch);//flicker
 		})
 		.fail( function(d,config,err){ console.log('API FAIL. '+err) })
 	}

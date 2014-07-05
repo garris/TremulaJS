@@ -1,64 +1,31 @@
 tremulaConfigs = {
 	
-	large1Row: function(){ 
+	default: function(){ 
 		return ({
-
-			displayFlag:function(){return true},
-			onChangePub			: this.doScrollEvents,
+			onChangePub					: this.doScrollEvents,
 			data                : null,
 			maxWidthClassMap		: {mini:50,small:143,medium:244,large:2000},//large will apply to anything over medium limit
 			lastContentBlock 		: {template :'<div class="lastContentItem"></div>',layoutType :'tremulaBlockItem',noScaling:true,w:300,h:390,isLastContentBlock:true},
-			adapter             : this.dataAdapters.JudyItem,
+			adapter             : this.dataAdapters.JudyItem,//a default adapter incase none is specified during import
 			itemConstraint      :300,
 			itemMargins         :[30,30],
 			staticAxisOffset    :0,//px
 			scrollAxisOffset    :20,//px
 			scrollAxis          :'x',
 			staticAxisCount     :0,//zero based
-			//isLooping         :true,
+			isLooping         	:false,
 			defaultLayout       :this.layouts.basicGridLayout,//<--- TODO:  this is not yet implemented.
 			surfaceMap          :this.projections.centerLinear,
 			itemPreloading      :true,
-			itemEasing           :false,
+			itemEasing          :false,
 			itemEasingParams    :{
 				touchCurve          :this.easings.easeOutCubic,
 				swipeCurve          :this.easings.easeOutCubic,
 				transitionCurve     :this.easings.easeOutElastic,
-				easeTime            :1000,
-				springLimit         :80 //in px
+				easeTime            :500,
+				springLimit         :40 //in px
 			}
-		})
-	},//large2Row
+		});
+	} //end default
 
-
-	sm3Row: function(){ 
-		return ({
-
-			displayFlag:function(){return true},
-			onChangePub			: this.doScrollEvents,
-			data                : null,
-			maxWidthClassMap		: {mini:50,small:143,medium:244,large:2000},//large will apply to anything over medium limit
-			lastContentBlock 		: {template :'<div class="lastContentItem"></div>',layoutType :'tremulaBlockItem',noScaling:true,w:300,h:390,isLastContentBlock:true},
-			adapter             : this.dataAdapters.JudyItem,
-			itemConstraint      :80,
-			itemMargins         :[30,30],
-			staticAxisOffset    :20,//px
-			scrollAxisOffset    :20,//px
-			scrollAxis          :'x',
-			staticAxisCount     :0,//zero based
-			//isLooping         :true,
-			defaultLayout       :this.layouts.basicGridLayout,//<--- TODO:  this is not yet implemented.
-			surfaceMap          :this.projections.xyPlane,
-			itemPreloading      :true,
-			itemEasing          :true,
-			itemEasingParams    :{
-				touchCurve          :this.easings.easeOutCubic,
-				swipeCurve          :this.easings.easeOutCubic,
-				transitionCurve     :this.easings.easeOutElastic,
-				easeTime            :1000,
-				springLimit         :80 //in px
-			}
-		})
-	}//large2Row
-
-}
+}//end tremulaConfigs
