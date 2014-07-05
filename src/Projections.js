@@ -14,10 +14,10 @@ define([],function(){
 	];
 
 	var sunriseCurve = [
-		{x:0,y:0},
-		{x:.25,y:.50},
-		{x:.75,y:.50},
-		{x:1,y:0}
+		{x:0,y:.55},
+		{x:.35,y:.35},
+		{x:.65,y:.35},
+		{x:1,y:.55}
 	];
 
 	var mountainCurve = [
@@ -233,10 +233,9 @@ define([],function(){
 
 	function mountain(x,y){
 
-		var curve = mountainCurve;
 
 		var
-			minViewPortSa = 1000,
+			minViewPortSa = 600,
 			grid0 = this.parent.gridDims[0],
 			grid1 = this.parent.gridDims[1],
 			viewOffset = (grid0>minViewPortSa)?0:(minViewPortSa-grid0)*.5,
@@ -248,21 +247,25 @@ define([],function(){
 			xo,//xo=x,//-xoffset, 
 			yo;//yo=y;//-yoffset;
 
-		grid0 = Math.max(minViewPortSa,grid0);  //
+		//compensation vvvvv
+		grid0 = Math.max(minViewPortSa,grid0);
 
 		var xyFactor = [
 			grid0, //Math.max(0,grid0),
 			grid1 //Math.max(0,grid1)
 		];
 
+		var curve = (grid0<800)?sunriseCurve:mountainCurve;
 		var cubicBezier = factorCurveBy(curve,xyFactor);
 		
 		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
 		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
+
+		//compensation vvvvv
 		xo = xo -viewOffset;
-		// var yo = y+this.itemMargins[1]+(grid1-this.outerDims[1]*.5)-p.y;
+
 		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
 		
 		this.e.style.webkitTransformOrigin = '50%';
@@ -374,7 +377,9 @@ define([],function(){
 		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
 		var xo = (gridDims[0]-this.outerDims[0]*.5)-p.x;
-		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
+		// var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
+		var yo = p.y-(this.dims[1]*.5)*(this.parent.staticAxisCount+1)+y - this.parent.itemMargins[1]*this.parent.staticAxisCount //- ((axisLength[0]-this.dims[0])*.5) +  count*(this.itemMargins[0]*.5) - this.itemMargins[0]*.5;
+
 		// var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-(this.dims[1]+this.itemMargins[1]*(this.staticAxisCount+1)))*.5);// - this.itemMargins[1];
 		var zo = 0;//Math.max(50,((tri)*100));
 

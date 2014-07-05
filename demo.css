@@ -19,6 +19,7 @@ body{
 
 .gridBox{
 	border:#fff 10px solid;
+	margin: -10px 0 0 -10px;
 }
 
 .boxLabel{display: none;}

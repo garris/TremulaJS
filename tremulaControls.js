@@ -263,7 +263,7 @@ function attachDemoControls(tremula){
 			,si_ = g.si_
 			,currentCount = g.staticAxisCount
 			,margin = g.itemMargins[si_]*2
-			,eStaticAxisLessMargin = targetSizeFactor * (t.$e[saDim_]() - margin * (currentCount+2))
+			,eStaticAxisLessMargin = targetSizeFactor * (t.$e[saDim_]() - margin * (currentCount+1))
 			,currentConstraint = g.itemConstraint
 			,newCount = Math.max(0,Math.floor(eStaticAxisLessMargin/currentConstraint)-1);
 
