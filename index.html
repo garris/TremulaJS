@@ -18,6 +18,7 @@
 		
 		<script src="libs/jquery.ba-throttle-debounce.min.js"></script>
 
+		<script src="tremulaAdapters.js"></script>
 		<script src="tremulaConfig.js"></script>
 		<script src="tremulaControls.js"></script>
 		<script src="dist/Tremula.js"></script>
@@ -42,7 +43,7 @@
 
 
 				var tremula = new Tremula();
-				var config = tremulaConfigs.large1Row.call(tremula);
+				var config = tremulaConfigs.default.call(tremula);
 
 				tremula.doScrollEvents = doScrollEvents;
 				tremula.init($tremulaContainer,config,this);

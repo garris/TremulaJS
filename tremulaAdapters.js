@@ -6,12 +6,12 @@
 		this.w = data.w;
 		this.h = data.h;
 
-		//meta options
-		this.isLastContentBlock 	= data.isLastContentBlock||false;
+		//options
+		this.isLastContentBlock 			= data.isLastContentBlock||false;
 		this.layoutType 					= data.layoutType||'tremulaInline';// ['tremulaInline' | 'tremulaBlockItem']
 		this.noScaling 						= data.noScaling||false;
 		this.isFavorite 					= data.isFavorite||false;
-		this.auxClassList 				= data.auxClassList||'';
+		this.auxClassList 					= data.auxClassList||'';
 		this.template 						= this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/>')
 	}
 
@@ -20,7 +20,8 @@
 	
 
 
-	//https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=sky%2C+night%2C+day&format=json&page=2
+	// for use with...
+	// https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=sky%2C+night%2C+day&format=json&page=1
 	function flickrSearch(data,env){
 
 		this.data = data;
