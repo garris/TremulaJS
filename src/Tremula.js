@@ -25,10 +25,10 @@ define([
 
 
 	var Tremula = function(){
-		this.Grid 		= {};
+		this.Grid 					= {};
 		this.dataAdapters 	= dataAdapters;
-		this.layouts 		= layouts;
-		this.easings 		= easings;
+		this.layouts 				= layouts;
+		this.easings 				= easings;
 		this.projections 		= projections;
 		this.cache = {};//for instance parameters
 	}
@@ -68,7 +68,7 @@ define([
 			onChangePub             :null,
 			adapter 								:dataAdapters.TremulaItem,
 			isLooping 							:false,
-			surfaceMap 							:projections.xyPlane,
+			surfaceMap 							:projections.streamHorizontal,
 			itemPreloading      		:false,
 			itemEasing              :false,
 			itemEasingParams    		:{

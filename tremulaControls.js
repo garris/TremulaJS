@@ -2,12 +2,12 @@ function attachDemoControls(tremula){
 
 	var s = tremula.Grid;
 
-	$(".centerLinear").click(function() {
+	$(".streamHorizontal").click(function() {
 		// s.jumpToScrollProgress(0);
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			var targetSize = tremula.$e.height()*.5;
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize},800,tremula.easings.easeOutElastic,tremula.projections.centerLinear);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize},800,tremula.easings.easeOutElastic,tremula.projections.streamHorizontal);
 			resizeFn(tremula)
 		}, 100)
 	})
@@ -19,14 +19,6 @@ function attachDemoControls(tremula){
 			$body.removeClass('doReflect');
 			s.doTransition(tremula.layouts.basicGridLayout,{axes:3,itemConstraint:200,itemMargins:[25,25]},800,tremula.easings.easeOutElastic,tremula.projections.pinterest);
 			resizeFn = autoColumnCount;
-			resizeFn(tremula)
-		}, 100)
-	})
-
-	$(".btnL1").click(function() {
-		s.jumpToScrollProgress(0);
-		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200},800,tremula.easings.easeOutElastic,tremula.projections.xyPlane);
 			resizeFn(tremula)
 		}, 100)
 	})
@@ -82,6 +74,17 @@ function attachDemoControls(tremula){
 		setTimeout(function(){
 			$body.removeClass('doReflect');
 			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200,itemMargins:[5,5]},800,tremula.easings.easeOutElastic,tremula.projections.headExpansion);
+			s.setItemEasing(false);
+			resizeFn(tremula)
+		}, 100)
+	})
+	
+	$(".xy").click(function() {
+		var ax = (s.sa=='x')?'y':'x';
+		s.toggleScrollAxis(ax);
+		setTimeout(function(){
+			$body.removeClass('doReflect');
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200,itemMargins:[5,5]},800,tremula.easings.easeOutElastic,tremula.projections.xyPlain);
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}, 100)

@@ -56,7 +56,7 @@ define([],function(){
 
 
 
-	var centerLinearPath = [
+	var streamHorizontalPath = [
 		{x:0,y:.5},
 		{x:.33,y:.5},
 		{x:.66,y:.5},
@@ -358,9 +358,9 @@ define([],function(){
 
 
 
-	function centerLinear(x,y){
+	function streamHorizontal(x,y){
 
-		var curve = centerLinearPath;
+		var curve = streamHorizontalPath;
 
 		var 
 		gridDims = this.parent.gridDims,
@@ -404,8 +404,8 @@ define([],function(){
 		this.e.style.opacity = 1;
 
 		this.pPos = [x,y];
-	}//centerLinear()
-	exports.centerLinear = centerLinear;
+	}//streamHorizontal()
+	exports.streamHorizontal = streamHorizontal;
 
 
 
@@ -467,7 +467,7 @@ define([],function(){
 
 	// ========= 1:1 projection ========
 			
-	function xyPlane(x,y) {
+	function xyPlain(x,y) {
 	
 		var 
 			w = this.waves,
@@ -479,19 +479,20 @@ define([],function(){
 			
 		xo=x;
 		yo=y;
+		zo=0;
 		
 		this.e.style.webkitTransformOrigin = '50%';
 		this.e.style.MozTransformOrigin = '50%';
 
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
-			'translate3d(' + xo + 'px,' + yo +'px, 0) '
+			'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)';
 
 		this.e.style.opacity = 1;//tri;
 		this.pPos = [x,y];
 
-	} //xyPlane(x,y)
+	} //xyPlain(x,y)
 		
-	exports.xyPlane = xyPlane;
+	exports.xyPlain = xyPlain;
 
 
 
@@ -526,7 +527,7 @@ define([],function(){
 		this.e.style.opacity = tri;
 		this.pPos = [x,y];
 			
-	} //xyPlane(x,y)				
+	} //xyPlain(x,y)				
 	exports.xyBumpTaper = xyBumpTaper;
 
 	return exports;

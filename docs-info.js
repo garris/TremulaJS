@@ -1,73 +1,73 @@
 tremulaConfig = {
 
-            
-            //method called after each frame is painted. Passes internal parameter object.
-            onChangePub         : this.doScrollEvents,
-            
-            //content/stream data can optionally be passed here
-            data                : null,
-            
-            //the last content block -- allows a persistant content block to appear at the end of the stream
-            //common use case is to target $('.lastContentItem') with a conditional loading spinner or result summary.
-            lastContentBlock    : {
-            	template 	:'<div class="lastContentItem"></div>',
-            	layoutType  :'tremulaBlockItem',
-            	noScaling	:true,
-            	w:300,//px
-            	h:390,//px
-            	isLastContentBlock:true
-            },
-            
-            //dafault data adapter method which is called for each data item -- this is used if none is supplied during an import operation
-            //enables easy adaptation of arbitrary API data formats -- see flickr example
-            adapter             : this.dataAdapters.JudyItem,
-            
-            //size of the static axis in pixels
-            itemConstraint      : 300,//px
-            
-            //size of margins added to each side of each content item
-            itemMargins         : [30,30],//x,y in px
-            
-            //offset of static axis
-            staticAxisOffset    : 0,//px
-            
-            //offset of scroll axis
-            scrollAxisOffset    : 20,//px
-            
-            //sets the scroll axis.  accepts 'x'|'y'
-            scrollAxis          : 'x',
-            
-            //how many rows (or colums) to display
-            staticAxisCount     : 0,//zero based
-            
-            //enables looping with the current seet of results
-            isLooping			: false,
-            
-            //the grid that will be used to project content
-            defaultLayout       : this.layouts.basicGridLayout,
-            
-            //this is the projection/effect which will be used to display grid content
-            surfaceMap          : this.projections.centerLinear,
-            
-            //enables item level momentum envelope
-            itemEasing          : false,
-            
-            //if item-level easing is enabled, it will use the following parameters -- experimental
-            itemEasingParams    : {
-                touchCurve          :this.easings.easeOutCubic,
-                swipeCurve          :this.easings.easeOutCubic,
-                transitionCurve     :this.easings.easeOutElastic,
-                easeTime            :1000,//in ms
-                springLimit         :80 //in px -- maximum distance an object will independently move when directly dragged
-            }            
-            
-            //this config determines DOM class when new content is processed. useful for classifying content css behaivior -- experimental
-            //maxWidthClassMap    : {mini:50,small:143,medium:244,large:2000},
-            
-            //itemPreloading      : true, //experimental
+			
+			//method called after each frame is painted. Passes internal parameter object.
+			onChangePub         : this.doScrollEvents,
+			
+			//content/stream data can optionally be passed here
+			data                : null,
+			
+			//the last content block -- allows a persistant content block to appear at the end of the stream
+			//common use case is to target $('.lastContentItem') with a conditional loading spinner or result summary.
+			lastContentBlock    : {
+				template 	:'<div class="lastContentItem"></div>',
+				layoutType  :'tremulaBlockItem',
+				noScaling	:true,
+				w:300,//px
+				h:390,//px
+				isLastContentBlock:true
+			},
+			
+			//dafault data adapter method which is called for each data item -- this is used if none is supplied during an import operation
+			//enables easy adaptation of arbitrary API data formats -- see flickr example
+			adapter             : this.dataAdapters.JudyItem,
+			
+			//size of the static axis in pixels
+			itemConstraint      : 300,//px
+			
+			//size of margins added to each side of each content item
+			itemMargins         : [30,30],//x,y in px
+			
+			//offset of static axis
+			staticAxisOffset    : 0,//px
+			
+			//offset of scroll axis
+			scrollAxisOffset    : 20,//px
+			
+			//sets the scroll axis.  accepts 'x'|'y'
+			scrollAxis          : 'x',
+			
+			//how many rows (or colums) to display
+			staticAxisCount     : 0,//zero based
+			
+			//enables looping with the current seet of results
+			isLooping			: false,
+			
+			//the grid that will be used to project content
+			defaultLayout       : this.layouts.basicGridLayout,
+			
+			//this is the projection/effect which will be used to display grid content
+			surfaceMap          : this.projections.streamHorizontal,
+			
+			//enables item level momentum envelope
+			itemEasing          : false,
+			
+			//if item-level easing is enabled, it will use the following parameters -- experimental
+			itemEasingParams    : {
+				touchCurve          :this.easings.easeOutCubic,
+				swipeCurve          :this.easings.easeOutCubic,
+				transitionCurve     :this.easings.easeOutElastic,
+				easeTime            :1000,//in ms
+				springLimit         :80 //in px -- maximum distance an object will independently move when directly dragged
+			}            
+			
+			//this config determines DOM class when new content is processed. useful for classifying content css behaivior -- experimental
+			//maxWidthClassMap    : {mini:50,small:143,medium:244,large:2000},
+			
+			//itemPreloading      : true, //experimental
 
-        })
-    }
+		})
+	}
 
 }
 

@@ -36,16 +36,20 @@
 				margin: 0;
 				text-shadow: 0px 1px 0px rgba(255,255,255,1);
 			}
-			/* Tremula Styles  */
 
+
+			/* === Tremula Styles === */
+
+			/* Note: any gridBox border added must be compensated for by adding negative margin */
 			.gridBox{
 				border:#fff 10px solid;
 				margin: -10px 0 0 -10px;
 			}
 
+			/* .tremulaContainer must have actual dimentionality (set H&W) */
 			.tremulaContainer{
 				height:400px;
-				width:80%;
+				width:90%;
 				position:relative;
 				top:0;
 				left:0;
@@ -70,45 +74,96 @@
 				setTimeout(function(){
 					window.tremula = tremulaInit();//does not need to be on the window -- implemented here for convienience.
 					loadFlickr()
-				},0);
+				},1000);
 			});
 
 
+
+
 			function tremulaInit(){
+
+				// .tremulaContainer must exist and have actual dimentionality 
+				// requires display:block with an explicitly defined H & W
 				$tremulaContainer = $('.tremulaContainer');
 
+				//this creates a hook to a new Tremula instance
 				var tremula = new Tremula();
 
-
-
-				tremula.doScrollEvents = function(o){
-					if(o.scrollProgress>.7){
-						if(!tremula.cache.endOfScrollFlag){
-							tremula.cache.endOfScrollFlag = true;
-							pageCtr++;
-							loadFlickr();
-							console.log('END OF SCROLL!')
-						}
-					}
-				};
-
+				//Create a config object -- this is how most default behaivior is set.
+				//see updateConfig(prop_val_object,refreshStreamFlag) method to change properties of a running instance
 				var config = {
-					onChangePub					: tremula.doScrollEvents,
+					
+					//method called after each frame is painted. Passes internal parameter object.
+					//see fn definition below
+					onChangePub					: doScrollEvents,
+
+					//content/stream data can optionally be passed in on init()
 					data                : null,
-					maxWidthClassMap		: {mini:50,small:143,medium:244,large:2000},//large will apply to anything over medium limit
-					lastContentBlock 		: {template :'<div class="lastContentItem"></div>',layoutType :'tremulaBlockItem',noScaling:true,w:300,h:390,isLastContentBlock:true},
-					adapter             : null,//tremula.dataAdapters.JudyItem,//a default adapter incase none is specified during import
+					
+					// lastContentBlock enables a persistant content block to exist at the end of the stream at all times.
+					// Common use case is to target $('.lastContentItem') with a conditional loading spinner when API is churning.
+					lastContentBlock 		: {
+						template :'<div class="lastContentItem"></div>',
+						layoutType :'tremulaBlockItem',
+						noScaling:true,
+						w:300,
+						h:300,
+						isLastContentBlock:true
+					},
+
+					//dafault data adapter method which is called on each data item -- this is used if none is supplied during an import operation
+					//enables easy adaptation of arbitrary API data formats -- see flickr example
+					adapter             :null,
+
+					//Size of the static axis in pixels
 					itemConstraint      :250,
-					itemMargins         :[30,30],
-					staticAxisOffset    :0,//px
+
+					//Margin in px added to each side of each content item
+					itemMargins         :[30,30],//x(l&r),y(t&b) in px
+
+					//Display offset of static axis (static axis is the non-scrolling dimention)
+					staticAxisOffset    :20,//px
+
+					//Display offset of scroll axis (this is the amount of scrollable area added before the first content block)
 					scrollAxisOffset    :20,//px
-					scrollAxis          :'x',
+
+					//Sets the scroll axis 'x'|'y'.
+					//NOTE: projections generally only work with one scroll axis
+					//when changeing this value, make sure to use a compatible projection
+					scrollAxis          :'x',//'x'|'y'
+
+					//how many rows (or colums) to display.  note: this is zero based -- so a value of 0 means there will be one row/column
 					staticAxisCount     :0,//zero based
+
+					//enables looping with the current seet of results
 					isLooping         	:false,
-					defaultLayout       :tremula.layouts.basicGridLayout,//<--- TODO:  tremula is not yet implemented.
-					surfaceMap          :tremula.projections.centerLinear,
+
+					//the grid that will be used to project content
+					//NOTE: Generally, this will stay the same and various surface map projections
+					//will be used to create various 3d positioning effects
+					defaultLayout       :tremula.layouts.basicGridLayout,
+
+					//surfaceMap is the projection/3d-effect which will be used to display grid content
+					//following is a list of built-in projections with their corresponding scroll direction
+					//NOTE: Using a projection with an incompatible Grid or Grid-Direction will result in-not-so awesome results
+					//----------------------
+					// (x or y) xyPlain
+					// (x) streamHorizontal
+					// (y) pinterest
+					// (x) mountain
+					// (x) turntable
+					// (x) enterTheDragon
+					//----------------------
+					surfaceMap          :tremula.projections.streamHorizontal,
+
+					//it does not look like this actually got implemented so, don't worry about it ;)
 					itemPreloading      :true,
+
+					//enables the item-level momentum envelope
 					itemEasing          :false,
+
+					//if item-level easing is enabled, it will use the following parameters
+					//NOTE: this is experimental. This effect can make people queasy.
 					itemEasingParams    :{
 						touchCurve          :tremula.easings.easeOutCubic,
 						swipeCurve          :tremula.easings.easeOutCubic,
@@ -118,12 +173,40 @@
 					}
 				};
 				
+				//initalize the tremula instance with 3 parameters: 
+				//a DOM container, a config object, and a parent context
 				tremula.init($tremulaContainer,config,this);
 
+				//return the tremula hook 
 				return tremula;
 			}
 
+			//This method is called on each paint frame thus enabling low level behaivior control
+			//it receives a single parameter object of internal instance states
+			//NOTE: below is a simple example of infinate scrolling where new item
+			//requests are made when the user scrolls past the existing 70% mark.
+			//
+			//Another option here is multiple tremula instancechaining i.e. follow the scroll events of another tremula instance.
+			//use case of this may be one tremula displaying close up data view while another may be an overview.
+			function doScrollEvents(o){
+				if(o.scrollProgress>.7){
+					if(!tremula.cache.endOfScrollFlag){
+						tremula.cache.endOfScrollFlag = true;
+						pageCtr++;
+						loadFlickr();
+						console.log('END OF SCROLL!')
+					}
+				}
+			};
 
+
+			//Basic example of API integration
+			//=================================
+			//DATA FUNCTIONS OF NOTE: 
+			//tremula.refreshData(returned_set_array,dataAdapter)//replaces current data set with returned_set_array
+			//tremula.appendData(returned_set_array,dataAdapter)//appends current data set with returned_set_array
+			//tremula.insertData(returned_set_array,dataAdapter)//prepends current data set with returned_set_array
+			//=================================
 			var pageCtr = 1;
 			function loadFlickr(){
 				var dataUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=street+art&format=json&page='+pageCtr+'&extras=url_z';
@@ -142,8 +225,9 @@
 			}
 
 
-
-			// for use with flickr API
+			// DATA ADAPTER EXAMPLE
+			//=====================
+			// flickrDataAdapter() is for use with the flickr API
 			// https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=sky%2C+night%2C+day&format=json&page=1
 			function flickrDataAdapter(data,env){
 				this.data = data;
@@ -153,6 +237,19 @@
 				this.auxClassList = "flickrRS";//stamp each mapped item with map ID 
 				this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/>');
 			}
+
+			// updateConfig() enables updating of configuration parameters after an instance is running.
+			// adding an optional true parameter will force a tremula grid redraw with the new parameter in effect
+			// ----------------------------
+			// EXAMPLE: tremula.Grid.updateConfig({itemConstraint:100},true);
+			// ----------------------------
+			// Use toggleScrollAxis() to set the scrollAxis, 
+			// NOTE: not all projections will work with this setting. 
+			// see: surfaceMap projection compatibility list above
+			// ----------------------------
+			// EXAMPLE: tremula.Grid.toggleScrollAxis('y'); 
+			// ----------------------------
+
 
 
 
@@ -164,9 +261,9 @@
 
 	<body class="doReflect">
 
-		<h1>TremulaJS</h1>
 		
 		<div class="tremulaContainer"></div>
+		<h1>TremulaJS</h1>
 
 	</body>
 	
