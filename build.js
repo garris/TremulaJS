@@ -14,6 +14,6 @@
   ,wrap: true
   // ,optimize:'none'
   // ,generateSourceMaps: true
-  ,preserveLicenseComments: false
+//   ,preserveLicenseComments: true
 
 })

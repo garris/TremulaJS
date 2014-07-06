@@ -1,3 +1,9 @@
+/** 
+*   @license TremulaJS v1.0.0 
+*   (c) Garris Shipon - garris.shipon@gmail.com
+*   License: MIT (http://www.opensource.org/licenses/mit-license.php)
+*/
+
 requirejs.config({
     baseUrl: 'src'
     // ,paths: {
