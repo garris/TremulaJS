@@ -319,9 +319,9 @@ function attachDemoControls(tremula){
 		var dataUrl = 'decorProductSearch.json';
 		$.getJSON(dataUrl,function(res){
 			if(refreshData)
-				tremula.refreshData(res.ImageDetails);//art.com
+				tremula.refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
 			else
-				tremula.appendData(res.ImageDetails);//art.com
+				tremula.appendData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
 
 		}).fail(function(){console.log('getJSON problem.')});
 	}

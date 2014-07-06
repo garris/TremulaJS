@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>TremulaJS</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		
+
+		<link rel="stylesheet" href="../dist/Tremula.css">
+
+		<style type="text/css">
+			@import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+
+			body{
+				font-family: 'Yanone Kaffeesatz', sans-serif;
+				background-color: #ddd;
+			}
+
+			*{
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;				
+			}
+
+
+			h1{
+				color: rgba(0, 0, 0, 0.19);
+				position: relative;
+				z-index: 0;
+				right: 0px;
+				bottom: 0;
+				font-size: 60px;
+				padding: 15px;
+				margin: 0;
+				text-shadow: 0px 1px 0px rgba(255,255,255,1);
+			}
+			/* Tremula Styles  */
+
+			.gridBox{
+				border:#fff 10px solid;
+				margin: -10px 0 0 -10px;
+			}
+
+			.tremulaContainer{
+				height:400px;
+				width:80%;
+				position:relative;
+				top:0;
+				left:0;
+				z-index: 1;
+				margin:auto;
+				border: black solid 1px;
+			}
+
+		</style>
+		
+		<script src="../libs/jquery-min.js"></script>
+		<script src="../libs/hammer.js"></script>
+		<script src="../libs/jsBezier-0.6.js"></script>
+
+		<script src="../dist/Tremula.js"></script>
+
+		<script type="text/javascript">
+
+
+
+			$(document).ready(function(){
+				setTimeout(function(){
+					window.tremula = tremulaInit();//does not need to be on the window -- implemented here for convienience.
+					loadFlickr()
+				},0);
+			});
+
+
+			function tremulaInit(){
+				$tremulaContainer = $('.tremulaContainer');
+
+				var tremula = new Tremula();
+
+
+
+				tremula.doScrollEvents = function(o){
+					if(o.scrollProgress>.7){
+						if(!tremula.cache.endOfScrollFlag){
+							tremula.cache.endOfScrollFlag = true;
+							pageCtr++;
+							loadFlickr();
+							console.log('END OF SCROLL!')
+						}
+					}
+				};
+
+				var config = {
+					onChangePub					: tremula.doScrollEvents,
+					data                : null,
+					maxWidthClassMap		: {mini:50,small:143,medium:244,large:2000},//large will apply to anything over medium limit
+					lastContentBlock 		: {template :'<div class="lastContentItem"></div>',layoutType :'tremulaBlockItem',noScaling:true,w:300,h:390,isLastContentBlock:true},
+					adapter             : null,//tremula.dataAdapters.JudyItem,//a default adapter incase none is specified during import
+					itemConstraint      :250,
+					itemMargins         :[30,30],
+					staticAxisOffset    :0,//px
+					scrollAxisOffset    :20,//px
+					scrollAxis          :'x',
+					staticAxisCount     :0,//zero based
+					isLooping         	:false,
+					defaultLayout       :tremula.layouts.basicGridLayout,//<--- TODO:  tremula is not yet implemented.
+					surfaceMap          :tremula.projections.centerLinear,
+					itemPreloading      :true,
+					itemEasing          :false,
+					itemEasingParams    :{
+						touchCurve          :tremula.easings.easeOutCubic,
+						swipeCurve          :tremula.easings.easeOutCubic,
+						transitionCurve     :tremula.easings.easeOutElastic,
+						easeTime            :500,
+						springLimit         :40 //in px
+					}
+				};
+				
+				tremula.init($tremulaContainer,config,this);
+
+				return tremula;
+			}
+
+
+			var pageCtr = 1;
+			function loadFlickr(){
+				var dataUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=street+art&format=json&page='+pageCtr+'&extras=url_z';
+				$.ajax({
+					url:dataUrl
+					,dataType: 'jsonp'
+					,jsonp: 'jsoncallback' 
+				})
+				.done(function(res){
+					console.log('API success',res);
+					var rs = res.photos.photo.filter(function(o,i){return o.height_z > o.width_z * .5});//filter out any with a really wide aspect ratio.
+					tremula.appendData(rs,flickrDataAdapter);//flicker
+					tremula.cache.endOfScrollFlag = false;
+				})
+				.fail( function(d,config,err){ console.log('API FAIL. '+err) })
+			}
+
+
+
+			// for use with flickr API
+			// https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=sky%2C+night%2C+day&format=json&page=1
+			function flickrDataAdapter(data,env){
+				this.data = data;
+				this.w = this.width = data.width_z;
+				this.h = this.height = data.height_z;
+				this.imgUrl = data.url_z;
+				this.auxClassList = "flickrRS";//stamp each mapped item with map ID 
+				this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/>');
+			}
+
+
+
+		</script>
+
+
+
+	</head>
+
+	<body class="doReflect">
+
+		<h1>TremulaJS</h1>
+		
+		<div class="tremulaContainer"></div>
+
+	</body>
+	
+</html>
+
+
+

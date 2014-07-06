@@ -54,8 +54,7 @@
 
 		this.itemTitle = data.title||'';
 
-		this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/> <div class="boxLabel">{{itemTitle}}</div>')
-			.replace(/{{itemTitle}}/g,'');
+		this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/>')
 	}
 
 
