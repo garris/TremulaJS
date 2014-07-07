@@ -10,11 +10,13 @@ TremulaJS (trem-yoo-la) is a client-side javascript UI component providing Bézi
 
 ![Smaller icon](docs/vimeo.png)
 
-The TremulaJS project began as an exercise to create an Apple-style momentum-scroller for Javascript UI projects. The project eventually grew into a tool able to synthesize live visual content feeds into compelling path-based interactions.
 
-TremulaJS has been tested in production and is working in all modern browsers (yes, including IE.)
+The TremulaJS project began as an exercise to create an Apple-style momentum-scroller for Javascript. The project eventually grew into a tool able to synthesize live visual content feeds into compelling path-based interactions.
 
-TremulaJS was developed by [Garris Shipon](http://garriss.wordpress.com/) at [Art.com Labs](http://art.com/).
+TremulaJS has been extensively tested and is compatible with all recent versions of iOS Safari, Chrome, OS X Safari, FF, IE. TremulaJS is currently in use on Art.com.
+
+TremulaJS was developed by [Garris Shipon](http://garriss.wordpress.com/) at [Art.com Labs](http://art.com/).  
+Open Sourced under The MIT License
 
 **follow [@garris](https://twitter.com/garris)** 
 **contact** <garris.shipon@gmail.com>
@@ -35,7 +37,7 @@ Technical articles coming soon -- stay tuned...
 - JsBezier *(Thank you Simon Porritt !)*
 - jQuery *(TremulaJS uses only a little bit of jQuery. Would be happy to remove it from the project in the future.)*
 
-### Tested in production on Art.com
+### Tested in the following browsers
 
 - iOS Safari, Chrome, OS X Safari, FF, IE (recent versions) 
 
