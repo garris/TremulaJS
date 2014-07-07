@@ -30,6 +30,7 @@
 			$().ready(function(){
 				setTimeout(function(){
 					var tremula = tremulaInit();
+					tremula.Grid.updateConfig({itemConstraint:200,itemMargins:[20,20]});
 					attachDemoControls(tremula);
 					window.tremula=tremula;//does not need to be on the window -- implemented here for convienience.
 				},1000);
@@ -47,7 +48,6 @@
 
 				tremula.doScrollEvents = doScrollEvents;
 				tremula.init($tremulaContainer,config,this);
-
 
 
 				var doScrollEvents = function(o){
@@ -87,7 +87,7 @@
 			
 			<div class="buttons" >
 				
-				<ul class="group main presets"><li class="streamHorizontal">streamHorizontal</li><li class="pinterest">pinterest</li><li class="btnL2">turntable</li><li class="mountain">mountain</li><li class="btnL3">enterTheDragon</li><li class="btnL5">headExpansion</li></ul>
+				<ul class="group main presets"><li class="streamHorizontal">streamHorizontal</li><li class="pinterest">pinterest</li><li class="btnL2">turntable</li><li class="mountain">mountain</li><li class="btnL3">enterTheDragon</li><li class="xy">xyPlain (toggle)</li></ul>
 
 				<ul class="group main">
 					<li class="more">Experimental controls...</li>
