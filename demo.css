@@ -143,7 +143,7 @@ margin-left: 38px;
 .tab{
 	position: absolute;
 	top: 0;
-	background: #efefef;
+	background: rgba(239, 239, 239, 0.6);
 	padding: 7px 10px;
 	left: 20px;
 	box-shadow: 0 -2px 11px rgba(0,0,0,0.2);

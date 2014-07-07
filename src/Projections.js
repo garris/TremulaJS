@@ -30,10 +30,10 @@ define([],function(){
 	];
 
 	var mountainCurve = [
-		{x:0,y:.80},
-		{x:.33,y:.50},
-		{x:.66,y:.50},
-		{x:1,y:.80}
+		{x:0,y:.90},
+		{x:.33,y:.40},
+		{x:.66,y:.40},
+		{x:1,y:.90}
 	];
 
 	var softKnee = [

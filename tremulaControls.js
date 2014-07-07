@@ -7,7 +7,7 @@ function attachDemoControls(tremula){
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			var targetSize = tremula.$e.height()*.5;
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize},800,tremula.easings.easeOutElastic,tremula.projections.streamHorizontal);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize,staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.streamHorizontal);
 			resizeFn(tremula)
 		}, 100)
 	})
@@ -17,7 +17,7 @@ function attachDemoControls(tremula){
 		s.toggleScrollAxis('y');
 		setTimeout(function(){
 			$body.removeClass('doReflect');
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:3,itemConstraint:200,itemMargins:[25,25]},800,tremula.easings.easeOutElastic,tremula.projections.pinterest);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:3,itemConstraint:220,itemMargins:[25,25],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.pinterest);
 			resizeFn = autoColumnCount;
 			resizeFn(tremula)
 		}, 100)
@@ -28,8 +28,8 @@ function attachDemoControls(tremula){
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			$body.addClass('doReflect');
-			var targetSize = tremula.$e.height()*.7;
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize},800,tremula.easings.easeOutElastic,tremula.projections.turntable);
+			var targetSize = tremula.$e.height()*.6;
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize,staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.turntable);
 			s.setItemEasing(false);
 
 
@@ -41,7 +41,7 @@ function attachDemoControls(tremula){
 		// s.jumpToScrollProgress(0);
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:350},800,tremula.easings.easeOutElastic,tremula.projections.enterTheDragon);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:300,staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.enterTheDragon);
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}, 100)
@@ -50,7 +50,7 @@ function attachDemoControls(tremula){
 	$(".btnL4").click(function() {
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:100},800,tremula.easings.easeOutElastic,tremula.projections.sunrise);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:100,staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.sunrise);
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}, 100)
@@ -60,8 +60,8 @@ function attachDemoControls(tremula){
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			$body.addClass('doReflect');
-			var targetSize = tremula.$e.height()*.5;
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize,itemMargins:[10,10]},800,tremula.easings.easeOutElastic,tremula.projections.mountain);
+			var targetSize = tremula.$e.height()*.4;
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize,itemMargins:[10,10],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.mountain);
 			s.setItemEasing(false);
 			diableAuto();
 			refreshData=false;
@@ -73,7 +73,7 @@ function attachDemoControls(tremula){
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			$body.removeClass('doReflect');
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200,itemMargins:[5,5]},800,tremula.easings.easeOutElastic,tremula.projections.headExpansion);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200,itemMargins:[5,5],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.headExpansion);
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}, 100)
@@ -84,7 +84,7 @@ function attachDemoControls(tremula){
 		s.toggleScrollAxis(ax);
 		setTimeout(function(){
 			$body.removeClass('doReflect');
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200,itemMargins:[5,5]},800,tremula.easings.easeOutElastic,tremula.projections.xyPlain);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:1,itemConstraint:200,itemMargins:[20,20],staticAxisOffset:20},800,tremula.easings.easeOutElastic,tremula.projections.xyPlain);
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}, 100)
@@ -94,7 +94,7 @@ function attachDemoControls(tremula){
 	$(".btn1").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0},800,tremula.easings.easeOutElastic);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,staticAxisOffset:0},800,tremula.easings.easeOutElastic);
 			s.setItemEasing(false);
 			diableAuto();
 		}, 100)
@@ -103,7 +103,7 @@ function attachDemoControls(tremula){
 	$(".btn2").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:1},800,tremula.easings.easeOutElastic);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:1,staticAxisOffset:0},800,tremula.easings.easeOutElastic);
 			s.setItemEasing(false);
 			diableAuto();
 		}, 100)
@@ -111,7 +111,7 @@ function attachDemoControls(tremula){
 	$(".btn3").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:2},800,tremula.easings.easeOutElastic);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:2,staticAxisOffset:0},800,tremula.easings.easeOutElastic);
 			s.setItemEasing(false);
 			diableAuto();
 		}, 100)
@@ -317,14 +317,15 @@ function attachDemoControls(tremula){
 
 
 	function loadArtDotCom(){
-		// var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=100&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';	
+		var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=200&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';	
 
-		var dataUrl = 'decorProductSearch.json';
+		// var dataUrl = 'decorProductSearch.json';
 		$.getJSON(dataUrl,function(res){
+			var rs = res.ImageDetails.filter(function(o,i){return o.ImageDimensions[2].PixelHeight > o.ImageDimensions[2].PixelWidth * .5});//filter out any with a really wide aspect ratio.
 			if(refreshData)
-				tremula.refreshData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
+				tremula.refreshData(rs,tremula.dataAdapters.JudyItem);//art.com
 			else
-				tremula.appendData(res.ImageDetails,tremula.dataAdapters.JudyItem);//art.com
+				tremula.appendData(rs,tremula.dataAdapters.JudyItem);//art.com
 
 		}).fail(function(){console.log('getJSON problem.')});
 	}
@@ -338,10 +339,12 @@ function attachDemoControls(tremula){
 		})
 		.done(function(res){
 			console.log(res);
+			var rs = res.photos.photo.filter(function(o,i){return o.height_z > o.width_z * .5});//filter out any with a really wide aspect ratio.
+
 			if(refreshData)
-				tremula.refreshData(res.photos.photo,flickrSearch);//flicker
+				tremula.refreshData(rs,flickrSearch);//flicker
 			else
-				tremula.appendData(res.photos.photo,flickrSearch);//flicker
+				tremula.appendData(rs,flickrSearch);//flicker
 		})
 		.fail( function(d,config,err){ console.log('API FAIL. '+err) })
 	}
