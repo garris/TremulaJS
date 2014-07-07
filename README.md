@@ -6,7 +6,8 @@ TremulaJS (trem-yoo-la) is a client-side javascript UI component providing Bézi
 
 **Put another way, TremulaJS can be thought of as an extremely bad-ass image carousel.**  
 
-[Watch the TremulaJS demo here](https://vimeo.com/99481197)  
+**[Watch the TremulaJS demo here](https://vimeo.com/99481197)**  
+
 ![Smaller icon](docs/vimeo.png)
 
 The TremulaJS project began as an exercise to create an Apple-style momentum-scroller for Javascript UI projects. The project eventually grew into a tool able to synthesize live visual content feeds into compelling path-based interactions.
@@ -15,17 +16,18 @@ TremulaJS has been tested in production and is working in all modern browsers (y
 
 TremulaJS was developed by [Garris Shipon](http://garriss.wordpress.com/) at [Art.com Labs](http://art.com/).
 
-**follow @garris**  
+**follow [@garris](https://twitter.com/garris)** 
 **contact** <garris.shipon@gmail.com>
 
-## Getting started
+## More info...
 
-### Links
+- **Get up-and-running fast: See the [fully-documented boilerplate file](http://garris.github.io/TremulaJS/boilerplate/), includes a summary of all configuration settings.**
+- [The demo video](https://vimeo.com/99481197) (2.5 min), illustrating some of the visual possibilities.
+- [Live component demo](http://garris.github.com/TremulaJS)
+- [Download, Fork, Contribute!](https://github.com/garris/TremulaJS.git)
 
-- Video demo of some of the features <https://vimeo.com/99481197>
-- Live component demo <http://garris.github.com/TremulaJS>
-- Fully documented boilerplate file, includes a summary of all configuration settings. <http://garris.github.io/TremulaJS/boilerplate/>
-- Download or Clone TremulaJS <https://github.com/garris/TremulaJS.git>
+Technical articles coming soon -- stay tuned...
+
 
 ### Dependencies
 
