@@ -17,7 +17,7 @@ function attachDemoControls(tremula){
 		s.toggleScrollAxis('y');
 		setTimeout(function(){
 			$body.removeClass('doReflect');
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:3,itemConstraint:220,itemMargins:[25,25],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.pinterest);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:3,itemConstraint:250,itemMargins:[25,25],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.pinterest);
 			resizeFn = autoColumnCount;
 			resizeFn(tremula)
 		}, 100)
@@ -28,7 +28,7 @@ function attachDemoControls(tremula){
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			$body.addClass('doReflect');
-			var targetSize = tremula.$e.height()*.6;
+			var targetSize = tremula.$e.height()*.5;
 			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize,staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.turntable);
 			s.setItemEasing(false);
 
@@ -41,7 +41,7 @@ function attachDemoControls(tremula){
 		// s.jumpToScrollProgress(0);
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:300,staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.enterTheDragon);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:300,itemMargins:[30,30],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.enterTheDragon);
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}, 100)
@@ -80,14 +80,19 @@ function attachDemoControls(tremula){
 	})
 	
 	$(".xy").click(function() {
-		var ax = (s.sa=='x')?'y':'x';
-		s.toggleScrollAxis(ax);
-		setTimeout(function(){
+		function jiggleHandle(){
+			var ax = (s.sa=='x')?'y':'x';
+			s.toggleScrollAxis(ax);
 			$body.removeClass('doReflect');
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:1,itemConstraint:200,itemMargins:[20,20],staticAxisOffset:20},800,tremula.easings.easeOutElastic,tremula.projections.xyPlain);
+			s.updateConfig({axes:1,itemConstraint:200,itemMargins:[20,20],staticAxisOffset:20,surfaceMap:tremula.projections.xyPlain});
 			s.setItemEasing(false);
 			resizeFn(tremula)
-		}, 100)
+		}
+		//yes, I know...  would be great to know why this is necessary.  
+		jiggleHandle();
+		jiggleHandle();
+		jiggleHandle();
+
 	})
 	
 	
