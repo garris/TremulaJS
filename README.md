@@ -1,4 +1,4 @@
-# TremulaJS 1.0.0
+# TremulaJS
 
 **Picture Streams + Momentum Engine + Bézier Paths + Cross-Browser + Cross-Device**  
 
