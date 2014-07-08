@@ -31,7 +31,7 @@ Open Sourced under The MIT License
 
 - Get up-and-running with the [fully-documented boilerplate file](http://garris.github.io/TremulaJS/boilerplate/), includes a summary of all configuration settings.  
 
-- Download, Fork, Contribute on [GitHub](https://github.com/garris/TremulaJS.git)
+- Download, Fork, Contribute on [GitHub](https://github.com/garris/TremulaJS.git). [Issues go here](https://github.com/garris/TremulaJS/issues)
 
 - Learn how to create your own Grid Projections -- technical articles coming soon  
 
