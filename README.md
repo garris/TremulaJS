@@ -8,7 +8,7 @@ TremulaJS (trem-yoo-la) is a client-side javascript UI component providing Bézi
 
 **[Watch the TremulaJS video demo here](https://vimeo.com/99481197)**  
 
-![tremula vimeo image](docs/vimeo.png)
+<a href="https://vimeo.com/99481197">![tremula vimeo image](docs/vimeo.png)</a>
 
 
 The TremulaJS project began as an exercise to create an Apple-style momentum-scroller for Javascript. The project eventually grew into a tool able to synthesize live visual content feeds into compelling path-based interactions.
