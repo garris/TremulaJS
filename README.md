@@ -47,5 +47,5 @@ Open Sourced under The MIT License
 - iOS Safari, Chrome, OS X Safari, FF, IE (recent versions) 
 
 
-<script src="https://gist.github.com/garris/2214de2100a4a67a2899.js"></script>
+https://gist.github.com/garris/2214de2100a4a67a2899.js
 
