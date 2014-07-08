@@ -22,13 +22,19 @@ Open Sourced under The MIT License
 **contact <garris.shipon@gmail.com>**
 
 ## More info...
+## More info...
 
-- **Get up-and-running fast: See the [fully-documented boilerplate file](http://garris.github.io/TremulaJS/boilerplate/), includes a summary of all configuration settings.**
-- [The demo video](https://vimeo.com/99481197) (2.5 min), illustrating some of the visual possibilities.
-- [Live component demo](http://garris.github.com/TremulaJS)
-- [Download, Fork, Contribute!](https://github.com/garris/TremulaJS.git)
+- See [the demo video](https://vimeo.com/99481197) (2.5 min), illustrating some of the visual possibilities.  
 
-Technical articles coming soon -- stay tuned...
+- Play with the [live component demo](http://garris.github.com/TremulaJS)  
+
+- Experiment with the configuration file on [CodePen](http://codepen.io/garris/pen/bevqG?editors=001)  
+
+- Get up-and-running with the [fully-documented boilerplate file](http://garris.github.io/TremulaJS/boilerplate/), includes a summary of all configuration settings.  
+
+- Download, Fork, Contribute on [GitHub](https://github.com/garris/TremulaJS.git)
+
+- Learn how to create your own Grid Projections -- technical articles coming soon  
 
 
 ### Dependencies
