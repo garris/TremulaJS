@@ -18,7 +18,7 @@ TremulaJS has been extensively tested and is compatible with all recent versions
 TremulaJS was developed by [Garris Shipon](http://garriss.wordpress.com/) at [Art.com Labs](http://art.com/).  
 Open Sourced under The MIT License
 
-**follow [@garris](https://twitter.com/garris)** 
+**follow [@garris](https://twitter.com/garris)**  
 **contact** <garris.shipon@gmail.com>
 
 ## More info...
