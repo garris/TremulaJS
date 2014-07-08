@@ -22,7 +22,6 @@ Open Sourced under The MIT License
 **contact <garris.shipon@gmail.com>**
 
 ## More info...
-## More info...
 
 - See [the demo video](https://vimeo.com/99481197) (2.5 min), illustrating some of the visual possibilities.  
 
