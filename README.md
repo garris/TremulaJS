@@ -6,7 +6,7 @@ TremulaJS (trem-yoo-la) is a client-side javascript UI component providing Bézi
 
 **Put another way, TremulaJS can be thought of as an extremely bad-ass image carousel.**  
 
-**[Watch the TremulaJS demo here](https://vimeo.com/99481197)**  
+**[Watch the TremulaJS video demo here](https://vimeo.com/99481197)**  
 
 ![tremula vimeo image](docs/vimeo.png)
 
