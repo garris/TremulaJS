@@ -19,7 +19,6 @@ TremulaJS was developed by [Garris Shipon](http://garriss.wordpress.com/) at [Ar
 Open Sourced under The MIT License
 
 **follow [@garris](https://twitter.com/garris)**  
-**contact <garris.shipon@gmail.com>**
 
 ## More info...
 
@@ -29,11 +28,11 @@ Open Sourced under The MIT License
 
 - Experiment with the configuration file on [CodePen](http://codepen.io/garris/pen/bevqG?editors=001)  
 
-- Get up-and-running with the [fully-documented boilerplate file](http://garris.github.io/TremulaJS/boilerplate/), includes a summary of all configuration settings.  
+- Get up-and-running with the [fully-documented boilerplate file](https://gist.github.com/garris/2214de2100a4a67a2899), includes a summary of all configuration settings.  
 
-- Download, Fork, Contribute on [GitHub](https://github.com/garris/TremulaJS.git). Report [issues here](https://github.com/garris/TremulaJS/issues).
+- Download, Fork, Contribute on [GitHub](https://github.com/garris/TremulaJS.git)
 
-- Learn how to create your own Grid Projections -- technical articles coming soon  
+- Learn how to create your own Grid Projections -- technical articles coming soon... stay tuned!
 
 
 ### Dependencies
