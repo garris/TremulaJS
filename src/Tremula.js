@@ -1,7 +1,7 @@
 /** 
-*   @license TremulaJS v1.0.0 
-*   (c) Garris Shipon - garris.shipon@gmail.com
-*   License: MIT (http://www.opensource.org/licenses/mit-license.php)
+*   TremulaJS https://github.com/garris/TremulaJS
+*   Copyright 2014 Garris Shipon & Art.com Labs 
+*   Released under the MIT license. http://www.opensource.org/licenses/mit-license.php
 */
 
 requirejs.config({
