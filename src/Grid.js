@@ -676,8 +676,11 @@ define([
 			
 			//each box gets a serial id
 			//b.index = i;//this is moved because insert function shuffles the deck in a non-desirable way
-
-			b.setModel(new adapter(data[i-ptr],this));//shim data through the adapter.  We will eventually want to add a DOM template configuration for this as well.
+			var d = data[i-ptr];
+			if(d.isLastContentBlock)
+				b.setModel(new d.adapter(data[i-ptr],this));//shim data through the adapter. 
+			else
+				b.setModel(new adapter(data[i-ptr],this));//shim data through the adapter.  We will eventually want to add a DOM template configuration for this as well.
 
 			//the getConstrainedItemDims array scales content to the staticAxis value 
 			var scrollAxis_staticAxis_arr = (b.noScaling)?[b.model[this.saDim],b.model[this.saDim_]]:this.getConstrainedItemDims(b);

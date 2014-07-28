@@ -3,8 +3,8 @@
 	function TremulaItem(data){
 		this.data = data;
 		this.imgUrl = data.imgUrl;//optional
-		this.w = data.w;
-		this.h = data.h;
+		this.w = this.width = data.w;
+		this.h = this.height = data.h;
 
 		//options
 		this.isLastContentBlock 			= data.isLastContentBlock||false;
