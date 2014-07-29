@@ -13,6 +13,12 @@ define([
 		this.imgUrl = data.imgUrl;//optional
 		this.w = this.width = data.w;
 		this.h = this.height = data.h;
+
+		//meta options
+		this.isLastContentBlock = data.isLastContentBlock||false;
+		this.layoutType = this.data.layoutType||'tremulaInline';// ['tremulaInline' | 'tremulaBlockItem']
+		this.noScaling = this.data.noScaling||false;
+		this.auxClassList = data.auxClassList||'';
 	}
 
 
