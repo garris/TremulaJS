@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+  <html>
+	<head>
+		<title>TremulaJS</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" href="test/css/style.css" media="screen" type="text/css" />
+		<link rel="stylesheet" href="node_modules/mocha/mocha.css" />
+		<link rel="stylesheet" href="src/Tremula.css">
+
+		<style type="text/css">
+			.debug{
+				position: absolute;
+				bottom:0;
+				right:0;
+				width:300px;
+				height: 300px;
+				overflow: scroll;
+				padding: 10px;
+				background-color: rgba(255,255,255,.9);
+				z-index: 10;
+			}
+			#mocha{
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 500px;
+				height: 400px;
+				overflow: scroll;
+				padding-right: 10px;
+				margin:0px;
+				background-color: rgba(255,255,255,.9);
+				z-index: 10;
+
+			}
+			#mocha-stats{position:absolute;}
+			#mocha .test pre{font-size: 9px}
+		</style>
+
+		<script src="libs/jquery-min.js"></script>
+		<script src="libs/hammer.js"></script>
+		<script src="libs/jsBezier-0.6.js"></script>
+
+
+		<script src="node_modules/mocha/mocha.js" type="text/javascript"></script>
+		<script src="node_modules/chai/chai.js" type="text/javascript"></script>
+		<!--<script src="node_modules/expect.js/index.js" type="text/javascript"></script>-->
+		
+	  <script src="test/js/index.js" style=""></script>
+		<script data-main="src/Tremula" src="libs/require.js"></script>
+
+	  <script src="test/test.js" style=""></script>
+
+	</head>
+
+	<body>
+		<div id="mocha"></div>
+    <div class="pageLayoutContainer">
+ 		 <a class="plug" href="https://github.com/garris/TremulaJS" target="_blank">TremulaJS on Github</a>
+ 		 	<pre class="debug">DEBUG</pre>
+			<div class="tremulaContainer"></div>
+			<h1><a href="https://github.com/garris/TremulaJS" target="_blank">TremulaJS</a></h1>
+       <span class="cta">Swipe, Scroll, Click &amp; Drag</span>
+    </div>
+    <div class="pageFold">
+    	<img src="test/deal-with-it-cat11.jpeg"/>
+
+    </div>
+	</body>
+
+</html>

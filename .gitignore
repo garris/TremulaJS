@@ -14,7 +14,7 @@ results
 npm-debug.log
 
 
-.DS_Store
+*.DS_Store
 *.sublime-project
 *.sublime-workspace
 .svn
