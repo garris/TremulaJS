@@ -230,10 +230,12 @@ function applyBoxClick(){
 
 
 showControlData = function(o){
+	return;
 	if(!this.$debug)this.$debug = $('.debug');
 
 		this.$debug.html(
-		'absScrollPos: '        + o.absScrollPos + '<br/>'
+		'scrollAxis: '        + o.sa + ' [sx]--> ' + o.sx + '<br/>'
+		+ 'absScrollPos: '        + o.absScrollPos + '<br/>'
 		+ 'scrollPos: '         + o.scrollPos + '<br/>'
 		+ 'scrollProgress: '      + o.scrollProgress + '<br/>'
 		+ 'isInHeadMargin: '      + o.isInHeadMargin + '<br/>'

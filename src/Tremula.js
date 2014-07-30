@@ -104,14 +104,23 @@ define([
 		var fanEvents =new Hammer($e[0],{prevent_default: true});
 		fanEvents.on('dragdown dragup dragleft dragright swipeleft swipeup swipedown swiperight touch release tap',function(evt){that.Grid.handleGesture(evt)});
 		
-		$e.on('mousewheel wheel DOMMouseScroll', function(evt){
+
+		fanEvents.on('mousewheel wheel DOMMouseScroll', function(evt){
 			//test for a scroll signifigantly perpendicular to the SA -- if that is true then pass it up the DOM to scroll the layer 
 			//note: prolly need to do this to the drag == potentially doing the whole thing in that.Grid.handleGesture()
-			//if(true){
-				that.Grid.handleGesture(evt)
-				evt.preventDefault();
-				evt.stopPropagation();
-			//}
+
+			that.Grid.handleGesture(evt);
+			// block page scroll
+			// if in horizontal config and the user is scrolling horizontally
+			// or if in vertical config and the user is scrolling vertically
+			if(
+				that.Grid.sx && evt.deltaX != 0
+				|| !that.Grid.sx && evt.deltaY != 0
+			){
+				// evt.preventDefault();
+				// evt.stopPropagation();
+			}
+
 		})
 	}//init()
 

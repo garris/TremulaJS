@@ -1019,7 +1019,7 @@ define([
 				
 			case '_mw': //map events over for processing by dragleft
 
-				var wheelEvent = ev.originalEvent;
+				var wheelEvent = ev;//ev.originalEvent;
 				var //wheel events for webkit|| new moz || old moz
 					dy = wheelEvent.wheelDeltaY*.5||-wheelEvent.deltaY||-wheelEvent.detail*3,
 					dx = wheelEvent.wheelDeltaX*.5||-wheelEvent.deltaX||-wheelEvent.detail*3;
@@ -1042,8 +1042,8 @@ define([
 				ev.gesture.deltaX           = dx;
 				ev.gesture.deltaY           = dy;
 				ev.gesture.center           = ev.gesture.center || {};
-				ev.gesture.center.pageX = ev.originalEvent.pageX;
-				ev.gesture.center.pageY = ev.originalEvent.pageY;
+				ev.gesture.center.pageX = ev.pageX;//ev.originalEvent.pageX;
+				ev.gesture.center.pageY = ev.pageY;//ev.originalEvent.pageY;
 				//fingeredOffset = this.scrollPos; moved below...
 				
 				
@@ -1055,12 +1055,12 @@ define([
 				this.isTouching=true;
 				
 				//incase we are at the begining of a touch event or incase this is a fallthrough WheelEvent
-				if(fingeredOffset==0 || ev.originalEvent){
+				if(fingeredOffset==0 || ev){
 					fingeredOffset = this.scrollPos;
 					lastD = 0;
 				}
 				//incase we are at the begining of a touch event or incase this is a fallthrough WheelEvent
-				if(fingeredOffset_==0 || ev.originalEvent){
+				if(fingeredOffset_==0 || ev){
 					fingeredOffset_ = this.parentParentE.scrollTop;
 					lastD_ = 0;
 				}
