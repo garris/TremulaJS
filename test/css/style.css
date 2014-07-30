@@ -41,27 +41,6 @@
         line-height:40px;
        }
 
-			/* === Tremula Styles === */
-
-			/* Note: any gridBox border added must be compensated for by adding negative margin */
-			.gridBox{
-				border:#fff 10px solid;
-				margin: -10px 0 0 -10px;
-			}
-
-			/* .tremulaContainer must have actual dimentionality (set H&W) */
-			.tremulaContainer{
-				height:60%;
-				height:calc(100% - 120px);
-				width:90%;
-				position:relative;
-				top:20px;
-				left:0;
-				z-index: 1;
-				margin:25px auto;
-				border: black solid 1px;
-			}
-
 			.pageLayoutContainer{
 				height:100%;
 				width:100%;
@@ -85,4 +64,44 @@
 			.pageFold img{
 				top:300px;
 				position: relative;
+			}
+
+
+
+			/* === Tremula Styles === */
+
+			/* Note: any gridBox border added must be compensated for by adding negative margin */
+			.gridBox{
+				border:#fff 10px solid;
+				margin: -10px 0 0 -10px;
+			}
+
+			.lastContentItem{
+				background-color: #eee;
+				width: 100%;
+				height: 440px;
+			}
+			
+			.lastContentItem span{
+				top: 100%;
+				position: absolute;
+				display: inline-block;
+				right: 5%;
+				background-color: rgb(255, 181, 42);
+				font-size: 30px;
+				padding: .25em;
+			}
+
+
+			/* .tremulaContainer must have actual dimentionality (set H&W) */
+			.tremulaContainer{
+				height:60%;
+				height:calc(100% - 120px);
+				width:90%;
+				position:relative;
+				top:20px;
+				left:0;
+				z-index: 1;
+				margin:25px auto;
+				border: black solid 1px;
 			}

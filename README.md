@@ -46,4 +46,7 @@ Open Sourced under The MIT License
 - iOS Safari, Chrome, OS X Safari, FF, IE (recent versions) 
 
 
+### Building with r.js
+		step 1. cd to the root /TremulaJS/ directory
+		step 2. $ node r.js -o build.js; node r.js -o cssIn=src/Tremula.css out=dist/Tremula.css optimizeCss=standard
 

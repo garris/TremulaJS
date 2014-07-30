@@ -90,7 +90,7 @@ function createTremula(){
 		// lastContentBlock enables a persistant content block to exist at the end of the stream at all times.
 		// Common use case is to target $('.lastContentItem') with a conditional loading spinner when API is churning.
 		lastContentBlock 		: {
-			template :'<div class="lastContentItem"></div>',
+			template :'<div class="lastContentItem"><span>This is the end of the road.</span></div>',
 			layoutType :'tremulaBlockItem',
 			noScaling:true,
 			w:500,
@@ -253,7 +253,7 @@ showControlData = function(o){
 
 
 
-function loadTestData(limit){
+function loadTestData(limit,cb){
 	if(!limit)limit = 100;
 	var dataUrl = 'test/flickr_'+limit.toString()+'.json';
 	$.ajax({
@@ -268,7 +268,11 @@ function loadTestData(limit){
 		console.log('API success',rs.length,rs_.length);
 		tremula.refreshData(rs,flickrDataAdapter);//flicker
 		tremula.cache.endOfScrollFlag = false;
+		cb(null,res)
 	})
-	.fail( function(d,config,err){ console.log('API FAIL. '+err) })
+	.fail( function(d,config,err){ 
+		console.log('API FAIL. '+err);
+		cb(err,null);
+	})
 }
 

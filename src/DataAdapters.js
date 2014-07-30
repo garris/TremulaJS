@@ -19,6 +19,8 @@ define([
 		this.layoutType = this.data.layoutType||'tremulaInline';// ['tremulaInline' | 'tremulaBlockItem']
 		this.noScaling = this.data.noScaling||false;
 		this.auxClassList = data.auxClassList||'';
+		this.template = this.data.template||'';
+
 	}
 
 
