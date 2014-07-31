@@ -113,13 +113,13 @@ define([
 			// block page scroll
 			// if in horizontal config and the user is scrolling horizontally
 			// or if in vertical config and the user is scrolling vertically
-			if(
-				that.Grid.sx && evt.deltaX != 0
-				|| !that.Grid.sx && evt.deltaY != 0
-			){
-				// evt.preventDefault();
-				// evt.stopPropagation();
-			}
+			// if(
+			// 	that.Grid.sx && evt.deltaX != 0
+			// 	|| !that.Grid.sx && evt.deltaY != 0
+			// ){
+			// 	// evt.preventDefault();
+			// 	// evt.stopPropagation();
+			// }
 
 		})
 	}//init()

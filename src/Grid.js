@@ -1055,12 +1055,12 @@ define([
 				this.isTouching=true;
 				
 				//incase we are at the begining of a touch event or incase this is a fallthrough WheelEvent
-				if(fingeredOffset==0 || ev){
+				if(fingeredOffset==0 || /wheel|scroll/.test(ev.type)){
 					fingeredOffset = this.scrollPos;
 					lastD = 0;
 				}
 				//incase we are at the begining of a touch event or incase this is a fallthrough WheelEvent
-				if(fingeredOffset_==0 || ev){
+				if(fingeredOffset_==0 ||  /wheel|scroll/.test(ev.type)){
 					fingeredOffset_ = this.parentParentE.scrollTop;
 					lastD_ = 0;
 				}
