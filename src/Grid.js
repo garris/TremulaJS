@@ -18,6 +18,8 @@ define([
 		this.parent = parent;
 		this.parentParentE = $target.parent();//this.parent.parent.$e[0];
 
+
+
 		this.statsCache = {};//workspace node for instance-level data.
 
 		this.onChangePub = options.onChangePub;
@@ -52,7 +54,7 @@ define([
 		
 
 		var lastD 					= 0;
-		var lastD_ 					= 0;
+		// var lastD_ 					= 0;
 		
 		this.setScrollPos = function(v,isDelta) {
 			this.scrollPos = (isDelta)?this.scrollPos+v:v ;
@@ -115,7 +117,7 @@ define([
 		this.hasMediumGridDimsSi = false;//visual content extends beyond scroll axis gridDim but does not fill scroll axis gridDim plus scroll margin
 
 		this.scrollDirection = 0;
-		
+
 		this.itemMargins = options.itemMargins;
 		this.itemConstraint     = options.itemConstraint;//staticAxis value
 		this.staticAxisCount = options.staticAxisCount;//
@@ -995,7 +997,7 @@ define([
 				
 				if(now-lastMwTime>100){
 					mwEventsDetected = false;
-					//that.isTouching=false;
+					// that.isTouching=false;
 					//that.oneShotPaint();
 					that.handleGesture({type:'release'})
 					clearInterval(mwCheck);
@@ -1004,11 +1006,18 @@ define([
 		}//!mwEventsDetected
 	}//_mw()
 
+	function shuntEvent(ev){
+		(ev.preventDefault)?ev.preventDefault():ev.gesture.preventDefault();
+		(ev.stopPropagation)?ev.stopPropagation():ev.gesture.stopPropagation();
+	}
+
+
 
 	Grid.prototype.handleGesture = function(ev){
-
 		// if(window.isDragging) return;
-		
+
+
+
 		switch(ev.type) {
 
 			case 'mousewheel':
@@ -1046,11 +1055,46 @@ define([
 				ev.gesture.center.pageY = ev.pageY;//ev.originalEvent.pageY;
 				//fingeredOffset = this.scrollPos; moved below...
 				
+				// ===>  NOTE: THERE IS NO BREAK HERE. MW EVENTS ARE NORMALIZED (as ev.gesture.*) ABOVE AND THEN PROCESSED AS DRAG EVENTS BELOW vvv
 				
 			case 'dragup':
 			case 'dragdown':
 			case 'dragright':
 			case 'dragleft':
+
+
+			// === manually block page scroll ===
+			// if in horizontal config and the user is scrolling horizontally
+			// or if in vertical config and the user is scrolling vertically
+
+			
+			if(ev.pointerType=="mouse"){
+				
+				ev.gesture.preventDefault();
+				ev.gesture.stopPropagation();
+
+			}else if(this.sx){//is horizontal config
+
+
+				if(ev.gesture.deltaX != 0){ // if SA has some directionality then we MAY want to block cross scrolling
+					if(Math.abs(ev.gesture.deltaY/ev.gesture.deltaX) <= 1){ // if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
+						shuntEvent(ev);
+					}
+				}
+
+			}else{// is vertical config
+
+				if(ev.gesture.deltaY != 0){ // if SA_ has some directionality then we MAY want to block cross scrolling
+					if(Math.abs(ev.gesture.deltaX/ev.gesture.deltaY) <= 1){ // if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
+						shuntEvent(ev);
+					}
+				}
+
+			}// config case
+			// === END: manually block page scroll  === 
+
+
+
 
 				this.isTouching=true;
 				
@@ -1059,11 +1103,11 @@ define([
 					fingeredOffset = this.scrollPos;
 					lastD = 0;
 				}
-				//incase we are at the begining of a touch event or incase this is a fallthrough WheelEvent
-				if(fingeredOffset_==0 ||  /wheel|scroll/.test(ev.type)){
-					fingeredOffset_ = this.parentParentE.scrollTop;
-					lastD_ = 0;
-				}
+				// //incase we are at the begining of a touch event or incase this is a fallthrough WheelEvent
+				// if(fingeredOffset_==0 ||  /wheel|scroll/.test(ev.type)){
+				// 	fingeredOffset_ = this.parentParentE.scrollTop;
+				// 	lastD_ = 0;
+				// }
 				
 				var D = (this.sx)?ev.gesture.deltaX:ev.gesture.deltaY;
 				var D_ = (!this.sx)?ev.gesture.deltaX:ev.gesture.deltaY;
@@ -1073,16 +1117,20 @@ define([
 					this.setScrollPos( D-lastD, true );
 					lastD = D;
 					this.oneShotPaint(ev);
-				}else{
-					//if we are scrolling orthogonal to the scrollAxis
-					var D_scroll = this.parentParentE.scrollTop;
-					this.parentParentE.scrollTop(D_scroll-(D_-lastD_));
-					lastD_ = D_;
 				}
+				// else{
+				// 	//if we are scrolling orthogonal to the scrollAxis
+				// 	var D_scroll = this.parentParentE.scrollTop;
+				// 	//this.parentParentE.scrollTop(D_scroll-(D_-lastD_));
+
+				// 	lastD_ = D_;
+				// }
 
 
 				//var D = ev.gesture.deltaX+ev.gesture.deltaY;
 				
+	
+
 				
 
 				this.tagLastUserEvent(ev);
@@ -1162,6 +1210,7 @@ define([
 				break;                  
 				
 		}//switch
+
 	}//handleGesture
 
 

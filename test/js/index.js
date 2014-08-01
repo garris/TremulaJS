@@ -8,6 +8,8 @@ $(document).ready(function(){
 
 
 
+
+
 function createTremula(){
 
 	// .tremulaContainer must exist and have actual dimentionality 
@@ -199,7 +201,7 @@ function flickrDataAdapter(data,env){
 	this.h = this.height = data.height_n;
 	this.imgUrl = data.url_n;
 	this.auxClassList = "flickrRS";//stamp each mapped item with map ID 
-	this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/>');
+	this.template = this.data.template||('<img draggable="false" class="moneyShot" onload="imageLoaded(this)" src=""/>');
 	// console.log(this)
 }
 
@@ -230,11 +232,13 @@ function applyBoxClick(){
 
 
 showControlData = function(o){
-	return;
+
 	if(!this.$debug)this.$debug = $('.debug');
 
 		this.$debug.html(
 		'scrollAxis: '        + o.sa + ' [sx]--> ' + o.sx + '<br/>'
+		+ 'isTouching: '        + o.isTouching + '<br/>'
+		+ 'isMovingOnSA: '        + o.isMovingOnSA + '<br/>'
 		+ 'absScrollPos: '        + o.absScrollPos + '<br/>'
 		+ 'scrollPos: '         + o.scrollPos + '<br/>'
 		+ 'scrollProgress: '      + o.scrollProgress + '<br/>'
@@ -277,4 +281,7 @@ function loadTestData(limit,cb){
 		cb(err,null);
 	})
 }
+
+
+
 

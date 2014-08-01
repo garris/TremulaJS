@@ -101,27 +101,60 @@ define([
 			that.resize(evt);
 		});
 		
-		var fanEvents =new Hammer($e[0],{prevent_default: true});
+		var fanEvents =new Hammer($e[0],{prevent_default: false});
 		fanEvents.on('dragdown dragup dragleft dragright swipeleft swipeup swipedown swiperight touch release tap',function(evt){that.Grid.handleGesture(evt)});
-		
+		fanEvents.on('mousewheel wheel DOMMouseScroll', function(evt){that.Grid.handleGesture(evt);})
 
-		fanEvents.on('mousewheel wheel DOMMouseScroll', function(evt){
-			//test for a scroll signifigantly perpendicular to the SA -- if that is true then pass it up the DOM to scroll the layer 
-			//note: prolly need to do this to the drag == potentially doing the whole thing in that.Grid.handleGesture()
 
-			that.Grid.handleGesture(evt);
-			// block page scroll
-			// if in horizontal config and the user is scrolling horizontally
-			// or if in vertical config and the user is scrolling vertically
-			// if(
-			// 	that.Grid.sx && evt.deltaX != 0
-			// 	|| !that.Grid.sx && evt.deltaY != 0
-			// ){
-			// 	// evt.preventDefault();
-			// 	// evt.stopPropagation();
-			// }
+		var ltme = {time:null,evt:null};//LTME ==> last touchmove event
+		var deltaX,deltaY;
+		this.$e.bind('touchmove',function(evt){
 
-		})
+			//IMPORTANT: DO NOT DO THIS --> evt.stopPropagation();// <-- we still actually want this to propegate (otherwise it wont make it to Hammer).
+
+			if(that.Grid.sx){//if config'd horizontally
+				// if(ltme.time && (new Date)-ltme.time<100){ //test if our last event is part of the same gesture
+				if(ltme.time){ //test if our last event is part of the same gesture
+					deltaX = evt.originalEvent.pageX-ltme.evt.pageX;
+					deltaY = evt.originalEvent.pageY-ltme.evt.pageY;
+
+					if(deltaX!=0){
+						if(Math.abs(deltaY/deltaX) <= 1){//if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
+							evt.preventDefault();
+						}
+					}
+
+				}else{ //need to trap the touchmove event until we get a reliable measurement
+					evt.preventDefault();
+				}
+			
+			}else{//if config'd vertically
+
+				if(ltme.time){ //test if our last event is part of the same gesture
+					deltaX = evt.originalEvent.pageX-ltme.evt.pageX;
+					deltaY = evt.originalEvent.pageY-ltme.evt.pageY;
+
+					if(deltaY!=0){
+						if(Math.abs(deltaX/deltaY) <= 1){//if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
+							evt.preventDefault();
+						}
+					}
+
+				}else{ //need to trap the touchmove event until we get a reliable measurement
+					evt.preventDefault();
+				}
+
+			}
+
+
+			
+			console.log(Math.abs(deltaY/deltaX),(new Date())-ltme.time);
+			
+			ltme = {time:new Date,evt:evt.originalEvent};
+
+
+		});
+
 	}//init()
 
 
