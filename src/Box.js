@@ -151,7 +151,7 @@ define([
 		this.dims[1] = this.height = this.h = h;
 		this.sizeRatio = h/w;
 		this.displayClass = this.getDisplayClass(this.sizeRatio);
-		this.$moneyShot.css({'width':this.w,'height':this.h})
+		// this.$moneyShot.css({'width':this.w,'height':this.h})
 	}
 	
 	Box.prototype.getDisplayClass = function(ratio){

@@ -22,6 +22,9 @@ body{
 	border:#fff 10px solid;
 	margin: -10px 0 0 -10px;
 }
+.moneyShot{
+	width: 100%;
+}
 
 .boxLabel{display: none;}
 

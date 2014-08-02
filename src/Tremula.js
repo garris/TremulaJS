@@ -1,5 +1,5 @@
 /** 
-*   TremulaJS https://github.com/garris/TremulaJS
+*   TremulaJS 1.1.0 https://github.com/garris/TremulaJS
 *   Copyright 2014 Garris Shipon & Art.com Labs 
 *   Released under the MIT license. http://www.opensource.org/licenses/mit-license.php
 */
@@ -113,8 +113,8 @@ define([
 			//IMPORTANT: DO NOT DO THIS --> evt.stopPropagation();// <-- we still actually want this to propegate (otherwise it wont make it to Hammer).
 
 			if(that.Grid.sx){//if config'd horizontally
-				// if(ltme.time && (new Date)-ltme.time<100){ //test if our last event is part of the same gesture
 				if(ltme.time){ //test if our last event is part of the same gesture
+				// if(ltme.time && (new Date())-ltme.time<250){ //test if our last event is part of the same gesture
 					deltaX = evt.originalEvent.pageX-ltme.evt.pageX;
 					deltaY = evt.originalEvent.pageY-ltme.evt.pageY;
 
@@ -148,7 +148,7 @@ define([
 
 
 			
-			console.log(Math.abs(deltaY/deltaX),(new Date())-ltme.time);
+			// console.log(  ltme.time && (new Date())-ltme.time<250   );
 			
 			ltme = {time:new Date,evt:evt.originalEvent};
 
