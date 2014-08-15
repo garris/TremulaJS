@@ -236,21 +236,28 @@ showControlData = function(o){
 	if(!this.$debug)this.$debug = $('.debug');
 
 		this.$debug.html(
-		'scrollAxis: '        + o.sa + ' [sx]--> ' + o.sx + '<br/>'
-		+ 'isTouching: '        + o.isTouching + '<br/>'
-		+ 'isMovingOnSA: '        + o.isMovingOnSA + '<br/>'
-		+ 'absScrollPos: '        + o.absScrollPos + '<br/>'
-		+ 'scrollPos: '         + o.scrollPos + '<br/>'
-		+ 'scrollProgress: '      + o.scrollProgress + '<br/>'
-		+ 'isInHeadMargin: '      + o.isInHeadMargin + '<br/>'
-		+ 'isInTailMargin: '      + o.isInTailMargin + '<br/>'
-
-		+ 'scrollMargin: '        + o.scrollMargin + '<br/>'
-		+ 'boxAxisLengths: '      + o.boxAxisLengths + '<br/>'
-		//+ 'boxAxisLessScrollMargin: '     + o.boxAxisLessScrollMargin[0] + '<br/>'
-		+ 'gridDims: '          + o.gridDims + '<br/>'
-		+ 'hasShortGridDimsSi: '          + o.hasShortGridDimsSi + '<br/>'
-		+ 'hasMediumGridDimsSi: '           + o.hasMediumGridDimsSi + '<br/>'
+		'<ul>'
+		+ '<li>scrollAxis: '        					+ o.sa + ' [sx]--> ' + o.sx 				+ '<span>Direction of scroll</span></li>'
+		+ '<li>this.physicsLoopRAF: ' 				+ o.physicsLoopRAF 									+ '<span>RAF FRAME ID</span></li>'
+		+ '<li>isTouching: '        					+ o.isTouching 											+ '<span></span></li>'
+		// + '<li>isMovingOnSA: '        				+ o.isMovingOnSA 										+ '<span></span></li>'
+		+ '<li>absScrollPos: '        				+ o.absScrollPos 										+ '<span>The scroll position of the content head in relation to the visible leading border.</span></li>'
+		+ '<li>scrollPos: '         					+ o.scrollPos 											+ '<span></span></li>'
+		+ '<li>scrollProgress: '      				+ o.scrollProgress 									+ '<span></span></li>'
+		+ '<li>isInHeadMargin: '      				+ o.isInHeadMargin 									+ '<span></span></li>'
+		+ '<li>isInTailMargin: '      				+ o.isInTailMargin 									+ '<span></span></li>'
+		+ '<li>firstItemPos: '        				+ o.firstItemPos 										+ '<span>The head edge position of the first item.</span></li>'
+		// + '<li>scrollMargin: '        				+ o.scrollMargin 										+ '<span></span></li>'
+		+ '<li>trailingEdgeScrollPos: '       + o.trailingEdgeScrollPos 					+ '<span></span></li>'
+		+ '<li>absTrailingEdgeScrollPos: '    + o.absTrailingEdgeScrollPos 				+ '<span>The value of absScrollPos when content is scrolled completely to the tail position (exclude rubber band effect).</span></li>'
+		+ '<li>currentGridContentDims: '      				+ o.currentGridContentDims 									+ '<span>?</span></li>'
+		+ '<li>boxAxisLengths: '      				+ o.boxAxisLengths 									+ '<span>A mysterious number which starts as the contentDims but gets transformed in ways that are no longer clear.</span></li>'
+		+ '<li>contentDims: '      						+ o.contentDims 										+ '<span>Content bounding box dims.</span></li>'
+		//+ <li> 'boxAxisLessScrollMargin: '   + o.boxAxisLessScrollMargin[0] 		+ '<span></span></li>'
+		+ '<li>gridDims: '          					+ o.gridDims 												+ '<span></span></li>'
+		+ '<li>hasShortGridDimsSi: '          + o.hasShortGridDimsSi 							+ '<span></span></li>'
+		+ '<li>hasMediumGridDimsSi: '         + o.hasMediumGridDimsSi 						+ '<span></span></li>'
+		+'</ul>'
 	)
 }
 

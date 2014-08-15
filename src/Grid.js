@@ -37,6 +37,7 @@ define([
 
 		this.boxAxisLengths 		= [0,0]; //The total H&W axis lengths after evaluating data (including item margin -- but does not include axis margin)
 		this.currentGridContentDims		= [0,0]; //NOTE:  boxAxisLengths is used as an aggregator during layout and will not always reflect the correct state -- use this value instead for inter-module publishing
+		this.contentDims		= [0,0]; //NOTE:  should actually be the dims of the content
 		
 		//this.boxAxisLessScrollMargin	= [0,0]; //The total H&W axis lengths after evaluating data (including item margin -- but does not include axis margin)
 		
@@ -99,8 +100,8 @@ define([
 		this.easeToDiff             = 0;
 		
 		this.dMomentum              = 100;
-		this.momentum                   = 0;
-		this.momentumLimit      = 150;
+		this.momentum               = 0;
+		this.momentumLimit      		= 150;
 		
 		
 		this.mouseWheelReleaseTime = 100;//ms
@@ -732,7 +733,7 @@ define([
 	
 	Grid.prototype.getConstrainedItemDims = function(b){
 			var 
-				staticAxisDim       = this.itemConstraint,                                  //cache the constraint value (for the static axis)
+				staticAxisDim       = this.itemConstraint,                  //cache the constraint value (for the static axis)
 				constraintRatio     = staticAxisDim / b.model[this.saDim_], //how much we will enlarge/reduce the scroll axis to scale 1:1 with our staticAxis constraint
 				scrollAxisDim       = b.model[this.saDim]*constraintRatio,  //calculate the scroll axis value
 				scrollAxis_staticAxis_arr = [scrollAxisDim,staticAxisDim];//save as relative matrix for setDimentions(w,h)
@@ -772,31 +773,67 @@ define([
 			//we are currently basing scrollMargin on the first item h or w (per si)
 			//if this is the first item then we should get the calculated values for h,w and position
 			if(i==0){
+
 				this.scrollMargin =[-b.width*this.si_*this.scrollMarginFactor,-b.height*this.si*this.scrollMarginFactor];//should be based on size of first & last element
+				
+				//first item position starts at the end of the head scroll margin
 				this.firstItemPos = (this.sx)?b.width*this.scrollMarginFactor:b.height*this.scrollMarginFactor;//this is probably always tied the the active scroll margin and is equal to the width of the first item
+				
 				this.bounceMargin = this.firstItemPos + this.bounceMarginDefault;
 			}
 			
 		}//END for loop
+
+		//Handle an empty set of data.
 		if(!b){
 			this.hasData = false;
-			if(console && console.error){console.error('tremula: no data found')}
-			return
+			var sorry = new Error('Tremula: No data found on layout operation.');
+			if(console && console.error){console.error(sorry)}
+			return sorry;
 		}else{
 			this.hasData = true;
 		}
 
-		//update boxAxisLengths[]
-		//NOTE: the tail point values are equal to the start value plus the object dims plus margin. See Layouts.js for setting method
-		if(this.boxAxisLengths[0]<b.tailPointPos[0])this.boxAxisLengths[0]=b.tailPointPos[0];
-		if(this.boxAxisLengths[1]<b.tailPointPos[1])this.boxAxisLengths[1]=b.tailPointPos[1];
+
+
+		/*
+			
+			- boxAxisLengths is an array [x,y] starts off as the content area bounding box PLUS the leading scrollMargin offset value.
+
+			- Update boxAxisLengths[] comparing against every item layed out on the content grid.
 		
+			- the tail point values are equal to the start value plus the object dims plus margin. See Layouts.js for setting method.
+
+		*/
+		this.boxAxisLengths[0]=Math.max(this.boxAxisLengths[0],b.tailPointPos[0])
+		this.boxAxisLengths[1]=Math.max(this.boxAxisLengths[1],b.tailPointPos[1])
+		// if(this.boxAxisLengths[0]<b.tailPointPos[0])this.boxAxisLengths[0]=b.tailPointPos[0];
+		// if(this.boxAxisLengths[1]<b.tailPointPos[1])this.boxAxisLengths[1]=b.tailPointPos[1];
+		
+
+		/* 
+			- scrollAxisAndMargin is the sum of head and tail scroll margins (as a negative number for some unremembered reason). 
+			
+			- gridDimsSiPlusScrollMargin is the total gridDims (containing element) *less* scrollAxisAndMargin
+
+			- NOTE: we need to scroll if content is greater than gridDimsSiPlusScrollMargin.
+				otherise, absScroll should always return to 0
+			
+		*/
+
 		var scrollAxisAndMargin = -2*parseInt(this.scrollMargin);
 		var gridDimsSiPlusScrollMargin = this.gridDims[this.si]+scrollAxisAndMargin;
+
 		//var gridDimsSiPlusFirstItemPos = this.gridDims[this.si]+this.firstItemPos;
 
 
-		if(this.boxAxisLengths[this.si]<this.gridDims[this.si]){
+		//Set the actual content bounding box
+		this.contentDims[this.si] = this.boxAxisLengths[this.si];// + this.scrollMargin[this.si];//scrollMargin is a negative number so basically, we are removing the scroll offset here.
+		this.contentDims[this.si_] = this.boxAxisLengths[this.si_];
+
+
+		//hasShortGridDimsSi is true if content scroll axis dimention is shorter than containing element  
+		if(this.gridDims[this.si]>this.contentDims[this.si]){
 			this.hasShortGridDimsSi = true;
 		}
 		
@@ -807,7 +844,11 @@ define([
 		}
 
 		//cache the location of the trailing edge of the stream
-		this.trailingEdgeScrollPos = -(this.scrollAxisOffset)+ Math.min(this.gridDims[this.si],this.getTrailingEdgeScrollPos());
+		// this.trailingEdgeScrollPos = -(this.scrollAxisOffset)+ Math.min(this.gridDims[this.si],this.getTrailingEdgeScrollPos());
+		this.trailingEdgeScrollPos = -(this.scrollAxisOffset)+ Math.min(
+			this.getTrailingEdgeScrollPos()+(this.contentDims[this.si]-this.gridDims[this.si]),
+			this.getTrailingEdgeScrollPos()
+		);
 		this.absTrailingEdgeScrollPos = this.firstItemPos - this.trailingEdgeScrollPos;
 
 		//run medium list compansation test after trailingEdgeScrollPos assignment if hasShortGridDimsSi
@@ -820,12 +861,18 @@ define([
 			this.boxAxisLengths[this.si]=gridDimsSiPlusScrollMargin;
 		}
 
+
+		//The scroll axis always equals the scroll axis
+		//The cross axis always equals the cross axis count x constraint plus item margins
 		this.currentGridContentDims[this.si]=this.boxAxisLengths[this.si];
 		this.currentGridContentDims[this.si_]=(this.staticAxisCount+1)*(this.itemConstraint+(this.itemMargins[this.si_]*2));//+(this.itemMargins[this.si_]*2)  <add this back
+
 
 		//set scroll to top if this is a new set of items
 		if(options_.isNewSet)
 			this.setAbsScrollPos(1);
+
+
 
 		this.oneShotPaint(1);
 	}//setLayout()
@@ -929,6 +976,7 @@ define([
 			var triangle = 2*((tailRamp<.5)?tailRamp:headRamp);
 			//set DOM position
 			if(
+				// true||
 				isInViewport.call(this,b) 
 				&& (this.isLooping || isOnFirstPage.call(this,b))
 			){
