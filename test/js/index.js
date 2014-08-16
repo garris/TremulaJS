@@ -246,6 +246,7 @@ showControlData = function(o){
 		+ '<li>scrollProgress: '      				+ o.scrollProgress 									+ '<span></span></li>'
 		+ '<li>isInHeadMargin: '      				+ o.isInHeadMargin 									+ '<span></span></li>'
 		+ '<li>isInTailMargin: '      				+ o.isInTailMargin 									+ '<span></span></li>'
+		+ '<li>scrollMargin: '        				+ o.scrollMargin 										+ '<span>The margin value before and after the content.</span></li>'
 		+ '<li>firstItemPos: '        				+ o.firstItemPos 										+ '<span>The head edge position of the first item.</span></li>'
 		// + '<li>scrollMargin: '        				+ o.scrollMargin 										+ '<span></span></li>'
 		+ '<li>trailingEdgeScrollPos: '       + o.trailingEdgeScrollPos 					+ '<span></span></li>'
