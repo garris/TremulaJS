@@ -122,8 +122,9 @@ define([
 		this.itemMargins = options.itemMargins;
 		this.itemConstraint     = options.itemConstraint;//staticAxis value
 		this.staticAxisCount = options.staticAxisCount;//
-							
-		this.scrollMarginFactor = 10;//this multiplies the size of the first element used in scroll margin
+		
+		this.scrollMarginDefault = -3000;
+		//this.scrollMarginFactor = 10;//this multiplies the size of the first element used in scroll margin
 		this.scrollMargin =[0,0];//should be based on size of first & last element
 		this.firstItemPos = 0;//this is probably always tied the the active scroll margin and is equal to the width of the first item
 
@@ -770,18 +771,20 @@ define([
 			//this.layouts[layout](b,this,axes);
 			layout.call(this,b,options_);
 			
-			//we are currently basing scrollMargin on the first item h or w (per si)
 			//if this is the first item then we should get the calculated values for h,w and position
 			if(i==0){
-
-				this.scrollMargin =[-b.width*this.si_*this.scrollMarginFactor,-b.height*this.si*this.scrollMarginFactor];//should be based on size of first & last element
-				
 				//first item position starts at the end of the head scroll margin
-				this.firstItemPos = (this.sx)?b.width*this.scrollMarginFactor:b.height*this.scrollMarginFactor;//this is probably always tied the the active scroll margin and is equal to the width of the first item
-				
+				this.firstItemPos = -this.scrollMargin[this.si];//this is probably always tied the the active scroll margin and is equal to the width of the first item				
 				this.bounceMargin = this.firstItemPos + this.bounceMarginDefault;
 			}
-			
+
+			/*
+				- boxAxisLengths is an [x,y] array starting off as the content area bounding box -- but watch out because, in a rare act of desperation, it gets mutated later in this method.
+				- the tail point values are equal to the start value plus the object dims plus margin. See Layouts.js for setting method.
+			*/
+			this.boxAxisLengths[0]=Math.max(this.boxAxisLengths[0],b.tailPointPos[0]);
+			this.boxAxisLengths[1]=Math.max(this.boxAxisLengths[1],b.tailPointPos[1]);
+
 		}//END for loop
 
 		//Handle an empty set of data.
@@ -796,19 +799,11 @@ define([
 
 
 
-		/*
-			
-			- boxAxisLengths is an array [x,y] starts off as the content area bounding box PLUS the leading scrollMargin offset value.
 
-			- Update boxAxisLengths[] comparing against every item layed out on the content grid.
-		
-			- the tail point values are equal to the start value plus the object dims plus margin. See Layouts.js for setting method.
 
-		*/
-		this.boxAxisLengths[0]=Math.max(this.boxAxisLengths[0],b.tailPointPos[0])
-		this.boxAxisLengths[1]=Math.max(this.boxAxisLengths[1],b.tailPointPos[1])
-		// if(this.boxAxisLengths[0]<b.tailPointPos[0])this.boxAxisLengths[0]=b.tailPointPos[0];
-		// if(this.boxAxisLengths[1]<b.tailPointPos[1])this.boxAxisLengths[1]=b.tailPointPos[1];
+		//Set the actual content bounding box
+		this.contentDims[this.si] = this.boxAxisLengths[this.si];// + this.scrollMargin[this.si];//scrollMargin is a negative number so basically, we are removing the scroll offset here.
+		this.contentDims[this.si_] = this.boxAxisLengths[this.si_];
 		
 
 		/* 
@@ -819,45 +814,51 @@ define([
 			- NOTE: we need to scroll if content is greater than gridDimsSiPlusScrollMargin.
 				otherise, absScroll should always return to 0
 			
+			- SUPER NOTE: scrollMargin is used to prevent visibility of tail items in rubberband area of head 
+				and also to prevent visibility of head items in rubberband area of tail.
+				ScrollMargin needs to be sufficient to prevent this case
+				there are also some weird scrolling ratios tied to these values in the input events block.
+				Look there to as well if you are thinking of cleaning all this logic up.
 		*/
 
-		var scrollAxisAndMargin = -2*parseInt(this.scrollMargin);
+
+		//create scrollMargin array from default values
+		this.scrollMargin =[this.si_*this.scrollMarginDefault,this.si*this.scrollMarginDefault];//[-b.width*this.si_*this.scrollMarginFactor,-b.height*this.si*this.scrollMarginFactor];//should be based on size of first & last element
+		// this.scrollMargin =[-b.width*this.si_*this.scrollMarginFactor,-b.height*this.si*this.scrollMarginFactor];//should be based on size of first & last element
+		
+
+		var scrollAxisAndMargin = -2*parseInt(this.scrollMargin[this.si]);
 		var gridDimsSiPlusScrollMargin = this.gridDims[this.si]+scrollAxisAndMargin;
-
-		//var gridDimsSiPlusFirstItemPos = this.gridDims[this.si]+this.firstItemPos;
-
-
-		//Set the actual content bounding box
-		this.contentDims[this.si] = this.boxAxisLengths[this.si];// + this.scrollMargin[this.si];//scrollMargin is a negative number so basically, we are removing the scroll offset here.
-		this.contentDims[this.si_] = this.boxAxisLengths[this.si_];
 
 
 		//hasShortGridDimsSi is true if content scroll axis dimention is shorter than containing element  
 		if(this.gridDims[this.si]>this.contentDims[this.si]){
 			this.hasShortGridDimsSi = true;
+		} else if(this.contentDims[this.si]<gridDimsSiPlusScrollMargin){
+			this.hasMediumGridDimsSi = true;
 		}
+
 		
-		//run short list compensation test before trailingEdgeScrollPos assignment if hasShortGridDimsSi
-		//HACK WARNING:  this.boxAxisLengths[this.si] will have a different value if hasShortGridDimsSi is true
-		if(this.hasShortGridDimsSi && this.boxAxisLengths[this.si]<gridDimsSiPlusScrollMargin){
+		//run short list compensation test (if hasShortGridDimsSi) before trailingEdgeScrollPos assignment
+		//HACK WARNING:  this.boxAxisLengths[this.si] will be transformed to gridDimsSiPlusScrollMargin if hasShortGridDimsSi is true
+		if(this.hasShortGridDimsSi){
 			this.boxAxisLengths[this.si]=gridDimsSiPlusScrollMargin;
 		}
 
 		//cache the location of the trailing edge of the stream
-		// this.trailingEdgeScrollPos = -(this.scrollAxisOffset)+ Math.min(this.gridDims[this.si],this.getTrailingEdgeScrollPos());
+		//if the content scroll dim is smaller than the scrolling gridDim then use that.
 		this.trailingEdgeScrollPos = -(this.scrollAxisOffset)+ Math.min(
 			this.getTrailingEdgeScrollPos()+(this.contentDims[this.si]-this.gridDims[this.si]),
 			this.getTrailingEdgeScrollPos()
 		);
+
+
+		//this converts trailingEdgeScrollPos to an intuitive value where we measure scroll values from 0 by removing the scrollDims offset.
 		this.absTrailingEdgeScrollPos = this.firstItemPos - this.trailingEdgeScrollPos;
 
-		//run medium list compansation test after trailingEdgeScrollPos assignment if hasShortGridDimsSi
-		if(!this.hasShortGridDimsSi && (this.boxAxisLengths[this.si]<gridDimsSiPlusScrollMargin)){
-			
-			//if(this.boxAxisLengths[this.si]<this.gridDims[this.si]){
-				this.hasMediumGridDimsSi = true;
-			//}
-			
+
+		//IMPORTANT NOTE -->  run this medium list compansation test after trailingEdgeScrollPos assignment if hasShortGridDimsSi
+		if(this.hasMediumGridDimsSi){
 			this.boxAxisLengths[this.si]=gridDimsSiPlusScrollMargin;
 		}
 
@@ -925,6 +926,9 @@ define([
 
 
 	Grid.prototype.assignBoxObjects = function(){
+
+		// vvv assignBoxObjects helpers
+
 		function isOnFirstPage(b) {
 			return ( b[this.sa] >= sMargin[si] && b[this.sa] <= (this.boxAxisLengths[si] + sMargin[si]) )?true:false;
 		}
@@ -939,7 +943,11 @@ define([
 			if(x>=0) return x;
 			return Math.abs( this.boxAxisLengths[si]+x );
 		}
-			
+
+
+		
+		// vvv assignBoxObjects vars
+
 		var
 			isChildEasing_l 	= false,
 			that 				= this, //used for this.physicsLoopRAF call
@@ -948,8 +956,13 @@ define([
 			si_ 				= this.si_,
 			soo 				= [0,0], //scroll ordinal offset x/y matrix
 			soop 				= [0,0], //scroll ordinal offset x/y matrix *OFFSET FOR PAINTING* This maps each "page" onto the current gridDims[this.sa]
-			sMargin 			= this.scrollMargin; //scrollMargin extends viewport bounds so that object redraws and repositions happen offscreen
+			sMargin 		= this.scrollMargin; //scrollMargin extends viewport bounds so that object redraws and repositions happen offscreen
 	
+
+
+		// vvv assignBoxObjects iteration
+
+
 		for(var i = 0; i < this.boxCount; i++){
 
 			var b = this.boxes[i];
@@ -959,7 +972,7 @@ define([
 			//calculate the static axis value
 			soo[si_] = b.headPointPos[si_];
 			
-			//update the active & static axis values in the target obj
+			//update the scroll axis & cross axis values in the target obj
 			b.setAbsPos(this.axisOffset[0] + soo[0], this.axisOffset[1] + soo[1]);
 			
 			//CALCULATE SCREEN POSITION
@@ -976,7 +989,6 @@ define([
 			var triangle = 2*((tailRamp<.5)?tailRamp:headRamp);
 			//set DOM position
 			if(
-				// true||
 				isInViewport.call(this,b) 
 				&& (this.isLooping || isOnFirstPage.call(this,b))
 			){
@@ -1083,11 +1095,11 @@ define([
 
 				var nextScrollPos = this.scrollPos + (this.sx)?dx:dy;
 				var maxScroll = this.trailingEdgeScrollPos;
-				var isNextHM = !this.hasMediumGridDimsSi && nextScrollPos>this.firstItemPos;
-				var isNextFM = !this.hasMediumGridDimsSi && nextScrollPos<maxScroll;
+				var isNextHeadMargin = !this.hasMediumGridDimsSi && nextScrollPos>this.firstItemPos;
+				var isNextTailMargin = !this.hasMediumGridDimsSi && nextScrollPos<maxScroll;
 				
 				//add scroll tension if looping is OFF and the very next tick is going to put us beyound the first item or the last item
-				if(!this.isLooping && (isNextHM||isNextFM)){
+				if(!this.isLooping && (isNextHeadMargin||isNextTailMargin)){
 					if(this.sx){
 						dx=Math.min(dx*.1,100);
 					}else{
