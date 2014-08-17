@@ -123,7 +123,7 @@ define([
 		this.itemConstraint     = options.itemConstraint;//staticAxis value
 		this.staticAxisCount = options.staticAxisCount;//
 		
-		this.scrollMarginDefault = -3000;
+		this.scrollMarginDefault = -2000;
 		//this.scrollMarginFactor = 10;//this multiplies the size of the first element used in scroll margin
 		this.scrollMargin =[0,0];//should be based on size of first & last element
 		this.firstItemPos = 0;//this is probably always tied the the active scroll margin and is equal to the width of the first item
@@ -362,7 +362,8 @@ define([
 		//=====HEAD MARGIN=====
 		//if we have scrolled to a position into the leading margin
 		if (
-					(!this.isLooping && this.scrollPos>this.firstItemPos)
+			
+			(!this.isLooping && this.scrollPos>this.firstItemPos)
 					
 			//TODO:  There is one last bug where you can not see a set of data which is longer than the viewable area 
 			//but still shorter than the viewable area PLUS scrollMargin X 2.   
@@ -414,7 +415,7 @@ define([
 		
 		//=====TAIL MARGIN=====
 		//if we have scrolled to a position into the trailing margin
-		if (!this.isLooping && this.scrollPos<this.trailingEdgeScrollPos){
+		if (!this.isLooping && this.scrollPos<this.trailingEdgeScrollPos ){
 			this.isInTailMargin = true;
 			
 			//if we are moving deeper into trailing margin
@@ -422,7 +423,7 @@ define([
 				
 				this.setLastTouchOrigin(this.gridDims[this.si]);
 				this.marginScrollWarp = true;//this.isTouching;
-				
+
 				//shorten the ease time if we are in the middle of a big throw
 				if(this.activeDuration - this.easingProgress > this.easeToDuration){
 					this.activeDuration = this.easeToDuration;
@@ -457,10 +458,11 @@ define([
 
 		
 		//warp head or tail margin space if touchMoveTension is active OR if we have less content than we have scroll dim
-		if( (this.hasShortGridDimsSi || this.marginScrollWarp) && !this.isEasing){
+		if( (this.hasShortGridDimsSi || this.marginScrollWarp ) && !this.isEasing ){
 			var ns;//this is our normalized scroll value
 
-			if((this.hasShortGridDimsSi || this.hasMediumGridDimsSi) && this.absScrollPos>0){
+			// if((this.hasShortGridDimsSi || this.hasMediumGridDimsSi) && this.absScrollPos>0){ <---attemping to fix tail scroll choke bug.  see next line, hasMediumGridDimsSi condition is removed...
+			if(this.hasShortGridDimsSi && this.absScrollPos>0){
 				ns = this.absScrollPos;
 			}else if(this.scrollPos>0){
 				ns = this.scrollPos-this.firstItemPos;//normalized scroll
@@ -844,6 +846,7 @@ define([
 		if(this.hasShortGridDimsSi){
 			this.boxAxisLengths[this.si]=gridDimsSiPlusScrollMargin;
 		}
+		
 
 		//cache the location of the trailing edge of the stream
 		//if the content scroll dim is smaller than the scrolling gridDim then use that.
@@ -1095,6 +1098,8 @@ define([
 
 				var nextScrollPos = this.scrollPos + (this.sx)?dx:dy;
 				var maxScroll = this.trailingEdgeScrollPos;
+
+				//isNextHeadMargin and isNextTailMargin add massive drag to input to simulate rubberband tension in scrollFrame
 				var isNextHeadMargin = !this.hasMediumGridDimsSi && nextScrollPos>this.firstItemPos;
 				var isNextTailMargin = !this.hasMediumGridDimsSi && nextScrollPos<maxScroll;
 				
@@ -1178,16 +1183,6 @@ define([
 					lastD = D;
 					this.oneShotPaint(ev);
 				}
-				// else{
-				// 	//if we are scrolling orthogonal to the scrollAxis
-				// 	var D_scroll = this.parentParentE.scrollTop;
-				// 	//this.parentParentE.scrollTop(D_scroll-(D_-lastD_));
-
-				// 	lastD_ = D_;
-				// }
-
-
-				//var D = ev.gesture.deltaX+ev.gesture.deltaY;
 				
 	
 

@@ -17,12 +17,7 @@
 */
 
 
-requirejs.config({
-    baseUrl: 'src'
-    // ,paths: {
-    //     app: '../app'
-    // }
-});
+requirejs.config({baseUrl: 'src'});//use this config line when building with almond.js
 
 
 
@@ -50,6 +45,8 @@ define([
 		this.easings 				= easings;
 		this.projections 		= projections;
 		this.cache = {};//for instance parameters
+		this.updateConfig = function(){console && console.error && console.error('Tremula is not initalized. Request ignored.')};
+		this.toggleScrollAxis = function(){console && console.error && console.error('Tremula is not initalized. Request ignored.')};
 	}
 
 
@@ -105,6 +102,9 @@ define([
 		var gridOptions = $.extend({},defaults,options||{})
 		
 		this.Grid = new Grid($e,gridOptions,parent)
+		
+		this.updateConfig = this.Grid.updateConfig;
+		this.toggleScrollAxis = this.Grid.toggleScrollAxis;
 		
 		if(options&&options.data)
 			this.Grid.initBoxes(options.data,options.adapter);

@@ -249,6 +249,7 @@ showControlData = function(o){
 		+ '<li>scrollMargin: '        				+ o.scrollMargin 										+ '<span>The margin value before and after the content.</span></li>'
 		+ '<li>firstItemPos: '        				+ o.firstItemPos 										+ '<span>The head edge position of the first item.</span></li>'
 		// + '<li>scrollMargin: '        				+ o.scrollMargin 										+ '<span></span></li>'
+		+ '<li>bounceMargin: '       					+ o.bounceMargin 										+ '<span></span></li>'
 		+ '<li>trailingEdgeScrollPos: '       + o.trailingEdgeScrollPos 					+ '<span></span></li>'
 		+ '<li>absTrailingEdgeScrollPos: '    + o.absTrailingEdgeScrollPos 				+ '<span>The value of absScrollPos when content is scrolled completely to the tail position (exclude rubber band effect).</span></li>'
 		+ '<li>currentGridContentDims: '      				+ o.currentGridContentDims 									+ '<span>?</span></li>'
