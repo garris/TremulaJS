@@ -461,7 +461,6 @@ define([
 		if( (this.hasShortGridDimsSi || this.marginScrollWarp ) && !this.isEasing ){
 			var ns;//this is our normalized scroll value
 
-			// if((this.hasShortGridDimsSi || this.hasMediumGridDimsSi) && this.absScrollPos>0){ <---attemping to fix tail scroll choke bug.  see next line, hasMediumGridDimsSi condition is removed...
 			if(this.hasShortGridDimsSi && this.absScrollPos>0){
 				ns = this.absScrollPos;
 			}else if(this.scrollPos>0){
@@ -469,6 +468,15 @@ define([
 			}else{
 				ns = -(this.scrollPos-this.trailingEdgeScrollPos);//normalized scroll
 			}
+
+			//NOTE: this overrides ns (normalized scroll value) so make sure to run this AFTER this.hasShortGridDimsSi test case.
+			if(this.hasMediumGridDimsSi){			
+				if(this.absScrollPos<0){
+					ns = this.scrollPos-this.firstItemPos;//normalized scroll
+				}else{
+					ns = -(this.scrollPos-this.trailingEdgeScrollPos);//normalized scroll
+				}
+			}				
 
 
 			var r = Math.min(1,ns/this.bounceMargin);//percent of bounce margin traveled
@@ -789,10 +797,13 @@ define([
 				- boxAxisLengths is an [x,y] array starting off as the content area bounding box -- but watch out because, in a rare act of desperation, it gets mutated later in this method.
 				- the tail point values are equal to the start value plus the object dims plus margin. See Layouts.js for setting method.
 			*/
+
 			this.boxAxisLengths[0]=Math.max(this.boxAxisLengths[0],b.tailPointPos[0]);
 			this.boxAxisLengths[1]=Math.max(this.boxAxisLengths[1],b.tailPointPos[1]);
 
 		}//END for loop
+// console.log('boxAxisLengths|tailPointPos ===>',this.boxAxisLengths[0],b.tailPointPos[0])
+
 
 		//Handle an empty set of data.
 		if(!b){

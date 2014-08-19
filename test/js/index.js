@@ -234,7 +234,7 @@ function applyBoxClick(){
 showControlData = function(o){
 
 	if(!this.$debug)this.$debug = $('.debug');
-
+// console.log(o.absScrollPos)
 		this.$debug.html(
 		'<ul>'
 		+ '<li>scrollAxis: '        					+ o.sa + ' [sx]--> ' + o.sx 				+ '<span>Direction of scroll</span></li>'
@@ -244,16 +244,17 @@ showControlData = function(o){
 		+ '<li>absScrollPos: '        				+ o.absScrollPos 										+ '<span>The scroll position of the content head in relation to the visible leading border.</span></li>'
 		+ '<li>scrollPos: '         					+ o.scrollPos 											+ '<span></span></li>'
 		+ '<li>scrollProgress: '      				+ o.scrollProgress 									+ '<span></span></li>'
-		+ '<li>marginScrollWarp: '      			+ o.marginScrollWarp 									+ '<span></span></li>'
+		+ '<li>marginScrollWarp: '      			+ o.marginScrollWarp 								+ '<span></span></li>'
 		+ '<li>isInHeadMargin: '      				+ o.isInHeadMargin 									+ '<span></span></li>'
 		+ '<li>isInTailMargin: '      				+ o.isInTailMargin 									+ '<span></span></li>'
-		+ '<li>scrollMargin: '        				+ o.scrollMargin 										+ '<span>The margin value before and after the content.</span></li>'
+		+ '<li>scrollAxisOffset: '						+ o.scrollAxisOffset 								+ '<span>The margin added before and after the content -- this creates a blank offset area on either side of the content -- IOW: this offsets the content position.</span></li>'
+		+ '<li>scrollMargin: '        				+ o.scrollMargin 										+ '<span>The scrollable area added before and after the content. NOTE: this does not offset the content.</span></li>'
 		+ '<li>firstItemPos: '        				+ o.firstItemPos 										+ '<span>The head edge position of the first item.</span></li>'
-		// + '<li>scrollMargin: '        				+ o.scrollMargin 										+ '<span></span></li>'
+		// + '<li>scrollMargin: '        			+ o.scrollMargin 										+ '<span></span></li>'
 		+ '<li>bounceMargin: '       					+ o.bounceMargin 										+ '<span></span></li>'
 		+ '<li>trailingEdgeScrollPos: '       + o.trailingEdgeScrollPos 					+ '<span></span></li>'
 		+ '<li>absTrailingEdgeScrollPos: '    + o.absTrailingEdgeScrollPos 				+ '<span>The value of absScrollPos when content is scrolled completely to the tail position (exclude rubber band effect).</span></li>'
-		+ '<li>currentGridContentDims: '      				+ o.currentGridContentDims 									+ '<span>?</span></li>'
+		+ '<li>currentGridContentDims: '     	+ o.currentGridContentDims					+ '<span>?</span></li>'
 		+ '<li>boxAxisLengths: '      				+ o.boxAxisLengths 									+ '<span>A mysterious number which starts as the contentDims but gets transformed in ways that are no longer clear.</span></li>'
 		+ '<li>contentDims: '      						+ o.contentDims 										+ '<span>Content bounding box dims.</span></li>'
 		//+ <li> 'boxAxisLessScrollMargin: '   + o.boxAxisLessScrollMargin[0] 		+ '<span></span></li>'
