@@ -268,7 +268,7 @@ showControlData = function(o){
 
 
 
-function loadTestData(limit,cb){
+function loadTestData(limit,cb,useAppendFlag){
 	if(!limit)limit = 100;
 	var dataUrl = 'test/flickr_'+limit.toString()+'.json';
 	$.ajax({
@@ -281,7 +281,11 @@ function loadTestData(limit,cb){
 		var rs = res.filter(function(o,i){return o.height_n > o.width_n * .5 });//filter out any with a really wide aspect ratio.
 		var rs_ = res.filter(function(o,i){return !(o.height_n > o.width_n * .5) });//filter out any with a really wide aspect ratio.
 		console.log('API success',rs.length,rs_.length);
-		tremula.refreshData(rs,flickrDataAdapter);//flicker
+		if(useAppendFlag)
+			tremula.appendData(rs,flickrDataAdapter);//flicker
+		else
+			tremula.refreshData(rs,flickrDataAdapter);//flicker
+
 		tremula.cache.endOfScrollFlag = false;
 		cb(null,res)
 	})

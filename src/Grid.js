@@ -246,11 +246,11 @@ define([
 		this.resetAllItemConstraints();
 		
 		
-		var that=this;
-		setTimeout(function(){
-				that.setLayout(layouts.basicGridLayout,{axes:that.staticAxisCount});
-	//      that.doTransition(basicGridLayout,{axes:2},0,easeOutElastic);
-		}, 100)
+	// 	var that=this;
+	// 	setTimeout(function(){
+	// 			that.setLayout(layouts.basicGridLayout,{axes:that.staticAxisCount});
+	// //      that.doTransition(basicGridLayout,{axes:2},0,easeOutElastic);
+	// 	}, 100)
 		
 		this.setLayout(layouts.basicGridLayout,{axes:this.staticAxisCount});
 
@@ -650,7 +650,7 @@ define([
  * @param {boolean} append - passing a true value will append new data to existing data set
  */
  
-	Grid.prototype.initBoxes = function(data,adapter,options){
+	Grid.prototype.initBoxes = function(data,adapter,flag){
 		try{data.length}catch(e){return console&&console.log('initBoxes(): No data found.');};
 
 		if(!adapter)adapter=this.options.adapter;
@@ -659,7 +659,7 @@ define([
 
 		//if we are not appending new items to our box list
 		//call remove on each item then clear our model array & set boxCount cache to zero
-		if(!options){
+		if(!flag){
 			$.each(this.boxes,function(i,o){o.remove();})
 			this.boxes=[];
 			this.boxCount = 0;//cached value of this.boxes.length
@@ -706,7 +706,7 @@ define([
 			//if this is not the first item AND there is a Last Content Block then *insert* new items OTHERWISE append new items
 			if(LCB && i>0){
 				this.boxes.splice(-1,0,b);
-			}else if(options=="insert"){
+			}else if(flag=="insert"){
 				this.boxes.splice(0,0,b);
 			}else{
 				this.boxes.push(b);
@@ -716,7 +716,12 @@ define([
 
 
 		}//END for loop
-		this.setLayout(layouts.basicGridLayout,{axes:this.staticAxisCount,isNewSet:(ptr==0)?true:false});
+		this.setLayout(layouts.basicGridLayout,{
+			axes:this.staticAxisCount,
+			isNewSet:(ptr==0)?true:false
+		});
+
+
 	}//Grid.prototype.initBoxes
 	
 	Grid.prototype.resetAllItemConstraints = function(){
@@ -774,11 +779,11 @@ define([
 			layout.call(this,b,options_);
 			
 			//if this is the first item then we should get the calculated values for h,w and position
-			if(i==0){
-				//first item position starts at the end of the head scroll margin
-				this.firstItemPos = -this.scrollMargin[this.si];//this is probably always tied the the active scroll margin and is equal to the width of the first item				
-				this.bounceMargin = this.firstItemPos + this.bounceMarginDefault;
-			}
+			// if(i==0){
+			// 	//first item position starts at the end of the head scroll margin
+			// 	this.firstItemPos = -this.scrollMargin[this.si];
+			// 	this.bounceMargin = this.firstItemPos + this.bounceMarginDefault;
+			// }
 
 			/*
 				- boxAxisLengths is an [x,y] array starting off as the content area bounding box -- but watch out because, in a rare act of desperation, it gets mutated later in this method.
@@ -798,8 +803,6 @@ define([
 		}else{
 			this.hasData = true;
 		}
-
-
 
 
 
@@ -827,7 +830,14 @@ define([
 		//create scrollMargin array from default values
 		this.scrollMargin =[this.si_*this.scrollMarginDefault,this.si*this.scrollMarginDefault];//[-b.width*this.si_*this.scrollMarginFactor,-b.height*this.si*this.scrollMarginFactor];//should be based on size of first & last element
 		// this.scrollMargin =[-b.width*this.si_*this.scrollMarginFactor,-b.height*this.si*this.scrollMarginFactor];//should be based on size of first & last element
+
+
+		//set the firstItemPos.  This is used in the transport layer to determine head scroll target
+		//trailingEdgeScrollPos sets this on the tail end.
+		this.firstItemPos = -this.scrollMargin[this.si];
 		
+		//this is the amount of tight elastic we have at the ends of our content (used when snapping back during swipe)
+		this.bounceMargin = this.firstItemPos + this.bounceMarginDefault;
 
 		var scrollAxisAndMargin = -2*parseInt(this.scrollMargin[this.si]);
 		var gridDimsSiPlusScrollMargin = this.gridDims[this.si]+scrollAxisAndMargin;
