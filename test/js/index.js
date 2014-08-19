@@ -244,6 +244,7 @@ showControlData = function(o){
 		+ '<li>absScrollPos: '        				+ o.absScrollPos 										+ '<span>The scroll position of the content head in relation to the visible leading border.</span></li>'
 		+ '<li>scrollPos: '         					+ o.scrollPos 											+ '<span></span></li>'
 		+ '<li>scrollProgress: '      				+ o.scrollProgress 									+ '<span></span></li>'
+		+ '<li>marginScrollWarp: '      			+ o.marginScrollWarp 									+ '<span></span></li>'
 		+ '<li>isInHeadMargin: '      				+ o.isInHeadMargin 									+ '<span></span></li>'
 		+ '<li>isInTailMargin: '      				+ o.isInTailMargin 									+ '<span></span></li>'
 		+ '<li>scrollMargin: '        				+ o.scrollMargin 										+ '<span>The margin value before and after the content.</span></li>'
