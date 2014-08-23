@@ -42,8 +42,12 @@ Open Sourced under The MIT License
 - jQuery *(TremulaJS uses only a little bit of jQuery. Would be happy to remove it from the project in the future.)*
 
 ### Tested in the following browsers
+iOS Safari, Chrome, OS X Safari, FF, IE (recent versions) 
 
-- iOS Safari, Chrome, OS X Safari, FF, IE (recent versions) 
+
+### running mocha.js tests
+open /TremulaJS/test.html in the web browser of your choice.
+
 
 
 ### Building with r.js
