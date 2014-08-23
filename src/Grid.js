@@ -894,8 +894,10 @@ define([
 
 
 		//set scroll to top if this is a new set of items
-		if(options_.isNewSet)
+		if(options_.isNewSet){
 			this.setAbsScrollPos(1);
+			this.lastLayoutOptions.options.isNewSet = false;
+		}
 
 
 
