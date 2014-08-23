@@ -34,6 +34,9 @@ describe("TremulaJS", function() {
 
 
 
+
+
+
 setTimeout(mocha.run,1200);
 
 
@@ -62,17 +65,20 @@ function test6(){
 			expect(Math.floor(o.contentDims[o.si]),'content dimentions').to.equal(contentDims_[o.si]);
 			expect(trailingTestValue,'tail-position value').to.be.within(o.trailingEdgeScrollPos-1,o.trailingEdgeScrollPos+1);			
 			expect(o.firstItemPos,'firstItemPostition default value').to.be.equal(-o.scrollMargin[o.si]);
-			setTimeout(function(){console.log('>testing scrollPostition default');expect(o.absScrollPos,'scrollPostition default').to.be.within(-1,3);done();},10);
+			setTimeout(function(){
+				expect(o.absScrollPos,'scrollPostition default').to.be.within(-1,3);
+				done();
+			},100);
 		});
 
 		it("it tracks content/env interaction parameters", function() {
 			var o = tremula.Grid;
-			resizeTo(o.contentDims[o.si]+1,o.sx);
+			resizeTremulaContainer(o.contentDims[o.si]+1,o.sx);
 			expect(o.hasShortGridDimsSi).to.be.true;
-			resizeTo(o.contentDims[o.si]-1,o.sx);
+			resizeTremulaContainer(o.contentDims[o.si]-1,o.sx);
 			expect(o.hasShortGridDimsSi).to.be.false;
 
-			resizeTo('',o.sx);//defaults to auto
+			resizeTremulaContainer('',o.sx);//defaults to auto
 		});//
 
 
@@ -82,7 +88,14 @@ function test6(){
 			expect(o.sx).to.be.false;
 			// o.updateConfig({itemConstraint:300});
 			// expect(o.SOMETHING).to.equal.SOMETHING;
+		});
 
+		it("it hot-updates config context successfully AGAIN", function() {
+			var o = tremula.Grid;
+			o.toggleScrollAxis('x');
+			expect(o.sx).to.be.true;
+			// o.updateConfig({itemConstraint:300});
+			// expect(o.SOMETHING).to.equal.SOMETHING;
 		});
 
 
@@ -107,7 +120,7 @@ function test120(){
 			});//loadTestData()
 		});//it now has 61 boxes
 
-		it("it calculates good content layout parameters", function() {
+		it("it calculates good content layout parameters", function(done) {
 			var o = tremula.Grid;
 			var contentAndViewDimsDiff = o.contentDims[o.si]-o.gridDims[o.si]-o.firstItemPos;
 			var trailingTestValue = (o.hasShortGridDimsSi)?contentAndViewDimsDiff-o.scrollAxisOffset:-1*(contentAndViewDimsDiff+o.scrollAxisOffset);
@@ -115,7 +128,10 @@ function test120(){
 			expect(Math.floor(o.contentDims[o.si]),'content dimentions').to.equal(contentDims_[o.si]);
 			expect(trailingTestValue,'tail-position value').to.be.within(o.trailingEdgeScrollPos-1,o.trailingEdgeScrollPos+1);			
 			expect(o.firstItemPos,'firstItemPostition default value').to.be.equal(-o.scrollMargin[o.si]);
-			expect(o.absScrollPos,'scrollPostition default').to.be.within(-1,3);
+			setTimeout(function(){
+				expect(o.absScrollPos,'scrollPostition default').to.be.within(-1,3);
+				done();
+			},100);
 		
 		});
 
@@ -138,7 +154,7 @@ function test120(){
 		});//it now has 61 boxes
 
 
-		it("it calculates good content layout parameters", function() {
+		it("it calculates good content layout parameters", function(done) {
 			var o = tremula.Grid;
 			var contentAndViewDimsDiff = o.contentDims[o.si]-o.gridDims[o.si]-o.firstItemPos;
 			var trailingTestValue = (o.hasShortGridDimsSi)?contentAndViewDimsDiff-o.scrollAxisOffset:-1*(contentAndViewDimsDiff+o.scrollAxisOffset);
@@ -146,7 +162,10 @@ function test120(){
 			expect(Math.floor(o.contentDims[o.si]),'content dimentions').to.equal(contentDims_[o.si]);
 			expect(trailingTestValue,'tail-position value').to.be.within(o.trailingEdgeScrollPos-1,o.trailingEdgeScrollPos+1);			
 			expect(o.firstItemPos,'firstItemPostition default value').to.be.equal(-o.scrollMargin[o.si]);
-			expect(o.absScrollPos,'scrollPostition default').to.be.within(-1,3);
+			setTimeout(function(){
+				expect(o.absScrollPos,'scrollPostition default').to.be.within(-1,3);
+				done();
+			},100);
 		
 		});
 
@@ -173,14 +192,41 @@ function test60(){
 		});//it now has 61 boxes
 
 
-		it("it calculates good content layout parameters", function() {
+		it("it calculates good content layout parameters", function(done) {
 			var o = tremula.Grid;
 
 			expect(Math.floor(o.contentDims[o.si]),'content dimentions').to.equal(contentDims_[o.si]);			
 			expect(o.contentDims[o.si]-o.gridDims[o.si]+o.scrollAxisOffset,'tail-position value').to.equal(o.absTrailingEdgeScrollPos);
 			expect(o.firstItemPos,'firstItemPostition').to.be.equal(-o.scrollMargin[o.si]);
-			expect(o.absScrollPos,'scrollPostition default').to.be.within(-1,3);
+			setTimeout(function(){
+				expect(o.absScrollPos,'scrollPostition default').to.be.within(-1,3);
+				done();
+			},100);
 		
+		});
+
+		//NOTE: VIEWPORT MUST BE GREATER THAN 300px FOR THIS TO PASS
+		it("it maintians scroll position on window resize", function(done) {
+			var 
+				o = tremula.Grid, 
+				w = $(window);
+
+			//scroll the tremula
+			tremula.tailScroll();
+
+			setTimeout(function(){
+			
+				var scrollPos = o.absScrollPos
+				expect(o.absScrollPos,'scrollPostition is greater than near zero').to.equal(scrollPos);
+				
+				window.resizeTo(w.width()-10, w.height()-10);
+				
+				setTimeout(function(){
+					expect(o.absScrollPos,'scrollPostition is persistent').to.equal(scrollPos);
+					done()
+				},100);
+
+			},2000)
 		});
 
 
@@ -221,10 +267,13 @@ function test60(){
 			// expect(o.SOMETHING).to.equal.SOMETHING;
 		});
 
+/* >>> TO DO...
+		it("it tracks content/env interaction parameters", function() {
+			var o = tremula.Grid;
+		});
+*/
 
-		// it("it tracks content/env interaction parameters", function() {
-		// 	var o = tremula.Grid;
-		// });
+
 
 	});//loading 60 items + lastContent
 
@@ -232,7 +281,7 @@ function test60(){
 
 //========HELPERS=========
 
-function resizeTo (d,sx) {
+function resizeTremulaContainer (d,sx) {
 	if(sx)
 		$('.tremulaContainer').width(d);
 	else

@@ -193,17 +193,11 @@ define([
 			this.gridDims[0] = this.$e.width();
 			this.gridDims[1] = this.$e.height();
 			
-			//this.staticAxisOffset = this.gridDims[this.si_]/2;//this is currently pinned to middle of the static axis
-			//if(!this.sx)//scroll is y-axis
-				//this.staticAxisOffset = this.gridDims[this.si_]/2;
-			
 			this.axisOffset[0] = (this.sx)?this.scrollAxisOffset:this.staticAxisOffset;
 			this.axisOffset[1] = (!this.sx)?this.scrollAxisOffset:this.staticAxisOffset;
-			
 			if(this.scrollPos==undefined) this.scrollPos = 0;//this.gridDims[this.si];
-			this.lastScrollPos      = 0;
+			this.lastScrollPos  = 0;
 			this.lastScrollDiff = 0;
-			//this.touchMoveTension =1;//coefficient
 			
 			//bounce margin is the distance you can drag the item list beyond the head or tail of the item list.
 			this.bounceMarginDefault = 50;
@@ -212,7 +206,6 @@ define([
 			if(this.trailingEdgeScrollPos)
 				this.trailingEdgeScrollPos=this.getTrailingEdgeScrollPos();
 			
-			//this.page                         = 0;
 		}
 		
 		this.lastUserEvent = {time:new Date,evt:'init'};
