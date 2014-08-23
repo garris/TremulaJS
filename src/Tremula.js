@@ -72,6 +72,21 @@ define([
 		this.cache.endOfScrollFlag = false;
 	}
 
+	Tremula.prototype.tailScroll = function(){
+		var g = this.Grid;
+		g.setLastTouchOrigin(g.gridDims[g.si]/2);
+		g.easeTo(g.getScrollPos()-(g.getScrollViewDim()*.50),800)
+	}
+
+	Tremula.prototype.headScroll = function(){
+		var g = this.Grid;
+		g.setLastTouchOrigin(g.gridDims[g.si]/2);
+		g.easeTo(g.getScrollPos()+(g.getScrollViewDim()*.50),800)
+	}
+
+
+
+
 
 	Tremula.prototype.init = function($e,options,parent){
 
