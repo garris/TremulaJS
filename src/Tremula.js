@@ -99,6 +99,7 @@ define([
 			onChangePub             :null,
 			adapter 								:dataAdapters.TremulaItem,
 			isLooping 							:false,
+			noScrolling 						:false,
 			surfaceMap 							:projections.streamHorizontal,
 			itemPreloading      		:false,
 			itemEasing              :false,
@@ -129,59 +130,59 @@ define([
 			that.resize(evt);
 		});
 		
-		var fanEvents =new Hammer($e[0],{prevent_default: false});
-		fanEvents.on('dragdown dragup dragleft dragright swipeleft swipeup swipedown swiperight touch release tap',function(evt){that.Grid.handleGesture(evt)});
-		fanEvents.on('mousewheel wheel DOMMouseScroll', function(evt){that.Grid.handleGesture(evt);})
+		if(!gridOptions.noScrolling){ //if we want scrolling, set up hammer/listeners/etc
+			var fanEvents =new Hammer($e[0],{prevent_default: false});
+			fanEvents.on('dragdown dragup dragleft dragright swipeleft swipeup swipedown swiperight touch release tap',function(evt){that.Grid.handleGesture(evt)});
+			fanEvents.on('mousewheel wheel DOMMouseScroll', function(evt){that.Grid.handleGesture(evt);})
 
+			var ltme = {time:null,evt:null};//LTME ==> last touchmove event
+			var deltaX,deltaY;
+			this.$e.bind('touchmove',function(evt){
 
-		var ltme = {time:null,evt:null};//LTME ==> last touchmove event
-		var deltaX,deltaY;
-		this.$e.bind('touchmove',function(evt){
+				//IMPORTANT: DO NOT DO THIS --> evt.stopPropagation();// <-- we still actually want this to propegate (otherwise it wont make it to Hammer).
 
-			//IMPORTANT: DO NOT DO THIS --> evt.stopPropagation();// <-- we still actually want this to propegate (otherwise it wont make it to Hammer).
+				if(that.Grid.sx){//if config'd horizontally
+					if(ltme.time){ //test if our last event is part of the same gesture
+					// if(ltme.time && (new Date())-ltme.time<250){ //test if our last event is part of the same gesture
+						deltaX = evt.originalEvent.pageX-ltme.evt.pageX;
+						deltaY = evt.originalEvent.pageY-ltme.evt.pageY;
 
-			if(that.Grid.sx){//if config'd horizontally
-				if(ltme.time){ //test if our last event is part of the same gesture
-				// if(ltme.time && (new Date())-ltme.time<250){ //test if our last event is part of the same gesture
-					deltaX = evt.originalEvent.pageX-ltme.evt.pageX;
-					deltaY = evt.originalEvent.pageY-ltme.evt.pageY;
-
-					if(deltaX!=0){
-						if(Math.abs(deltaY/deltaX) <= 1){//if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
-							evt.preventDefault();
+						if(deltaX!=0){
+							if(Math.abs(deltaY/deltaX) <= 1){//if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
+								evt.preventDefault();
+							}
 						}
+
+					}else{ //need to trap the touchmove event until we get a reliable measurement
+						evt.preventDefault();
+					}
+				
+				}else{//if config'd vertically
+
+					if(ltme.time){ //test if our last event is part of the same gesture
+						deltaX = evt.originalEvent.pageX-ltme.evt.pageX;
+						deltaY = evt.originalEvent.pageY-ltme.evt.pageY;
+
+						if(deltaY!=0){
+							if(Math.abs(deltaX/deltaY) <= 1){//if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
+								evt.preventDefault();
+							}
+						}
+
+					}else{ //need to trap the touchmove event until we get a reliable measurement
+						evt.preventDefault();
 					}
 
-				}else{ //need to trap the touchmove event until we get a reliable measurement
-					evt.preventDefault();
-				}
-			
-			}else{//if config'd vertically
-
-				if(ltme.time){ //test if our last event is part of the same gesture
-					deltaX = evt.originalEvent.pageX-ltme.evt.pageX;
-					deltaY = evt.originalEvent.pageY-ltme.evt.pageY;
-
-					if(deltaY!=0){
-						if(Math.abs(deltaX/deltaY) <= 1){//if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
-							evt.preventDefault();
-						}
-					}
-
-				}else{ //need to trap the touchmove event until we get a reliable measurement
-					evt.preventDefault();
 				}
 
-			}
 
+				
+				// console.log(  ltme.time && (new Date())-ltme.time<250   );
+				
+				ltme = {time:new Date,evt:evt.originalEvent};
 
-			
-			// console.log(  ltme.time && (new Date())-ltme.time<250   );
-			
-			ltme = {time:new Date,evt:evt.originalEvent};
-
-
-		});
+			});
+		}//if(!gridOptions.noScrolling)
 
 	}//init()
 

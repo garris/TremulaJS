@@ -14,6 +14,7 @@ tremulaConfigs = {
 			scrollAxis          :'x',
 			staticAxisCount     :0,//zero based
 			isLooping         	:false,
+			// noScrolling			:true,//<--- comment this in to disable scrolling
 			defaultLayout       :this.layouts.basicGridLayout,//<--- TODO:  this is not yet implemented.
 			surfaceMap          :this.projections.streamHorizontal,
 			itemPreloading      :true,
