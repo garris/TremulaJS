@@ -16,7 +16,8 @@ The TremulaJS project began as an exercise to create an Apple-style momentum-scr
 TremulaJS is compatible with all recent versions of iOS Safari, Chrome, OS X Safari, FF, IE. The component is currently in use on Art.com.
 
 TremulaJS was developed by [Garris Shipon](http://garriss.wordpress.com/) at [Art.com Labs](http://art.com/).  
-Open Sourced under The MIT License
+
+Licensed under GPLv3.
 
 **follow [@garris](https://twitter.com/garris)**  
 
