@@ -8,12 +8,12 @@
 	//,dir: "dist" //- this is the directory that the new files will be. it will be created if it doesn't exist
 	,out:'dist/Tremula.js'//this is the name of the new compiled js file
 	// ,removeCombined: true //
-  ,name: "almond"
-  ,include: "Tremula"
-  ,insertRequire:['Tremula']
-  ,wrap: true
-  // ,optimize:'none'
-  // ,generateSourceMaps: true
-//   ,preserveLicenseComments: true
+	,name: "almond"
+	,include: "Tremula"
+	,insertRequire:['Tremula']
+	,wrap: true
+	// ,optimize:'none'
+	// ,generateSourceMaps: true
+	// ,preserveLicenseComments: true
 
 })
