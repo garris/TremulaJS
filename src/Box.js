@@ -99,7 +99,7 @@ define([
 				if(this.model.template){
 					this.e.innerHTML = this.model.template;
 				}else{
-					this.e.innerHTML = '<div class="boxLabel">X</div><img class="moneyShot" onload="imageLoaded(this)" src=""/>';
+					this.e.innerHTML = '<div class="boxLabel">X</div><img draggable="false" class="moneyShot" onload="imageLoaded(this)" src=""/>';
 				}
 				this.$moneyShot = $('.moneyShot',this.$e);
 				this.$c = $('.boxLabel',this.e);
