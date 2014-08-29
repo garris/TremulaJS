@@ -72,6 +72,10 @@ function createTremula(){
 		//enables looping with the current seet of results
 		isLooping         	:false,
 
+		//set this to true to use TremulaJS as a responsive layout machine.
+		//when true: ignores user events i.e. touch/pointer/mousewheel events.
+		ignoreUserEvents		:false,
+
 		//if item-level easing is enabled, it will use the following parameters
 		//NOTE: this is experimental. This effect can make people queasy.
 		itemEasingParams    :{
