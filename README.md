@@ -2,7 +2,7 @@
 
 **Picture Streams + Momentum Engine + Bézier Paths + Cross-Browser + Cross-Device**  
 
-TremulaJS (trem-yoo-la) is a client-side javascript UI component providing Bézier-based content-stream interactions with momentum & physics effects for mouse, scroll and and touch UIs. 
+TremulaJS is a client-side javascript UI component providing Bézier-based content-stream interactions with momentum & physics effects for mouse, scroll and and touch UIs. 
 
 **Put another way, TremulaJS can be thought of as an extremely bad-ass image carousel.**  
 
