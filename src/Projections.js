@@ -296,17 +296,24 @@ define([],function(){
 
 
 
-	var headExpansionPath = [
-		{x:0,y:.5},
-		{x:.10,y:.5},
-		{x:.10,y:.5},
-		{x:1,y:.5}
+	// var bezierShapePath = [
+	// 	{x:0,y:.5},
+	// 	{x:.10,y:.5},
+	// 	{x:.10,y:.5},
+	// 	{x:1,y:.5}
+	// ];
+
+	var bezierShapePath = [
+		{x:0,y:0},
+		{x:0,y:1},
+		{x:1,y:1},
+		{x:1,y:0}
 	];
 
 
-	function headExpansion(x,y){
+	function bezierShape(x,y){
 
-		var curve = headExpansionPath;
+		var curve = bezierShapePath;
 
 		var 
 		grid0 = this.parent.gridDims[0],
@@ -330,12 +337,17 @@ define([],function(){
 
 		var cubicBezier = factorCurveBy(curve,xyFactor);
 		
-		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
-		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
+		var p = jsBezier.pointOnCurve(cubicBezier, tRamp);
+		var g = jsBezier.gradientAtPoint(cubicBezier, tRamp);
 
-		var xo = (grid0-this.outerDims[0]*.5)-p.x;
-		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
-		// var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-(this.dims[1]+this.itemMargins[1]*(this.staticAxisCount+1)))*.5);// - this.itemMargins[1];
+		//var xo = (grid0-this.outerDims[0]*.5)-p.x;
+		var xo = p.x - (this.dims[0]*.5);
+
+		//axisLength[1] = the total cross axis height when in horizontal mode
+		//((axisLength[1]-this.dims[1])*.5) is not needed when using only one cross axis (i.e. staticAxisCount = 0)
+		var yo = grid1 - p.y - (this.dims[1]*.5) - (((axisLength[1]-this.dims[1])*.5) - y - this.itemMargins[1]);
+
+
 		var zo = 0;//Math.max(50,((tri)*100));
 
 		this.e.style.webkitTransformOrigin = '50%';
@@ -350,8 +362,8 @@ define([],function(){
 		this.e.style.opacity = 1;
 
 		this.pPos = [x,y];
-	}//headExpansion()
-	exports.headExpansion = headExpansion;
+	}//bezierShape()
+	exports.bezierShape = bezierShape;
 
 
 

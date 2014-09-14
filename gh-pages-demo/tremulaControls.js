@@ -73,7 +73,7 @@ function attachDemoControls(tremula){
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			$body.removeClass('doReflect');
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200,itemMargins:[5,5],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.headExpansion);
+			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200,itemMargins:[5,5],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.bezierShape);
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}, 100)
