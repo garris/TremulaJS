@@ -242,6 +242,7 @@ showControlData = function(o){
 		this.$debug.html(
 		'<ul>'
 		+ '<li>scrollAxis: '        					+ o.sa + ' [sx]--> ' + o.sx 				+ '<span>Direction of scroll</span></li>'
+		+ '<li>this.frameRate: ' 							+ o.frameRate 											+ '<span>frameRate</span></li>'
 		+ '<li>this.physicsLoopRAF: ' 				+ o.physicsLoopRAF 									+ '<span>RAF FRAME ID</span></li>'
 		+ '<li>isTouching: '        					+ o.isTouching 											+ '<span></span></li>'
 		// + '<li>isMovingOnSA: '        				+ o.isMovingOnSA 										+ '<span></span></li>'
