@@ -1157,19 +1157,19 @@ define([
 			}else if(this.sx){//is horizontal config
 
 
-				if(ev.gesture.deltaX != 0){ // if SA has some directionality then we MAY want to block cross scrolling
+				// if(ev.gesture.deltaX != 0){//this old bit was recently disabled
 					if(Math.abs(ev.gesture.deltaY/ev.gesture.deltaX) <= 1){ // if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
 						shuntEvent(ev);
 					}
-				}
+				// }
 
 			}else{// is vertical config
 
-				if(ev.gesture.deltaY != 0){ // if SA_ has some directionality then we MAY want to block cross scrolling
+				// if(ev.gesture.deltaY != 0){//this old bit was recently disabled -- not needed now?
 					if(Math.abs(ev.gesture.deltaX/ev.gesture.deltaY) <= 1){ // if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
 						shuntEvent(ev);
 					}
-				}
+				// }
 
 			}// config case
 			// === END: manually block page scroll  === 
