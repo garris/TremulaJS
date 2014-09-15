@@ -54,7 +54,7 @@
 
 		this.itemTitle = data.title||'';
 
-		this.template = this.data.template||('<img class="moneyShot" onload="imageLoaded(this)" src=""/>')
+		this.template = this.data.template||('<img draggable="false" class="moneyShot" onload="imageLoaded(this)" src=""/>')
 	}
 
 
