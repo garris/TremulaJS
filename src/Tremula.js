@@ -117,7 +117,7 @@ define([
 		
 		var gridOptions = $.extend({},defaults,options||{})
 		
-		this.Grid = new Grid($e,gridOptions,parent)
+		this.Grid = new Grid($e,gridOptions,this)
 		
 		this.updateConfig = this.Grid.updateConfig;
 		this.toggleScrollAxis = this.Grid.toggleScrollAxis;

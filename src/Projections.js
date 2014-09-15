@@ -84,6 +84,9 @@ define([],function(){
 		]
 		return result;
 	}
+	jsBezier.factorCurveBy = factorCurveBy;
+	exports.factorCurveBy = factorCurveBy;
+
 
 
 	//===== bezier projections ========
