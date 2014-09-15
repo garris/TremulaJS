@@ -302,6 +302,72 @@ define([],function(){
 	// 	{x:.10,y:.5},
 	// 	{x:1,y:.5}
 	// ];
+	
+	var bezierQuadEasePath = [
+		{x:0,y:0},
+		{x:0,y:.5},
+		{x:.5,y:1},
+		{x:1,y:1}
+	];
+
+
+
+	function bezierQuad(x,y){
+
+		var curve = bezierQuadEasePath;
+
+		var 
+		grid0 = this.parent.gridDims[0],
+		grid1 = this.parent.gridDims[1],
+		axisLength = this.parent.currentGridContentDims,
+		tRamp = this.waves.tailRamp,
+		hRamp = this.waves.headRamp,
+		tri = this.waves.triangle,
+		//s = 1,
+		r,
+		xo,//xo=x,//-xoffset, 
+		yo;//yo=y;//-yoffset;
+
+
+		// console.log(axisLength)
+
+		var xyFactor = [
+			grid0, //Math.max(0,grid0),
+			grid1 //Math.max(0,grid1)
+		];
+
+		var cubicBezier = factorCurveBy(curve,xyFactor);
+		
+		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
+		var g = jsBezier.gradientAtPoint(cubicBezier, tRamp);
+
+		//var xo = (grid0-this.outerDims[0]*.5)-p.x;
+		var xo = grid0 - p.x - (this.dims[0]*.5);
+
+		//axisLength[1] = the total cross axis height when in horizontal mode
+		//((axisLength[1]-this.dims[1])*.5) is not needed when using only one cross axis (i.e. staticAxisCount = 0)
+		var yo = p.y - (this.dims[1]*.5) - (((axisLength[1]-this.dims[1])*.5) - y - this.itemMargins[1]);
+
+
+		var zo = 0;//Math.max(50,((tri)*100));
+
+		this.e.style.webkitTransformOrigin = '50%';
+		this.e.style.MozTransformOrigin = '50%';
+		
+		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
+		'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)'
+
+		var z = 1000000-this.index;
+		this.e.style.zIndex = z;
+
+		this.e.style.opacity = 1;
+
+		this.pPos = [x,y];
+	}//bezierQuad()
+	exports.bezierQuad = bezierQuad;
+
+
+
 
 	var bezierShapePath = [
 		{x:0,y:0},
@@ -309,6 +375,7 @@ define([],function(){
 		{x:1,y:1},
 		{x:1,y:0}
 	];
+
 
 
 	function bezierShape(x,y){
