@@ -205,7 +205,7 @@ function flickrDataAdapter(data,env){
 	this.h = this.height = data.height_n;
 	this.imgUrl = data.url_n;
 	this.auxClassList = "flickrRS";//stamp each mapped item with map ID 
-	this.template = this.data.template||('<img draggable="false" class="moneyShot" onload="imageLoaded(this)" src=""/>');
+	this.template = this.data.template||('<img draggable="false" onload="imageLoaded(this)" class="moneyShot" src=""/>');
 	// console.log(this)
 }
 
