@@ -1,4 +1,4 @@
-			
+
 define([],function(){
 
 
@@ -84,9 +84,7 @@ define([],function(){
 		]
 		return result;
 	}
-	jsBezier.factorCurveBy = factorCurveBy;
-	exports.factorCurveBy = factorCurveBy;
-
+	jsBezier.factorCurveBy = factorCurveBy;//add this to jsBezier namespace.
 
 
 	//===== bezier projections ========

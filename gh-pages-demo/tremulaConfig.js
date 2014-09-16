@@ -16,7 +16,7 @@ tremulaConfigs = {
 			isLooping         	:false,
 			ignoreUserEvents		:false,//when true, Tremula will not initalize touch or pointer handling. In this mode TremulaJS works more like a responsive layout machine.
 			defaultLayout       :this.layouts.basicGridLayout,//<--- TODO:  this is not yet implemented.
-			surfaceMap          :this.projections.streamHorizontal,
+			surfaceMap          :this.projections.streamHorizontal,//for your own projections try-->  surfaceMap:userProjection then edit tremulaProjections.js
 			itemPreloading      :true,
 			itemEasing          :false,
 			itemEasingParams    :{
