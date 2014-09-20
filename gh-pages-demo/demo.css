@@ -59,6 +59,25 @@ body{
 
 /* Demo Styles  */
 
+.debug{
+	display:none;
+	position: absolute;
+	bottom: 0px;
+	width: 400px;
+	height: 50%;
+	z-index: 3;
+	background: #eee;
+	font-size: 12px;
+	font-weight: 100;
+	font-family: courier;
+	color: #666;
+}
+.debug.show{display: block;}
+.debug li {
+list-style: none;
+}
+.debug li span{display: none;}
+
 .controls{
 	position: absolute;
 	top: 0;

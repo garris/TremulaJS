@@ -355,7 +355,11 @@ function attachDemoControls(tremula){
 	}
 
 
+
+
 	loadArtDotCom()//uncomment to load something automaticly on launch
+
+	return this;
 
 }
 

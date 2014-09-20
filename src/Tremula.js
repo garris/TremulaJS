@@ -84,7 +84,10 @@ define([
 		g.easeTo(g.getScrollPos()+(g.getScrollViewDim()*.50),800)
 	}
 
-
+	Tremula.prototype.setOnChangePub = function(cb){
+		var g = this.Grid;
+		g.onChangePub = cb;
+	};
 
 
 
