@@ -10,8 +10,9 @@ TremulaJS is a client-side javascript UI component providing Bézier-based conte
 
 <a href="https://vimeo.com/99481197">![tremula vimeo image](docs/vimeo.png)</a>
 
+While there are some monumental physics-based JS animation frameworks out there -- most notably, [famo.us](http://famo.us), [gsap](http://greensock.com/gsap) and [velocity.js](http://velocityjs.org/) -- TremulaJS was built with a very specific end in mind: to enable the kind of long-running, low-friction user interactions one might enjoy when navigating large sets of visual data.
 
-The TremulaJS project began as an exercise to create an Apple-style momentum-scroller for Javascript. The project eventually grew into a tool able to synthesize live visual content feeds into compelling path-based interactions.
+See TremulaJS in the wild: <a href="http://www.art.com/discover/keyword--gogh/posters.htm?searchstring=GOGH" title="TremulaJS on art.com" target="_blank">currently in production on Art.com</a>.
 
 TremulaJS is compatible with all recent versions of iOS Safari, Chrome, OS X Safari, FF, IE. The component is currently in use on Art.com.
 
@@ -54,4 +55,3 @@ open /TremulaJS/test.html in the web browser of your choice.
 ### Building with r.js
 		step 1. cd to the root /TremulaJS/ directory
 		step 2. $ node r.js -o build.js; node r.js -o cssIn=src/Tremula.css out=dist/Tremula.css optimizeCss=standard
-
