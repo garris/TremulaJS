@@ -1,11 +1,5 @@
 @import url(http://fonts.googleapis.com/css?family=Oswald);
 
-
-html, body {/*disable rubberbanding in safari*/
-height: 100%;
-overflow: hidden;
-}
-
 body{
 	font-family: 'Oswald', sans-serif;
 	font-size: .8em;
@@ -228,7 +222,7 @@ z-index: 4;
 right: 0px;
 bottom: 0;
 /* -webkit-transform: translateX(0) translateY(0%) rotateZ(-90deg); */
-font-size: 50px;
+font-size: 60px;
 /*line-height: 0.5em;*/
 padding: 15px;
 margin: 0;
@@ -265,6 +259,14 @@ background-image: radial-gradient(closest-side,rgba(255,255,255,1),rgba(255,255,
  line-height: 1em;
  text-transform:capitalize;
 }
+
+@media only screen and (max-width : 700px) {
+	h1{
+		/*display: none;*/
+		z-index: 0;
+	}
+}
+
 
 
 /* */
