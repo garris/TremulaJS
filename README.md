@@ -40,13 +40,13 @@ Licensed under GPLv3.
 
 - HammerJS *(A most awesome touch event component)*
 - JsBezier *(Thank you Simon Porritt !)*
-- jQuery *(TremulaJS uses only a little bit of jQuery. Would be happy to remove it from the project in the future.)*
+- jQuery *(Is jQuery the most important, most useful JS library ever? Yes, in 2009. Wouldn't it be nice to tweak a few lines and drop the jQuery requirement — yup. Will someone step forward and help me do it? Well, will you? punk...)*
 
 ### Tested in the following browsers
 iOS Safari, Chrome, OS X Safari, FF, IE (recent versions) 
 
 
-### running mocha.js tests
+### Running mocha.js tests
 open /TremulaJS/test.html in the web browser of your choice.
 
 
