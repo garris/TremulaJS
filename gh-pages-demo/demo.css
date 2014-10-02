@@ -131,6 +131,7 @@ margin-left: 38px;
 	text-align: left;	
 	overflow: auto;
 	white-space: nowrap;
+	-webkit-overflow-scrolling: touch;
 }
 
 .group.main.presets {
