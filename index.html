@@ -31,9 +31,13 @@
 			$().ready(function(){
 				setTimeout(function(){
 					var tremula = tremulaInit();
-					//tremula.Grid.updateConfig({itemConstraint:200,itemMargins:[20,20]});
+					tremula.Grid.updateConfig({itemConstraint:200,itemMargins:[20,20]});
 					attachDemoControls(tremula);
 					window.tremula=tremula;//does not need to be on the window -- implemented here for convienience.
+
+					$('body').removeClass('doReflect');
+					//toggleDebug();
+
 				},1000);
 			});
 
@@ -74,9 +78,13 @@
 
 	<body class="doReflect">
 
-		<h1>TremulaJS</h1>
+		<h1><a href="http://tremulajs.org/">TremulaJS</a></h1>
+
+		<a class="viewOnGithub" href="https://github.com/garris/TremulaJS">
+			<span class="ribbonTopRight">View on Github!</span>
+		</a>
 		
-		<div class="tab">settings</div>
+		<div class="tab">DIG ON<span style="font-size: 20px;display: block;line-height: 0.3em;">CONFIGS</span></div>
 
 		<div class="tremulaContainer main"></div>
 
@@ -89,7 +97,7 @@
 				<ul class="group main presets"><li class="streamHorizontal">streamHorizontal</li><li class="pinterest">pinterest</li><li class="btnL2">turntable</li><li class="mountain">mountain</li><li class="btnL3">enterTheDragon</li><li class="xy">xyPlain (toggle)</li></ul>
 
 				<ul class="group main">
-					<li class="more">Experimental controls...</li>
+					<li class="more">Experimental stuff...</li>
 				</ul>
 
 				<ul class="group">
@@ -135,6 +143,11 @@
 				</ul>
 
 
+				<ul class="group">
+					<li class="showCtrlData">showCtrlData</li>
+				</ul>
+
+
 			</div>
 		
 		</div>
@@ -149,9 +162,9 @@
 		if(!this.$debug)this.$debug = $('.debug');
 			this.$debug.html(
 			'<ul>'
-			+ '<li>jsHeapSizeLimit: ' 							+ performance.memory.jsHeapSizeLimit 											+ '<span>total available memory</span></li>'
-			+ '<li>totalJSHeapSize: ' 							+ performance.memory.totalJSHeapSize 											+ '<span>total used memory</span></li>'
-			+ '<li>usedJSHeapSize: ' 							+ performance.memory.usedJSHeapSize 											+ '<span>current  used memory</span></li>'
+			// + '<li>jsHeapSizeLimit: ' 							+ performance.memory.jsHeapSizeLimit 											+ '<span>total available memory</span></li>'
+			// + '<li>totalJSHeapSize: ' 							+ performance.memory.totalJSHeapSize 											+ '<span>total used memory</span></li>'
+			// + '<li>usedJSHeapSize: ' 							+ performance.memory.usedJSHeapSize 											+ '<span>current  used memory</span></li>'
 			+ '<li>scrollAxis: '        					+ o.sa + ' [sx]--> ' + o.sx 				+ '<span>Direction of scroll</span></li>'
 			+ '<li>this.frameRate: ' 							+ o.frameRate 											+ '<span>frameRate</span></li>'
 			+ '<li>this.physicsLoopRAF: ' 				+ o.physicsLoopRAF 									+ '<span>RAF FRAME ID</span></li>'

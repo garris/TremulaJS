@@ -196,6 +196,12 @@ function attachDemoControls(tremula){
 
 	$(".controls").on('click',function(evt) {
 		evt.stopPropagation();
+		if($(evt.target).hasClass('buttons')||$(evt.target).hasClass('controls'))
+			$body.removeClass('showControls');
+	})
+
+	$(".showCtrlData").on('click',function(evt) {
+		toggleDebug();
 	})
 	
 
@@ -359,6 +365,7 @@ function attachDemoControls(tremula){
 
 	loadArtDotCom()//uncomment to load something automaticly on launch
 
+	
 	return this;
 
 }
