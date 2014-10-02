@@ -34,7 +34,10 @@ Licensed under GPLv3.
 
 - Download, Fork, Contribute on [GitHub](https://github.com/garris/TremulaJS.git)
 
-- Learn how to create your own Grid Projections -- technical articles coming soon... stay tuned!
+- Learn how to <a href="http://davidwalsh.name/responsive-scalable-animations" title="Create your own TremulaJS grid projections" target="_blank">create your own Grid Projections</a> -- technical articles <del datetime="2014-09-17T19:09:40+00:00">coming soon</del> <a href="http://davidwalsh.name/responsive-scalable-animations" title="Create your own TremulaJS grid projections" target="_blank">here</a>!
+
+**follow [@garris](https://twitter.com/garris)** 
+
 
 
 ### Dependencies
