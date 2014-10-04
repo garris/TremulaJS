@@ -14,7 +14,7 @@ While there are some monumental physics-based JS animation frameworks out there 
 
 See TremulaJS in the wild: <a href="http://www.art.com/discover/keyword--gogh/posters.htm?searchstring=GOGH" title="TremulaJS on art.com" target="_blank">currently in production on Art.com</a>.
 
-TremulaJS is compatible with all recent versions of iOS Safari, Chrome, OS X Safari, FF, IE. The component is currently in use on Art.com.
+TremulaJS is compatible with all recent versions of iOS Safari, Chrome, OS X Safari, FF, IE.
 
 TremulaJS was developed by [Garris Shipon](http://garriss.wordpress.com/) at [Art.com Labs](http://art.com/).  
 
