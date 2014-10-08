@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>TremulaJS</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="src/Tremula.css">
+		<link rel="stylesheet" href="gh-pages-demo/demo.css">
+		<style type="text/css">
+
+		</style>
+		
+		<script src="libs/jquery-min.js"></script>
+		<script src="libs/hammer.js"></script>
+		<script src="libs/jsBezier-0.6.js"></script>
+		<script src="libs/raf_shim.js"></script>
+		
+		<script src="libs/jquery.ba-throttle-debounce.min.js"></script>
+
+		<script src="gh-pages-demo/tremulaAdapters.js"></script>
+		<script src="gh-pages-demo/tremulaConfig.js"></script>
+		<script src="gh-pages-demo/tremulaControls.js"></script>
+		<script src="gh-pages-demo/tremulaProjections.js"></script>
+		<script src="xsrc/Tremula.js"></script>
+		<script data-main="src/Tremula" src="libs/require.js"></script>
+		<script type="text/javascript">
+
+
+
+			$().ready(function(){
+				setTimeout(function(){
+					var tremula = tremulaInit();
+					// tremula.Grid.updateConfig({itemConstraint:200,itemMargins:[20,20]});
+					tremula.Grid.updateConfig({axes:0,itemConstraint:300,itemMargins:[30,30],surfaceMap:userProjection1});
+					attachDemoControls(tremula);
+										
+					window.tremula=tremula;//does not need to be on the window -- implemented here for convienience.
+
+					$('body').removeClass('doReflect');
+					//toggleDebug();
+
+				},1000);
+			});
+
+
+			function tremulaInit(){
+				console.log('starting tremula');
+
+				$tremulaContainer = $('.tremulaContainer');
+
+
+				var tremula = new Tremula();
+				var config = tremulaConfigs.default.call(tremula);
+
+				tremula.init($tremulaContainer,config,this);
+				
+				var doScrollEvents = function(o){
+					if(debugLoop)debugLoop(o);
+					if(o.scrollProgress>.7){
+						if(!tremula.cache.endOfScrollFlag){
+							tremula.cache.endOfScrollFlag = true;
+							console.log('END OF SCROLL!')
+						}
+					}
+				}//doScrollEvents()
+
+				tremula.setOnChangePub(doScrollEvents);
+
+				return tremula;
+			}
+
+
+
+		</script>
+
+
+
+	</head>
+
+	<body class="doReflect">
+
+		<h1><a href="http://tremulajs.org/">TremulaJS</a></h1>
+
+		<a class="viewOnGithub" href="https://github.com/garris/TremulaJS">
+			<span class="ribbonTopRight">View on Github!</span>
+		</a>
+		
+		<div class="tab">CONFIG IT<span style="font-size: 20px;display: block;line-height: 0.3em;">IF YOU DIG IT</span></div>
+
+		<div class="tremulaContainer main"></div>
+
+		<div class="debug"></div>
+
+		<div class="controls">
+			
+			<div class="buttons" >
+				
+				<ul class="group main presets"><li class="streamHorizontal">streamHorizontal</li><li class="pinterest">pinterest</li><li class="btnL2">turntable</li><li class="mountain">mountain</li><li class="btnL3">enterTheDragon</li><li class="xy">xyPlain (toggle)</li></ul>
+
+				<ul class="group main">
+					<li class="more">Experimental stuff...</li>
+				</ul>
+
+				<ul class="group">
+					<li class="autoSize">autoSize</li>
+					<li class="autoCount">autoCount</li>
+					<li class="autoDisable">autoDisable</li>
+				</ul>
+
+				<ul class="group">
+					<li class="btn1">1 Axis</li>
+					<li class="btn2">2 Axes</li>
+					<li class="btn3">3 Axes</li>
+				</ul>
+
+				<ul class="group">
+					<li class="size1">sm size</li>
+					<li class="size2">med size</li>
+					<li class="size3">lg size</li>
+				</ul>
+
+				<ul class="group">
+					<li class="margin1">margin sm</li>
+					<li class="margin2">margin med</li>
+					<li class="margin3">margin lg</li>
+				</ul>
+
+				<ul class="group">
+					<li class="toggleReflect">toggle reflect</li>
+					<li class="toggleItemEase">toggle ease</li>
+					<li class="toggleIsLooping">toggle looping</li>
+					<!-- <li class="toggleScrollAxis">toggle axis</li> -->
+				</ul>
+
+				<ul class="group">
+					<li class="headScroll">head scroll</li>
+					<li class="tailScroll">tail scroll</li>
+				</ul>
+
+				<ul class="group">
+					<li class="loadArtDotCom">loadArtDotCom</li>
+					<li class="loadFlickr">loadFlickr</li>
+					<li class="toggleRefreshData">toggle refresh</li>
+				</ul>
+
+
+				<ul class="group">
+					<li class="showCtrlData">showCtrlData</li>
+				</ul>
+
+
+			</div>
+		
+		</div>
+
+	</body>
+</html>
+
+
+<script type="text/javascript">
+
+	showControlData = function(o){
+		if(!this.$debug)this.$debug = $('.debug');
+			this.$debug.html(
+			'<ul>'
+			// + '<li>jsHeapSizeLimit: ' 							+ performance.memory.jsHeapSizeLimit 											+ '<span>total available memory</span></li>'
+			// + '<li>totalJSHeapSize: ' 							+ performance.memory.totalJSHeapSize 											+ '<span>total used memory</span></li>'
+			// + '<li>usedJSHeapSize: ' 							+ performance.memory.usedJSHeapSize 											+ '<span>current  used memory</span></li>'
+			+ '<li>scrollAxis: '        					+ o.sa + ' [sx]--> ' + o.sx 				+ '<span>Direction of scroll</span></li>'
+			+ '<li>this.frameRate: ' 							+ o.frameRate 											+ '<span>frameRate</span></li>'
+			+ '<li>this.physicsLoopRAF: ' 				+ o.physicsLoopRAF 									+ '<span>RAF FRAME ID</span></li>'
+			+ '<li>isTouching: '        					+ o.isTouching 											+ '<span></span></li>'
+			+ '<li>absScrollPos: '        				+ o.absScrollPos 										+ '<span>The scroll position of the content head in relation to the visible leading border.</span></li>'
+			+ '<li>scrollPos: '         					+ o.scrollPos 											+ '<span></span></li>'
+			+ '<li>scrollProgress: '      				+ o.scrollProgress 									+ '<span></span></li>'
+			+ '<li>marginScrollWarp: '      			+ o.marginScrollWarp 								+ '<span></span></li>'
+			+ '<li>isInHeadMargin: '      				+ o.isInHeadMargin 									+ '<span></span></li>'
+			+ '<li>isInTailMargin: '      				+ o.isInTailMargin 									+ '<span></span></li>'
+			+ '<li>scrollAxisOffset: '						+ o.scrollAxisOffset 								+ '<span>The margin added before and after the content -- this creates a blank offset area on either side of the content -- IOW: this offsets the content position.</span></li>'
+			+ '<li>scrollMargin: '        				+ o.scrollMargin 										+ '<span>The scrollable area added before and after the content. NOTE: this does not offset the content.</span></li>'
+			+ '<li>firstItemPos: '        				+ o.firstItemPos 										+ '<span>The head edge position of the first item.</span></li>'
+			+ '<li>bounceMargin: '       					+ o.bounceMargin 										+ '<span></span></li>'
+			+ '<li>trailingEdgeScrollPos: '       + o.trailingEdgeScrollPos 					+ '<span></span></li>'
+			+ '<li>absTrailingEdgeScrollPos: '    + o.absTrailingEdgeScrollPos 				+ '<span>The value of absScrollPos when content is scrolled completely to the tail position (exclude rubber band effect).</span></li>'
+			+ '<li>currentGridContentDims: '     	+ o.currentGridContentDims					+ '<span>?</span></li>'
+			+ '<li>boxAxisLengths: '      				+ o.boxAxisLengths 									+ '<span>A mysterious number which starts as the contentDims but gets transformed in ways that are no longer clear.</span></li>'
+			+ '<li>contentDims: '      						+ o.contentDims 										+ '<span>Content bounding box dims.</span></li>'
+			+ '<li>gridDims: '          					+ o.gridDims 												+ '<span></span></li>'
+			+ '<li>hasShortGridDimsSi: '          + o.hasShortGridDimsSi 							+ '<span></span></li>'
+			+ '<li>hasMediumGridDimsSi: '         + o.hasMediumGridDimsSi 						+ '<span></span></li>'
+			+'</ul>'
+		);
+	}
+
+
+	debugLoop = null;
+
+	toggleDebug = function toggleDebug(){
+		if(debugLoop){
+			debugLoop = null;
+			$('.debug').removeClass('show');
+		}else{
+			debugLoop = showControlData;
+			$('.debug').addClass('show');
+			showControlData({});
+		}
+
+	} 
+
+
+
+
+
+</script>

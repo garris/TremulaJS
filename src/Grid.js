@@ -33,6 +33,8 @@ define([
 		this.boxCount 				= 0;	//count of data elements
 		this.boxes      			= [];	//array of data elements
 
+		this.steppedScrolling = false;
+
 		this.springLimit 			= options.itemEasingParams.springLimit; //depth of item level movement when itemEasing is enabled
 
 		this.boxAxisLengths 		= [0,0]; //The total H&W axis lengths after evaluating data (including item margin -- but does not include axis margin)
@@ -727,7 +729,6 @@ define([
 	
 	Grid.prototype.resetAllItemConstraints = function(){
 		var c = this.boxCount;
-		
 		for (var i = 0; i < c; i++) {
 			var b = this.boxes[i];
 		
@@ -860,11 +861,13 @@ define([
 		if(this.hasShortGridDimsSi){
 			this.boxAxisLengths[this.si]=gridDimsSiPlusScrollMargin;
 		}
-		
+
+		//if steppedScrolling is true then we will add extra scroll margin to the tail (so tail scrolling ends the stream to the center)
+		var tailScrollAxisOffsetAmt = (this.steppedScrolling)?this.scrollAxisOffset*2:this.scrollAxisOffset;
 
 		//cache the location of the trailing edge of the stream
 		//if the content scroll dim is smaller than the scrolling gridDim then use that.
-		this.trailingEdgeScrollPos = -(this.scrollAxisOffset)+ Math.min(
+		this.trailingEdgeScrollPos = -(tailScrollAxisOffsetAmt)+ Math.min(
 			this.getTrailingEdgeScrollPos()+(this.contentDims[this.si]-this.gridDims[this.si]),
 			this.getTrailingEdgeScrollPos()
 		);

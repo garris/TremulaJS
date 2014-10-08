@@ -267,6 +267,21 @@ function attachDemoControls(tremula){
 
 
 
+	function resizeSteppedScrolling(t){
+
+		var 
+			g = t.Grid,
+			si = g.si,
+			saDim = g.saDim,
+			saGridDim = g.gridDims[si],
+			firstImageScrollDim = g.getBoxFromIndex(0)&&g.getBoxFromIndex(0)[saDim]||0,
+			newScrollOffset = saGridDim*.5-firstImageScrollDim*.5+g.itemMargins[si];
+
+		g.updateConfig({steppedScrolling:true,scrollAxisOffset:newScrollOffset},true);
+		t.resize();
+
+	}
+
 
 
 	function autoColumnCount(t){
@@ -360,10 +375,35 @@ function attachDemoControls(tremula){
 		.fail( function(d,config,err){ console.log('API FAIL. '+err) })
 	}
 
+	
+	function loadTestData(dataUrl){
+		$.getJSON(dataUrl)
+		.done(function(res){
+			console.log(res);
+			var rs = res.filter(function(o,i){
+				o.height_z = o.height_n;
+				o.width_z = o.width_n;
+				o.url_z = o.url_n;
+				return o.height_z > o.width_z * .5
+			});//filter out any with a really wide aspect ratio.
+
+			if(refreshData){				
+				tremula.refreshData(rs,flickrSearch);//flicker
+			}
+			else{
+				tremula.appendData(rs,flickrSearch);//flicker
+				window.resizeFn(tremula);//<---- this is here for the stepped scrolling test
+			}
+
+		})
+		.fail( function(d,config,err){ console.log('API FAIL. '+err) })
+	}
 
 
+	window.resizeFn = resizeSteppedScrolling;
 
-	loadArtDotCom()//uncomment to load something automaticly on launch
+	//loadArtDotCom()//uncomment to load something automaticly on launch
+	loadTestData('test/flickr_60.json');
 
 	
 	return this;
