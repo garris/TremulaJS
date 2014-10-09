@@ -30,7 +30,7 @@
 			$().ready(function(){
 				setTimeout(function(){
 					var tremula = tremulaInit();
-					tremula.Grid.updateConfig({itemConstraint:200,itemMargins:[0,0]});
+					tremula.Grid.updateConfig({itemConstraint:400,itemMargins:[30,30]});
 					// tremula.Grid.updateConfig({axes:0,itemConstraint:300,itemMargins:[30,30],surfaceMap:userProjection1});
 					attachDemoControls(tremula);
 										
@@ -73,7 +73,10 @@
 
 		</script>
 
-<style>.gridBox{margin-left: -0px;}img{display:none;}</style>
+<style>
+	.gridBox{margin-left: -0px;}
+	/*img{display:none;}*/
+</style>
 
 	</head>
 

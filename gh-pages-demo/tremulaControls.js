@@ -275,7 +275,7 @@ function attachDemoControls(tremula){
 			saDim = g.saDim,
 			saGridDim = g.gridDims[si],
 			firstImageScrollDim = g.getBoxFromIndex(0)&&g.getBoxFromIndex(0)[saDim]||0,
-			newScrollOffset = saGridDim*.5-firstImageScrollDim*.5+g.itemMargins[si];
+			newScrollOffset = saGridDim*.5-firstImageScrollDim*.5-g.itemMargins[si]*.5;
 
 		g.updateConfig({scrollAxisOffset:newScrollOffset},true);
 		t.resize();
@@ -381,18 +381,18 @@ function attachDemoControls(tremula){
 		.done(function(res){
 			console.log(res);
 			var rs = res.filter(function(o,i){
-				o.height_z = o.height_n;
-				o.width_z = o.width_n;
-				o.url_z = o.url_n;
+				o.height_z = o.height_n || o.height_z;
+				o.width_z = o.width_n || o.height_z;
+				o.url_z = o.url_n || o.url_z;
 				return o.height_z > o.width_z * .5
 			});//filter out any with a really wide aspect ratio.
 
 			if(refreshData){				
-				tremula.refreshData(rs,flickrSearch);//flicker
+				tremula.refreshData(rs,flickrTest);//flicker
 				if(cb)cb();
 			}
 			else{
-				tremula.appendData(rs,flickrSearch);//flicker
+				tremula.appendData(rs,flickrTest);//flicker
 				if(cb)cb();
 			}
 
@@ -404,9 +404,10 @@ function attachDemoControls(tremula){
 
 
 
+	tremula.Grid.updateConfig({itemConstraint:200});
 	
 	tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[30,30],surfaceMap:userProjection1});
-	tremula.Grid.updateConfig({steppedScrolling:true});//<--- moves zero point to center
+	tremula.Grid.updateConfig({steppedScrolling:true});//<--- modifies grid behaiviors
 	window.resizeFn = resizeSteppedScrolling;
 
 	//loadArtDotCom()//uncomment to load something automaticly on launch
