@@ -63,9 +63,17 @@ define([
 			this.scrollPos = (isDelta)?this.scrollPos+v:v ;
 		}
 		
+		this.getAbsToScrollPos = function(v) {
+			return v-this.firstItemPos;
+		}
+
 		this.setAbsScrollPos = function(v,isDelta) {
+			return this.scrollPos = (isDelta)?this.scrollPos+v:this.firstItemPos+v ;
+		}
+		
+		this.moveToAbsScrollPos = function(v,isDelta) {
 			this.scrollPos = (isDelta)?this.scrollPos+v:this.firstItemPos+v ;
-			return this.scrollPos;
+			this.startPhysicsLoop()
 		}
 		
 		this.getScrollViewDim = function(){
@@ -538,30 +546,52 @@ define([
 		return evt.gesture.center['page'+this.SA];
 	}
 
-	Grid.prototype.jumpObjTo = function(p,obj,origin){//object or index of object
+	Grid.prototype.getClosestScrollOriginObj = function(){
+		var arr = this.boxes;
+		
+		var obj = arr.reduce(function(a,b){
+			return (a.waves.triangle>b.waves.triangle)?a:b;
+		});
+		
+		return obj;
+	}
+
+
+	Grid.prototype.jumpObjTo = function(p,obj){//object or index of object
 		
 		this.resetEasing();
 		
 		if(!obj)obj=0;
-		
 		if(!isNaN(obj)){obj = this.getBoxFromIndex(obj);}
 		
-		if(p>this.firstItemPos)
-			p=this.firstItemPos;
+		// if(p>this.firstItemPos)
+		// 	p=this.firstItemPos;
 
-		if(p<this.trailingEdgeScrollPos)
-			p=this.trailingEdgeScrollPos;
+		// if(p<this.trailingEdgeScrollPos)
+		// 	p=this.trailingEdgeScrollPos;
 		
-		//if(!isNaN(origin)){}//if origin is an axis value
-		//u.log(origin)
 		var oPoint = obj.headPointPos[this.si]+obj.width*.5;
-		//this.$dbug.append(oPoint)
 		
-		//this.setScrollPos(p-oPoint+this.firstItemPos)
 		this.setAbsScrollPos(p-oPoint)
 		this.startPhysicsLoop();
 	}
+
+	Grid.prototype.easeToClosestStepItem = function(){
+		var obj = this.getClosestScrollOriginObj();
+		this.easeObjTo(0,obj)
+	}
 	
+	Grid.prototype.easeToNextStepItem = function(){
+		var obj = this.getClosestScrollOriginObj();
+		var next = this.getBoxFromIndex(obj.index+1 || null);
+		this.easeObjTo(0,next||obj)
+	}
+	Grid.prototype.easeToPrevStepItem = function(){
+		var obj = this.getClosestScrollOriginObj();
+		var next = this.getBoxFromIndex(obj.index-1 || null);
+		this.easeObjTo(0,next||obj)
+	}
+
 	//@param p = 0..1
 	Grid.prototype.jumpToScrollProgress = function(p){
 		if(p>1)p=0.999;
@@ -572,7 +602,14 @@ define([
 		this.startPhysicsLoop();
 	}
 
+	Grid.prototype.easeObjTo = function(p,obj,ms,eFn){//obj: accepts object or index of object; p: is scrollPos
 
+		if(!obj)obj=0;
+		if(!isNaN(obj)){obj = this.getBoxFromIndex(obj);}
+		var oPoint = this.getAbsToScrollPos(obj.headPointPos[this.si]+obj.width*.5);
+
+		this.easeTo(p-oPoint,ms,eFn);
+	}
 
 	Grid.prototype.easeTo = function(p,ms,eFn){
 		ms = (ms==undefined)?this.easeToDuration:ms;
@@ -641,7 +678,7 @@ define([
 		this.startPhysicsLoop();
 	}
 	
-				
+
 /**
  * Add new data items to the view model. 
  * calls setDimentions() on each object
@@ -1216,7 +1253,11 @@ define([
 				this.isTouching=false;
 				//var m = this.momentum = -this.dMomentum;
 				var m = -ev.gesture.velocityX;
-				this.startEasing(m,ev)
+
+				if(this.steppedScrolling)
+					this.easeToNextStepItem();
+				else
+					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
 				break;
@@ -1225,9 +1266,13 @@ define([
 				if(!this.sx){return}
 				ev.gesture.stopDetect();
 				this.isTouching=false;
-				//var m = this.momentum = this.dMomentum;
+
 				var m = ev.gesture.velocityX;
-				this.startEasing(m,ev)
+
+				if(this.steppedScrolling)
+					this.easeToPrevStepItem();
+				else
+					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
 				break;
@@ -1236,9 +1281,13 @@ define([
 				if(this.sx){return}
 				ev.gesture.stopDetect();
 				this.isTouching=false;
-				//var m = this.momentum = -this.dMomentum;
+
 				var m = -ev.gesture.velocityY;
-				this.startEasing(m,ev)
+
+				if(this.steppedScrolling)
+					this.easeToNextStepItem();
+				else
+					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
 				break;
@@ -1249,7 +1298,11 @@ define([
 				this.isTouching=false;
 				//var m = this.momentum = this.dMomentum;
 				var m = ev.gesture.velocityY;
-				this.startEasing(m,ev)
+
+				if(this.steppedScrolling)
+					this.easeToPrevStepItem();
+				else
+					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
 				break;
@@ -1278,7 +1331,10 @@ define([
 
 
 				this.isTouching=false;
-				this.oneShotPaint();
+				if(this.steppedScrolling)
+					this.easeToClosestStepItem();
+				else
+					this.oneShotPaint();
 
 				this.tagLastUserEvent(ev);
 				break;                  

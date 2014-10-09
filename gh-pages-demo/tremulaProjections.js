@@ -46,7 +46,7 @@
 		// var yo = grid1 - p.y - (this.dims[1]*.5) - (((axisLength[1]-this.dims[1])*.5) - y - this.itemMargins[1]);
 		var yo = (grid1*.5) - (p.y*0) - (this.dims[1]*.5) - (((axisLength[1]-this.dims[1])*.5) - (y*0) - this.itemMargins[1]);
 
-		var zo = (tri*100)*(tri*10)*.2;
+		var zo = (tri*100)*(tri*10)*.25;
 		// if(this.index==1)console.log(tri)
 
 		this.e.style.transformOrigin = this.e.style.webkitTransformOrigin = this.e.style.MozTransformOrigin = '50%';

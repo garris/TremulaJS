@@ -277,7 +277,7 @@ function attachDemoControls(tremula){
 			firstImageScrollDim = g.getBoxFromIndex(0)&&g.getBoxFromIndex(0)[saDim]||0,
 			newScrollOffset = saGridDim*.5-firstImageScrollDim*.5+g.itemMargins[si];
 
-		g.updateConfig({steppedScrolling:true,scrollAxisOffset:newScrollOffset},true);
+		g.updateConfig({scrollAxisOffset:newScrollOffset},true);
 		t.resize();
 
 	}
@@ -376,7 +376,7 @@ function attachDemoControls(tremula){
 	}
 
 	
-	function loadTestData(dataUrl){
+	function loadTestData(dataUrl,cb){
 		$.getJSON(dataUrl)
 		.done(function(res){
 			console.log(res);
@@ -389,10 +389,11 @@ function attachDemoControls(tremula){
 
 			if(refreshData){				
 				tremula.refreshData(rs,flickrSearch);//flicker
+				if(cb)cb();
 			}
 			else{
 				tremula.appendData(rs,flickrSearch);//flicker
-				window.resizeFn(tremula);//<---- this is here for the stepped scrolling test
+				if(cb)cb();
 			}
 
 		})
@@ -400,10 +401,20 @@ function attachDemoControls(tremula){
 	}
 
 
+
+
+
+	
+	tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[30,30],surfaceMap:userProjection1});
+	tremula.Grid.updateConfig({steppedScrolling:true});//<--- moves zero point to center
 	window.resizeFn = resizeSteppedScrolling;
 
 	//loadArtDotCom()//uncomment to load something automaticly on launch
-	loadTestData('test/flickr_60.json');
+	loadTestData(
+		'test/flickr_10_allRect.json',
+		window.resizeFn(tremula) //<---- this is here for the stepped scrolling test
+	);
+
 
 	
 	return this;
