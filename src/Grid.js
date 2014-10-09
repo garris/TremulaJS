@@ -34,6 +34,7 @@ define([
 		this.boxes      			= [];	//array of data elements
 
 		this.steppedScrolling = false;
+		this.easeToCompensation = 0;
 
 		this.springLimit 			= options.itemEasingParams.springLimit; //depth of item level movement when itemEasing is enabled
 
@@ -477,7 +478,7 @@ define([
 				if(this.absScrollPos<0){
 					ns = this.scrollPos-this.firstItemPos;//normalized scroll
 				}else{
-					ns = -(this.scrollPos-this.trailingEdgeScrollPos);//normalized scroll
+					// ns = -(this.scrollPos-this.trailingEdgeScrollPos);//normalized scroll
 				}
 			}				
 
@@ -547,12 +548,17 @@ define([
 	}
 
 	Grid.prototype.getClosestScrollOriginObj = function(){
-		var arr = this.boxes;
-		
-		var obj = arr.reduce(function(a,b){
-			return (a.waves.triangle>b.waves.triangle)?a:b;
-		});
-		
+		var arr = this.boxes, obj;
+
+		if(this.isInHeadMargin){
+			obj = this.getBoxFromIndex(0);
+		}else if(this.isInTailMargin){
+			obj = this.getLastBoxFromIndex();
+		}else{		
+			obj = arr.reduce(function(a,b){
+				return (a.waves.triangle>b.waves.triangle)?a:b;
+			});
+		}
 		return obj;
 	}
 
@@ -576,20 +582,21 @@ define([
 		this.startPhysicsLoop();
 	}
 
+
 	Grid.prototype.easeToClosestStepItem = function(){
 		var obj = this.getClosestScrollOriginObj();
-		this.easeObjTo(0,obj)
+		this.easeObjTo(this.easeToCompensation,obj)
 	}
 	
 	Grid.prototype.easeToNextStepItem = function(){
 		var obj = this.getClosestScrollOriginObj();
 		var next = this.getBoxFromIndex(obj.index+1 || null);
-		this.easeObjTo(0,next||obj)
+		this.easeObjTo(this.easeToCompensation,next||obj)
 	}
 	Grid.prototype.easeToPrevStepItem = function(){
 		var obj = this.getClosestScrollOriginObj();
-		var next = this.getBoxFromIndex(obj.index-1 || null);
-		this.easeObjTo(0,next||obj)
+		var prev = this.getBoxFromIndex(obj.index-1 || null);
+		this.easeObjTo(this.easeToCompensation,prev||obj)
 	}
 
 	//@param p = 0..1
@@ -1159,8 +1166,10 @@ define([
 				var isNextHeadMargin = !this.hasMediumGridDimsSi && nextScrollPos>this.firstItemPos;
 				var isNextTailMargin = !this.hasMediumGridDimsSi && nextScrollPos<maxScroll;
 				
+
+				//   || this.isInHeadMargin
 				//add scroll tension if looping is OFF and the very next tick is going to put us beyound the first item or the last item
-				if(!this.isLooping && (isNextHeadMargin||isNextTailMargin)){
+				if(!this.isLooping && (isNextHeadMargin||isNextTailMargin) ){
 					if(this.sx){
 						dx=Math.min(dx*.1,100);
 					}else{
@@ -1331,10 +1340,11 @@ define([
 
 
 				this.isTouching=false;
-				if(this.steppedScrolling)
+				if(this.steppedScrolling){
 					this.easeToClosestStepItem();
-				else
+				}else{
 					this.oneShotPaint();
+				}
 
 				this.tagLastUserEvent(ev);
 				break;                  

@@ -404,15 +404,21 @@ function attachDemoControls(tremula){
 
 
 
-	tremula.Grid.updateConfig({itemConstraint:200});
+	// tremula.Grid.updateConfig({itemConstraint:200});
 	
-	tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[30,30],surfaceMap:userProjection1});
+	tremula.Grid.updateConfig({axes:0,itemConstraint:300,itemMargins:[100,100],easeToCompensation:15,surfaceMap:userProjection1});
+	// tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
+	// tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[50,0],easeToCompensation:0,surfaceMap:carouselWithPop});
 	tremula.Grid.updateConfig({steppedScrolling:true});//<--- modifies grid behaiviors
 	window.resizeFn = resizeSteppedScrolling;
+	// toggleDebug();
+
 
 	//loadArtDotCom()//uncomment to load something automaticly on launch
 	loadTestData(
 		'test/flickr_10_allRect.json',
+		// 'test/flickr_10.json',
+		// 'test/flickr_25.json',
 		window.resizeFn(tremula) //<---- this is here for the stepped scrolling test
 	);
 
