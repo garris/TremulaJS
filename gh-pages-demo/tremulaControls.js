@@ -261,7 +261,19 @@ function attachDemoControls(tremula){
 		if(t){
 			var data = $.data(t).model.model.data;
 		}
-		console.log(data||{})
+		
+		console.log(data||'no target object selected')
+		
+		if(!data)return;
+
+		if(s.steppedScrolling){
+
+			
+			
+			console.log('steppedScrolling')
+		}
+
+
 	})
 
 
@@ -411,6 +423,8 @@ function attachDemoControls(tremula){
 	// tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[50,0],easeToCompensation:0,surfaceMap:carouselWithPop});
 	tremula.Grid.updateConfig({steppedScrolling:true});//<--- modifies grid behaiviors
 	window.resizeFn = resizeSteppedScrolling;
+
+
 	// toggleDebug();
 
 
