@@ -407,7 +407,19 @@
 			x =  length / 2 * Math.cos(_theta2);
 		return [{x:p.point.x + x, y:p.point.y + y}, {x:p.point.x - x, y:p.point.y - y}];
 	};
-	
+
+
+	//added by G.Shipon 10/10/14 -- allows 2D resizing of cubic Bezier curve by a factor array [x,y] 
+	var _factorCurveBy = function(cubic,xy){
+		var result = [
+			{x:cubic[3].x*xy[0],y:cubic[3].y*xy[1]},
+			{x:cubic[2].x*xy[0],y:cubic[2].y*xy[1]},
+			{x:cubic[1].x*xy[0],y:cubic[1].y*xy[1]},
+			{x:cubic[0].x*xy[0],y:cubic[0].y*xy[1]}
+		]
+		return result;
+	};
+	console.log('runnn')
 	var jsBezier = window.jsBezier = {
 		distanceFromCurve : _distanceFromCurve,
 		gradientAtPoint : _gradientAtPoint,
@@ -417,6 +429,7 @@
 		pointAlongCurveFrom : _pointAlongPathFrom,
 		perpendicularToCurveAt : _perpendicularToPathAt,
 		locationAlongCurveFrom:_locationAlongPathFrom,
-		getLength:_length
+		getLength:_length,
+		factorCurveBy:_factorCurveBy
 	};
 })();
