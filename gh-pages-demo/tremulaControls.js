@@ -264,14 +264,17 @@ function attachDemoControls(tremula){
 				data = boxObj.model.data;
 		}
 		
-		console.log(data||'no target object selected')
+		console.log(boxObj||'no target object selected')
 
 		if(!data)return;
 
 		if(s.steppedScrolling){
-
-			s.easeToThisStepItem(boxObj);
-
+			var o = s.getClosestScrollOriginObj();
+			if(boxObj===o){
+				alert('DO STUFF!');
+			}else{
+				s.easeToThisStepItem(boxObj);
+			}
 		}
 
 
@@ -419,8 +422,8 @@ function attachDemoControls(tremula){
 
 	// tremula.Grid.updateConfig({itemConstraint:200});
 	
-	// tremula.Grid.updateConfig({axes:0,itemConstraint:300,itemMargins:[100,100],easeToCompensation:15,surfaceMap:userProjection1});
-	tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
+	tremula.Grid.updateConfig({axes:0,itemConstraint:300,itemMargins:[100,100],easeToCompensation:15,surfaceMap:userProjection1});
+	// tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
 	// tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[50,0],easeToCompensation:15,surfaceMap:carouselWithPop});
 	tremula.Grid.updateConfig({steppedScrolling:true});//<--- modifies grid behaiviors
 	window.resizeFn = resizeSteppedScrolling;
