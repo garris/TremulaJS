@@ -16,7 +16,7 @@
 
 
 
-	function userProjection1(x,y){
+	function horizontalPop(x,y){
 
 		var curve = userPath;
 
@@ -64,7 +64,7 @@
 		var z = 10000-this.index;
 		this.e.style.zIndex = Math.abs(Math.floor(tri*100));
 		this.e.style.opacity = 1;//Math.max(tri,.5);
-		// this.e.style.webkitBoxShadow = '0 0 30px rgba(0,0,0,'+Math.min(tri,.5)+')';
+		this.e.style.webkitBoxShadow = '0 0 10px rgba(0,0,0,'+Math.min(tri,.3)+')';
 
 		this.pPos = [x,y];
 	}
@@ -137,7 +137,7 @@
 		var z = 10000-this.index;
 		this.e.style.zIndex = Math.abs(Math.floor(tri*100));
 
-		this.e.style.webkitBoxShadow = '0 0 30px rgba(0,0,0,'+Math.min(tri,.7)+')';
+		this.e.style.webkitBoxShadow = '0 0 20px -3px rgba(0,0,0,'+Math.min(tri,.6)+')';
 
 
 		this.pPos = [x,y];
@@ -186,7 +186,8 @@
 			grid1 //Math.max(0,grid1)
 		];
 
-		var curve = (grid0<minViewPortSa)?(grid0<641)?sunriseCurvePhone:sunriseCurve:mountainCurve;
+		//var curve = (grid0<minViewPortSa)?(grid0<641)?sunriseCurvePhone:mountainCurve;
+		var curve = mountainCurve;
 		var cubicBezier = jsBezier.factorCurveBy(curve,xyFactor);
 		
 		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
@@ -212,7 +213,7 @@
 		var z = 10000-this.index;
 		this.e.style.zIndex = Math.abs(Math.floor(tri*100));
 
-		this.e.style.webkitBoxShadow = '0 0 30px rgba(0,0,0,'+Math.min(tri,.7)+')';
+		this.e.style.webkitBoxShadow = '0 0 20px rgba(0,0,0,'+Math.min(tri,.5)+')';
 
 		this.pPos = [x,y];
 	}//mountain()

@@ -691,6 +691,13 @@ define([
 	}
 	
 
+
+	Grid.prototype.removeAll = function(){
+			$.each(this.boxes,function(i,o){o.remove();})
+			this.boxes=[];
+			this.boxCount = 0;//cached value of this.boxes.length			
+	}
+
 /**
  * Add new data items to the view model. 
  * calls setDimentions() on each object
@@ -851,8 +858,8 @@ define([
 		//Handle an empty set of data.
 		if(!b){
 			this.hasData = false;
-			var sorry = new Error('Tremula: No data found on layout operation.');
-			if(console && console.error){console.error(sorry)}
+			var sorry = 'Tremula: Warning. No data found on layout operation.';
+			if(console && console.error){console.info(sorry)}
 			return sorry;
 		}else{
 			this.hasData = true;

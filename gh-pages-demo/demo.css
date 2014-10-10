@@ -135,14 +135,14 @@ margin-left: 38px;
 }
 
 .group.main.presets {
-	width: 238px;
+	width: 348px;
 	white-space: normal;
 }
 
 .group.main.presets li{
 	width: 98px;
 	display: inline-block;
-	margin: 0px -0.5px;
+	margin: 0px 0px;
 } 
 
 

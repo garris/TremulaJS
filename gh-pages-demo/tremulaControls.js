@@ -7,7 +7,7 @@ function attachDemoControls(tremula){
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			var targetSize = tremula.$e.height()*.5;
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize,staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.streamHorizontal);
+			s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,itemConstraint:targetSize,itemMargins:[25,25],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.streamHorizontal);
 			resizeFn(tremula)
 		}, 100)
 	})
@@ -17,7 +17,7 @@ function attachDemoControls(tremula){
 		s.toggleScrollAxis('y');
 		setTimeout(function(){
 			$body.removeClass('doReflect');
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:3,itemConstraint:250,itemMargins:[25,25],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.pinterest);
+			s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:3,itemConstraint:250,itemMargins:[25,25],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.pinterest);
 			resizeFn = autoColumnCount;
 			resizeFn(tremula)
 		}, 100)
@@ -29,7 +29,7 @@ function attachDemoControls(tremula){
 		setTimeout(function(){
 			$body.addClass('doReflect');
 			var targetSize = tremula.$e.height()*.5;
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize,staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.turntable);
+			s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,itemConstraint:targetSize,staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.turntable);
 			s.setItemEasing(false);
 
 
@@ -41,7 +41,7 @@ function attachDemoControls(tremula){
 		// s.jumpToScrollProgress(0);
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:300,itemMargins:[30,30],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.enterTheDragon);
+			s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,itemConstraint:300,itemMargins:[30,30],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.enterTheDragon);
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}, 100)
@@ -50,7 +50,7 @@ function attachDemoControls(tremula){
 	$(".btnL4").click(function() {
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:100,staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.sunrise);
+			s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,itemConstraint:100,staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.sunrise);
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}, 100)
@@ -61,7 +61,7 @@ function attachDemoControls(tremula){
 		setTimeout(function(){
 			$body.addClass('doReflect');
 			var targetSize = tremula.$e.height()*.4;
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:targetSize,itemMargins:[10,10],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.mountain);
+			s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,itemConstraint:targetSize,itemMargins:[10,10],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.mountain);
 			s.setItemEasing(false);
 			diableAuto();
 			refreshData=false;
@@ -73,7 +73,7 @@ function attachDemoControls(tremula){
 		s.toggleScrollAxis('x');
 		setTimeout(function(){
 			$body.removeClass('doReflect');
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,itemConstraint:200,itemMargins:[5,5],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.bezierShape);
+			s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,itemConstraint:200,itemMargins:[5,5],staticAxisOffset:0},800,tremula.easings.easeOutElastic,tremula.projections.bezierShape);
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}, 100)
@@ -84,11 +84,11 @@ function attachDemoControls(tremula){
 			var ax = (s.sa=='x')?'y':'x';
 			s.toggleScrollAxis(ax);
 			$body.removeClass('doReflect');
-			s.updateConfig({axes:1,itemConstraint:200,itemMargins:[20,20],staticAxisOffset:20,surfaceMap:tremula.projections.xyPlain});
+			s.updateConfig({steppedScrolling:false,axes:1,itemConstraint:200,itemMargins:[20,20],staticAxisOffset:20,surfaceMap:tremula.projections.xyPlain});
 			s.setItemEasing(false);
 			resizeFn(tremula)
 		}
-		//yes, I know...  would be great to know why this is necessary.  
+		//yes, I know...  would be great to know why this is necessary. #freeSoftware  :/
 		jiggleHandle();
 		jiggleHandle();
 		jiggleHandle();
@@ -99,7 +99,7 @@ function attachDemoControls(tremula){
 	$(".btn1").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:0,staticAxisOffset:0},800,tremula.easings.easeOutElastic);
+			s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,staticAxisOffset:0},800,tremula.easings.easeOutElastic);
 			s.setItemEasing(false);
 			diableAuto();
 		}, 100)
@@ -108,7 +108,7 @@ function attachDemoControls(tremula){
 	$(".btn2").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:1,staticAxisOffset:0},800,tremula.easings.easeOutElastic);
+			s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:1,staticAxisOffset:0},800,tremula.easings.easeOutElastic);
 			s.setItemEasing(false);
 			diableAuto();
 		}, 100)
@@ -116,7 +116,7 @@ function attachDemoControls(tremula){
 	$(".btn3").click(function() {
 		s.jumpToScrollProgress(0);
 		setTimeout(function(){
-			s.doTransition(tremula.layouts.basicGridLayout,{axes:2,staticAxisOffset:0},800,tremula.easings.easeOutElastic);
+			s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:2,staticAxisOffset:0},800,tremula.easings.easeOutElastic);
 			s.setItemEasing(false);
 			diableAuto();
 		}, 100)
@@ -344,35 +344,44 @@ function attachDemoControls(tremula){
 	  return ret;
 	}
 
-	function diableAuto(){resizeFn = function(){};}
+	function diableAuto(){
+		tremula.Grid.scrollAxisOffset=0;//cleanup after any auto centering shenanigans.
+		resizeFn = function(){};
+	}
 
-	window.resizeFn = function(){};
+	resizeFn = function(){};
 	
 	$(".autoSize").click(function() {resizeFn = autoColumnSize; resizeFn(tremula); })
 	$(".autoCount").click(function() {resizeFn = autoColumnCount; resizeFn(tremula); })
 	$(".autoDisable").click(diableAuto)
 	$(window).on('resize', $.debounce(250, function(){ resizeFn(tremula) }) );
 
-	$(".loadArtDotCom").click(loadArtDotCom)
-	$(".loadFlickr").click(loadFlickr)
+	$(".loadArtDotCom").click(function(){loadArtDotCom(null,postLoadSeq)});
+	$(".loadFlickr").click(function(){loadFlickr(null,postLoadSeq)})
 
 
 
-	function loadArtDotCom(){
+	function loadArtDotCom(url_,cb){
 		var dataUrl = 'http://ws-decor.art.com/api/decorProductSearch?engine=judy&pageNumber=1&numProducts=200&rsLimit=1000&moodId=undefined&paletteHex=dfdd78-695d87&statusMsg=0.632s%3A+200+of+1000+returned&refinements=&keyword=abstract&includePoster=true&includeArt=true&includeDecorProducts=false&totalRetrieved=0&getDataFromThisUrl=null&totalFound=1000&pageReturned=4';	
 
 		// var dataUrl = 'decorProductSearch.json';
 		$.getJSON(dataUrl,function(res){
-			var rs = res.ImageDetails.filter(function(o,i){return o.ImageDimensions[2].PixelHeight > o.ImageDimensions[2].PixelWidth * .5});//filter out any with a really wide aspect ratio.
-			if(refreshData)
-				tremula.refreshData(rs,tremula.dataAdapters.JudyItem);//art.com
-			else
-				tremula.appendData(rs,tremula.dataAdapters.JudyItem);//art.com
+			
 
+			var rs = res.ImageDetails.filter(function(o,i){return o.ImageDimensions[2].PixelHeight > o.ImageDimensions[2].PixelWidth * .5});//filter out any with a really wide aspect ratio.
+			if(refreshData){
+				console.log('refresh',rs);
+				tremula.refreshData(rs,tremula.dataAdapters.JudyItem);//art.com
+				if(cb)cb();
+			}else{
+				console.log('append',rs);
+				tremula.appendData(rs,tremula.dataAdapters.JudyItem);//art.com
+				if(cb)cb();
+			}
 		}).fail(function(){console.log('getJSON problem.')});
 	}
 	
-	function loadFlickr(){
+	function loadFlickr(url_,cb){
 		var dataUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=c149b994c54c114bd7836b61539eec2e&tags=street+art&format=json&page=1&extras=url_z';
 		$.ajax({
 			url:dataUrl
@@ -385,8 +394,10 @@ function attachDemoControls(tremula){
 
 			if(refreshData)
 				tremula.refreshData(rs,flickrSearch);//flicker
+				if(cb)cb();
 			else
 				tremula.appendData(rs,flickrSearch);//flicker
+				if(cb)cb();
 		})
 		.fail( function(d,config,err){ console.log('API FAIL. '+err) })
 	}
@@ -420,28 +431,86 @@ function attachDemoControls(tremula){
 
 
 
-	// tremula.Grid.updateConfig({itemConstraint:200});
-	
-	tremula.Grid.updateConfig({axes:0,itemConstraint:300,itemMargins:[100,100],easeToCompensation:15,surfaceMap:userProjection1});
-	// tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
-	// tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[50,0],easeToCompensation:15,surfaceMap:carouselWithPop});
-	tremula.Grid.updateConfig({steppedScrolling:true});//<--- modifies grid behaiviors
-	window.resizeFn = resizeSteppedScrolling;
-	window.resizeFn(tremula)
+	$(".horizontalPop").click(function() {
+		s.toggleScrollAxis('x');
+		s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,itemConstraint:100,itemMargins:[25,25],staticAxisOffset:0},0,tremula.easings.easeOutElastic,tremula.projections.streamHorizontal);
+		$body.removeClass('doReflect');
 
+		setTimeout(function(){
+			tremula.Grid.removeAll();
+			s.updateConfig( {steppedScrolling:true,axes:0,itemConstraint:300,itemMargins:[100,100],easeToCompensation:15,surfaceMap:horizontalPop} );
+			window.resizeFn = resizeSteppedScrolling;
+			resizeFn(tremula);
+			refreshData=true;
+			setTimeout(function(){loadArtDotCom(null,postLoadSeq)},1000);
+		}, 100)
+	})
+
+
+
+	$(".mountainPop").click(function() {
+		s.toggleScrollAxis('x');
+		s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,itemConstraint:100,itemMargins:[25,25],staticAxisOffset:0},0,tremula.easings.easeOutElastic,tremula.projections.streamHorizontal);
+		$body.removeClass('doReflect');
+
+		// s.jumpToScrollProgress(0);
+		setTimeout(function(){
+			tremula.Grid.removeAll();
+			s.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
+			window.resizeFn = resizeSteppedScrolling;
+			resizeFn(tremula);
+			refreshData=true;
+			setTimeout(function(){loadArtDotCom(null,postLoadSeq)},1000);
+		}, 100)
+	})
+
+
+
+	$(".carouselWithPop").click(function() {
+		s.toggleScrollAxis('x');
+		s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,itemConstraint:100,itemMargins:[25,25],staticAxisOffset:0},0,tremula.easings.easeOutElastic,tremula.projections.streamHorizontal);
+		$body.removeClass('doReflect');
+
+		setTimeout(function(){
+			tremula.Grid.removeAll();
+			s.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[50,0],easeToCompensation:15,surfaceMap:carouselWithPop});
+			window.resizeFn = resizeSteppedScrolling;
+			resizeFn(tremula);
+			refreshData=true;
+			setTimeout(function(){loadArtDotCom(null,postLoadSeq)},1000);
+		}, 100)
+	})
+
+
+// $(".horizontalPop").click();
+	
+	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:300,itemMargins:[100,100],easeToCompensation:15,surfaceMap:horizontalPop});
+	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
+	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[50,0],easeToCompensation:15,surfaceMap:carouselWithPop});
+	// window.resizeFn = resizeSteppedScrolling;
+	// window.resizeFn(tremula)
 	// toggleDebug();
 
 
-	//loadArtDotCom()//uncomment to load something automaticly on launch
-	loadTestData(
-		// 'test/flickr_10_allRect.json',
-		// 'test/flickr_10.json',
-		'test/flickr_25.json',
-		postLoadSeq //<---- this is here for the stepped scrolling test
-	);
+
+
+
+	loadArtDotCom(null,postLoadSeq)//uncomment to load something automaticly on launch
+
+
+	// loadTestData(
+	// 	// 'test/flickr_10_allRect.json',
+	// 	// 'test/flickr_10.json',
+	// 	'test/flickr_25.json',
+	// 	postLoadSeq //<---- this is here for the stepped scrolling test
+	// );
 
 	function postLoadSeq(){
-		setTimeout(function(){tremula.Grid.easeToClosestStepItem()},100);
+		console.log('postLoadSeq')
+		if(tremula.steppedScrolling)
+			setTimeout(function(){
+				tremula.Grid.easeToClosestStepItem();
+			},100);
 	}
 
 	
