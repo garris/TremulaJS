@@ -64,7 +64,7 @@
 		var z = 10000-this.index;
 		this.e.style.zIndex = Math.abs(Math.floor(tri*100));
 		this.e.style.opacity = 1;//Math.max(tri,.5);
-		this.e.style.webkitBoxShadow = '0 0 30px rgba(0,0,0,'+Math.min(tri,.5)+')';
+		// this.e.style.webkitBoxShadow = '0 0 30px rgba(0,0,0,'+Math.min(tri,.5)+')';
 
 		this.pPos = [x,y];
 	}
@@ -130,7 +130,7 @@
 		
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
 			'translate3d(' + xo + 'px,' + yo +'px, '+ zo +'px)'
-			+' rotateY('+((tRamp*180)-90)+'deg)';
+			+' rotateY('+((tRamp*180)-96)+'deg)';
 		
 		this.e.style.opacity = Math.min(1,((tri*2)-.5));
 		
@@ -204,8 +204,8 @@
 		this.e.style.transformOrigin = this.e.style.webkitTransformOrigin = this.e.style.MozTransformOrigin = '50%';
 		
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
-		'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)'//
-		+' rotateZ('+g*-60+'deg)';
+		'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)'
+		+' rotateZ('+(-g*60+1)+'deg)';
 		
 		this.e.style.opacity = 1;
 

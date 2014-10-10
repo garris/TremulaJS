@@ -583,6 +583,11 @@ define([
 	}
 
 
+	Grid.prototype.easeToThisStepItem = function(o){
+		this.easeObjTo(this.easeToCompensation,o)
+	}
+	
+
 	Grid.prototype.easeToClosestStepItem = function(){
 		var obj = this.getClosestScrollOriginObj();
 		this.easeObjTo(this.easeToCompensation,obj)
@@ -610,7 +615,7 @@ define([
 	}
 
 	Grid.prototype.easeObjTo = function(p,obj,ms,eFn){//obj: accepts object or index of object; p: is scrollPos
-
+	// console.log('easeObjTo',obj.index)
 		if(!obj)obj=0;
 		if(!isNaN(obj)){obj = this.getBoxFromIndex(obj);}
 		var oPoint = this.getAbsToScrollPos(obj.headPointPos[this.si]+obj.width*.5);
@@ -1142,8 +1147,6 @@ define([
 	Grid.prototype.handleGesture = function(ev){
 		// if(window.isDragging) return;
 
-
-
 		switch(ev.type) {
 
 			case 'mousewheel':
@@ -1326,22 +1329,29 @@ define([
 
 				this.tagLastUserEvent(ev);
 				break;
-				
-				
+
+
 			case 'release':
 				//u.log('release: '+new Date().getMilliseconds())
 
 				//test for last event being a touch AND being OVER x ms ago.  Also make sure we're not in the middle of easing.
-				var lastTouchMs = new Date() - this.lastUserEvent.time;
-				if(!this.isEasing && this.lastUserEvent.evt.type == 'touch' && lastTouchMs < 1000){
+				var lastUserEvtMs = new Date() - this.lastUserEvent.time;
+				var lastWasTouch = /touch/.test(this.lastUserEvent.evt.type,'i');
+				
+				if(!this.isEasing && lastWasTouch && lastUserEvtMs < 1000){
 					this.$e.trigger('tremulaItemSelect',ev);
 				}
 
-
-
 				this.isTouching=false;
 				if(this.steppedScrolling){
-					this.easeToClosestStepItem();
+
+
+					var lastWasLegalTouch =  lastWasTouch && ev.target && ev.target.className && !/\bgridBox\b/.test(ev.target.className);
+
+					if(!lastWasTouch || lastWasLegalTouch){
+						this.easeToClosestStepItem();
+					};
+				
 				}else{
 					this.oneShotPaint();
 				}

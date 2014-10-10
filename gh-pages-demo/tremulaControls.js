@@ -259,18 +259,19 @@ function attachDemoControls(tremula){
 			$e = $(domEvt.target);
 			t = $e.closest('.gridBox')[0];
 		if(t){
-			var data = $.data(t).model.model.data;
+			var 
+				boxObj = $.data(t).model,
+				data = boxObj.model.data;
 		}
 		
 		console.log(data||'no target object selected')
-		
+
 		if(!data)return;
 
 		if(s.steppedScrolling){
 
-			
-			
-			console.log('steppedScrolling')
+			s.easeToThisStepItem(boxObj);
+
 		}
 
 
@@ -418,24 +419,27 @@ function attachDemoControls(tremula){
 
 	// tremula.Grid.updateConfig({itemConstraint:200});
 	
-	tremula.Grid.updateConfig({axes:0,itemConstraint:300,itemMargins:[100,100],easeToCompensation:15,surfaceMap:userProjection1});
-	// tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
-	// tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[50,0],easeToCompensation:0,surfaceMap:carouselWithPop});
+	// tremula.Grid.updateConfig({axes:0,itemConstraint:300,itemMargins:[100,100],easeToCompensation:15,surfaceMap:userProjection1});
+	tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
+	// tremula.Grid.updateConfig({axes:0,itemConstraint:200,itemMargins:[50,0],easeToCompensation:15,surfaceMap:carouselWithPop});
 	tremula.Grid.updateConfig({steppedScrolling:true});//<--- modifies grid behaiviors
 	window.resizeFn = resizeSteppedScrolling;
-
+	window.resizeFn(tremula)
 
 	// toggleDebug();
 
 
 	//loadArtDotCom()//uncomment to load something automaticly on launch
 	loadTestData(
-		'test/flickr_10_allRect.json',
+		// 'test/flickr_10_allRect.json',
 		// 'test/flickr_10.json',
-		// 'test/flickr_25.json',
-		window.resizeFn(tremula) //<---- this is here for the stepped scrolling test
+		'test/flickr_25.json',
+		postLoadSeq //<---- this is here for the stepped scrolling test
 	);
 
+	function postLoadSeq(){
+		setTimeout(function(){tremula.Grid.easeToClosestStepItem()},100);
+	}
 
 	
 	return this;
