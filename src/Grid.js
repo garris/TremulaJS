@@ -368,12 +368,8 @@ define([
 		if (
 			
 			(!this.isLooping && this.scrollPos>this.firstItemPos)
-					
-			//TODO:  There is one last bug where you can not see a set of data which is longer than the viewable area 
-			//but still shorter than the viewable area PLUS scrollMargin X 2.   
-			//This can be fixed by working with working with something less crude than this.hasShortGridDimsSi.   
-			//This binary property is not enough to handle the long-but-not-long-enough scrollAxis content problem.
-			||(this.hasShortGridDimsSi && this.absScrollPos>2) //<--- TODO:  this bit here should kick off it's own block and implement a marginScrollWarp=true state
+			||
+			(this.hasShortGridDimsSi && this.absScrollPos>2 && !this.steppedScrolling)
 
 		){
 			this.isInHeadMargin = true;
@@ -615,7 +611,7 @@ define([
 	}
 
 	Grid.prototype.easeObjTo = function(p,obj,ms,eFn){//obj: accepts object or index of object; p: is scrollPos
-	// console.log('easeObjTo',obj.index)
+	console.log('easeObjTo',obj.index)
 		if(!obj)obj=0;
 		if(!isNaN(obj)){obj = this.getBoxFromIndex(obj);}
 		var oPoint = this.getAbsToScrollPos(obj.headPointPos[this.si]+obj.width*.5);

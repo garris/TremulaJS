@@ -1,0 +1,33 @@
+[
+
+
+
+{
+	"h":100
+	,"w":200
+	,"template":"<span>switch1</span>"
+}
+,{
+	"h":100
+	,"w":200
+	,"template":"<span>switch2</span>"
+}
+,{
+	"h":100
+	,"w":200
+	,"template":"<span>switch3</span>"
+}
+,{
+	"h":100
+	,"w":200
+	,"template":"<span>switch4</span>"
+}
+,{
+	"h":100
+	,"w":200
+	,"template":"<span>switch5</span>"
+}
+
+
+
+] 

@@ -406,20 +406,28 @@ function attachDemoControls(tremula){
 	function loadTestData(dataUrl,cb){
 		$.getJSON(dataUrl)
 		.done(function(res){
-			console.log(res);
-			var rs = res.filter(function(o,i){
-				o.height_z = o.height_n || o.height_z;
-				o.width_z = o.width_n || o.height_z;
-				o.url_z = o.url_n || o.url_z;
-				return o.height_z > o.width_z * .5
-			});//filter out any with a really wide aspect ratio.
+			var rs = res;
+			var adapter = TremulaItem;
+
+			//only necessary for flickr data vvvv
+					// adapter = flickrTest;
+					// rs = res.filter(function(o,i){
+					// 	o.height_z = o.height_n || o.height_z;
+					// 	o.width_z = o.width_n || o.height_z;
+					// 	o.url_z = o.url_n || o.url_z;
+					// 	return o.height_z > o.width_z * .5
+					// });//filter out any with a really wide aspect ratio.
+			//end flickr adapter ^^^
+
+
+			console.log(rs);
 
 			if(refreshData){				
-				tremula.refreshData(rs,flickrTest);//flicker
+				tremula.refreshData(rs,adapter);//flicker
 				if(cb)cb();
 			}
 			else{
-				tremula.appendData(rs,flickrTest);//flicker
+				tremula.appendData(rs,adapter);//flicker
 				if(cb)cb();
 			}
 
@@ -483,27 +491,27 @@ function attachDemoControls(tremula){
 
 
 // $(".horizontalPop").click();
-	
-	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:300,itemMargins:[100,100],easeToCompensation:15,surfaceMap:horizontalPop});
-	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
-	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[50,0],easeToCompensation:15,surfaceMap:carouselWithPop});
-	// window.resizeFn = resizeSteppedScrolling;
-	// window.resizeFn(tremula)
+	// tremula.Grid.toggleScrollAxis('y');
+	tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:120,itemMargins:[10,10],easeToCompensation:-25,surfaceMap:thumbRollerDial});
+	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[100,100],easeToCompensation:0,surfaceMap:thumbRollerDial});
+	window.resizeFn = resizeSteppedScrolling;
+	window.resizeFn(tremula)
 	// toggleDebug();
 
 
 
 
 
-	loadArtDotCom(null,postLoadSeq)//uncomment to load something automaticly on launch
+	// loadArtDotCom(null,postLoadSeq)//uncomment to load something automaticly on launch
 
 
-	// loadTestData(
-	// 	// 'test/flickr_10_allRect.json',
-	// 	// 'test/flickr_10.json',
-	// 	'test/flickr_25.json',
-	// 	postLoadSeq //<---- this is here for the stepped scrolling test
-	// );
+	loadTestData(
+		'test/ctrls_5.json',
+		// 'test/flickr_10_allRect.json',
+		// 'test/flickr_10.json',
+		// 'test/flickr_25.json',
+		postLoadSeq //<---- this is here for the stepped scrolling test
+	);
 
 	function postLoadSeq(){
 		console.log('postLoadSeq')

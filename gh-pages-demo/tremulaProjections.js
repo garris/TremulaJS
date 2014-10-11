@@ -74,15 +74,6 @@
 
 
 
-
-	var userPath2 = [
-		{x:0.0,y:0},
-		{x:0.5,y:0.7},
-		{x:0.5,y:0.7},
-		{x:1,y:0}
-	];
-
-
 		var softKnee = [
 			{x:0,y:.5},
 			{x:.45,y:.5},
@@ -123,7 +114,7 @@
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
 		// var yo = (grid1-this.outerDims[1]*.5)-p.y;
 		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
-		var zo = Math.min(-200,((1-tri)*-2000))+500;		
+		var zo = Math.min(-200,((1-tri)*-2000))+500;
 		
 		this.e.style.webkitTransformOrigin = '50%';
 		this.e.style.MozTransformOrigin = '50%';
@@ -142,6 +133,75 @@
 
 		this.pPos = [x,y];
 	}//turntable()
+
+	
+
+
+
+
+
+
+
+
+// ========= thumbRollerDial =================
+
+
+	var pinterestPath = [
+		{x:.5,y:0},
+		{x:.5,y:.33},
+		{x:.5,y:.66},
+		{x:.5,y:1}
+	];
+	function thumbRollerDial(x,y){
+
+		var curve = pinterestPath;
+
+		var 
+		count = this.parent.staticAxisCount+1,
+		gridDims = this.parent.gridDims,
+		axisLength = this.parent.currentGridContentDims,
+		tRamp = this.waves.tailRamp,
+		hRamp = this.waves.headRamp,
+		tri = this.waves.triangle,
+		//s = 1,
+		r,
+		xo,//xo=x,//-xoffset, 
+		yo;//yo=y;//-yoffset;
+
+
+		// console.log(axisLength)
+
+		var xyFactor = [
+			gridDims[0], //Math.max(0,gridDims[0]),
+			gridDims[1] //Math.max(0,gridDims[1])
+		];
+
+		var cubicBezier = jsBezier.factorCurveBy(curve,xyFactor);
+		
+		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
+		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
+
+		var xo = p.x-(this.dims[0]*.5)*count +x - this.parent.itemMargins[0]*this.parent.staticAxisCount //- ((axisLength[0]-this.dims[0])*.5) +  count*(this.itemMargins[0]*.5) - this.itemMargins[0]*.5;
+		var yo = (gridDims[1]-this.outerDims[1]*.5)-p.y;
+		var zo = (tri*100)*(tri*10)*.2;
+
+		this.e.style.webkitTransformOrigin = this.e.style.MozTransformOrigin = '50%';
+		
+		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
+		'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)'
+		+' rotateX('+((1-tRamp*180)+106)+'deg)';
+
+		var z = 1000000-this.index;
+		this.e.style.zIndex = z;
+
+		this.e.style.opacity = Math.min(1,((tri*2)-.5));
+
+		this.pPos = [x,y];
+	}//pinterest()
+
+
+
+
 
 	
 
