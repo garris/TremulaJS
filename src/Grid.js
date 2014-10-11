@@ -611,7 +611,7 @@ define([
 	}
 
 	Grid.prototype.easeObjTo = function(p,obj,ms,eFn){//obj: accepts object or index of object; p: is scrollPos
-	console.log('easeObjTo',obj.index)
+	// console.log('easeObjTo',obj.index)
 		if(!obj)obj=0;
 		if(!isNaN(obj)){obj = this.getBoxFromIndex(obj);}
 		var oPoint = this.getAbsToScrollPos(obj.headPointPos[this.si]+obj.width*.5);

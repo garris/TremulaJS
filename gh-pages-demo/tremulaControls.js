@@ -492,10 +492,10 @@ function attachDemoControls(tremula){
 
 // $(".horizontalPop").click();
 	// tremula.Grid.toggleScrollAxis('y');
-	tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:120,itemMargins:[10,10],easeToCompensation:-25,surfaceMap:thumbRollerDial});
-	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[100,100],easeToCompensation:0,surfaceMap:thumbRollerDial});
-	window.resizeFn = resizeSteppedScrolling;
-	window.resizeFn(tremula)
+	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:120,itemMargins:[10,10],easeToCompensation:-25,surfaceMap:thumbRollerDial});
+	tremula.Grid.updateConfig({steppedScrolling:false,axes:0,itemConstraint:120,itemMargins:[10,10],easeToCompensation:-25,surfaceMap:tremula.projections.pinterest});
+	// window.resizeFn = resizeSteppedScrolling;
+	// window.resizeFn(tremula)
 	// toggleDebug();
 
 
