@@ -611,7 +611,9 @@ define([
 	}
 
 	Grid.prototype.easeObjTo = function(p,obj,ms,eFn){//obj: accepts object or index of object; p: is scrollPos
-	// console.log('easeObjTo',obj.index)
+	
+	console.log('easeObjTo',obj.index)
+	
 		if(!obj)obj=0;
 		if(!isNaN(obj)){obj = this.getBoxFromIndex(obj);}
 		var oPoint = this.getAbsToScrollPos(obj.headPointPos[this.si]+obj.width*.5);
@@ -710,8 +712,13 @@ define([
 
 		if(!adapter)adapter=this.options.adapter;
 
+		//if there *is* content block content and it is not already in our boxes array then insert it into our data array
 		var LCB = this.options.lastContentBlock;
-
+		var hasLcbInBoxesArray = this.boxes.filter(function(x){return x.model.isLastContentBlock}).length>0;
+		if(LCB && !hasLcbInBoxesArray){
+			data.splice(0,0,LCB);
+		}
+		
 		//if we are not appending new items to our box list
 		//call remove on each item then clear our model array & set boxCount cache to zero
 		if(!flag){
@@ -719,7 +726,7 @@ define([
 			this.boxes=[];
 			this.boxCount = 0;//cached value of this.boxes.length
 
-			if(LCB)data.splice(0,0,LCB);
+			//if(LCB)data.splice(0,0,LCB);
 		}
 
 		if(!data){
@@ -758,13 +765,13 @@ define([
 			// if(ptr==0)
 				// this.setAbsScrollPos(2000);//TODO:   THIS IS JUST A KLUDGE TO ENABLE *SCROLL ON* -- harmless until we see a scroll axis longer than 2000px, that is, assuming you want the stuff to scroll on...
 			
-			//if this is not the first item AND there is a Last Content Block then *insert* new items OTHERWISE append new items
+			//if this is not the first item AND there is a Last Content Block
 			if(LCB && i>0){
-				this.boxes.splice(-1,0,b);
+				this.boxes.splice(-1,0,b);//LCB is the last item. Add the new item just before that -- IOW: second to last
 			}else if(flag=="insert"){
-				this.boxes.splice(0,0,b);
+				this.boxes.splice(0,0,b);//add new item to the beginning of the list
 			}else{
-				this.boxes.push(b);
+				this.boxes.push(b);//push new item to the end of the list
 			}
 			
 			this.e.appendChild(b.e);

@@ -183,18 +183,18 @@
 
 		var xo = p.x-(this.dims[0]*.5)*count +x - this.parent.itemMargins[0]*this.parent.staticAxisCount //- ((axisLength[0]-this.dims[0])*.5) +  count*(this.itemMargins[0]*.5) - this.itemMargins[0]*.5;
 		var yo = (gridDims[1]-this.outerDims[1]*.5)-p.y;
-		var zo = (tri*100)*(tri*10)*.2;
-
+		var zo = 20*(tri*10);
+if(this.index==1)console.log(zo)
 		this.e.style.webkitTransformOrigin = this.e.style.MozTransformOrigin = '50%';
 		
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
 		'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)'
-		+' rotateX('+((1-tRamp*180)+106)+'deg)';
+		+' rotateX('+((1-tRamp*180)+86)+'deg)';
 
 		var z = 1000000-this.index;
 		this.e.style.zIndex = z;
 
-		this.e.style.opacity = Math.min(1,((tri*2)-.5));
+		this.e.style.opacity = Math.min(1,zo*zo*0.00007);
 
 		this.pPos = [x,y];
 	}//pinterest()

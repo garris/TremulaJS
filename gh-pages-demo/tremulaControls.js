@@ -292,7 +292,7 @@ function attachDemoControls(tremula){
 			saGridDim = g.gridDims[si],
 			firstImageScrollDim = g.getBoxFromIndex(0)&&g.getBoxFromIndex(0)[saDim]||0,
 			newScrollOffset = saGridDim*.5-firstImageScrollDim*.5-g.itemMargins[si]*.5;
-
+// console.log(newScrollOffset)
 		g.updateConfig({scrollAxisOffset:newScrollOffset},true);
 		t.resize();
 
@@ -492,10 +492,10 @@ function attachDemoControls(tremula){
 
 // $(".horizontalPop").click();
 	// tremula.Grid.toggleScrollAxis('y');
-	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:120,itemMargins:[10,10],easeToCompensation:-25,surfaceMap:thumbRollerDial});
-	tremula.Grid.updateConfig({steppedScrolling:false,axes:0,itemConstraint:120,itemMargins:[10,10],easeToCompensation:-25,surfaceMap:tremula.projections.pinterest});
-	// window.resizeFn = resizeSteppedScrolling;
-	// window.resizeFn(tremula)
+	tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[10,10],easeToCompensation:50,surfaceMap:thumbRollerDial});
+	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:50,surfaceMap:tremula.projections.pinterest});
+	window.resizeFn = resizeSteppedScrolling;
+	window.resizeFn(tremula)
 	// toggleDebug();
 
 
