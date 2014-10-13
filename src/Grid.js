@@ -234,6 +234,8 @@ define([
 	
 	Grid.prototype.updateConfig = function(config,torf){
 		if(config.hasOwnProperty('axes'))config.staticAxisCount=config.axes;//need to map this...
+		if(config.hasOwnProperty('surfaceMap'))this.setSurfaceMap(config.surfaceMap);
+		
 		$.extend(this,config);
 		this.resetAllItemConstraints();
 		if(torf)this.setLayout(null,config);
@@ -474,7 +476,7 @@ define([
 				if(this.absScrollPos<0){
 					ns = this.scrollPos-this.firstItemPos;//normalized scroll
 				}else{
-					// ns = -(this.scrollPos-this.trailingEdgeScrollPos);//normalized scroll
+					// ns = -(this.scrollPos-this.trailingEdgeScrollPos);//normalized scroll <--- this was causing bug #10 "stream jumps when tail dragging at or near absolute 0 scrollPos"
 				}
 			}				
 
@@ -612,7 +614,7 @@ define([
 
 	Grid.prototype.easeObjTo = function(p,obj,ms,eFn){//obj: accepts object or index of object; p: is scrollPos
 	
-	console.log('easeObjTo',obj.index)
+	// console.log('easeObjTo',obj.index)
 	
 		if(!obj)obj=0;
 		if(!isNaN(obj)){obj = this.getBoxFromIndex(obj);}

@@ -409,15 +409,17 @@ function attachDemoControls(tremula){
 			var rs = res;
 			var adapter = TremulaItem;
 
-			//only necessary for flickr data vvvv
-					// adapter = flickrTest;
-					// rs = res.filter(function(o,i){
-					// 	o.height_z = o.height_n || o.height_z;
-					// 	o.width_z = o.width_n || o.height_z;
-					// 	o.url_z = o.url_n || o.url_z;
-					// 	return o.height_z > o.width_z * .5
-					// });//filter out any with a really wide aspect ratio.
-			//end flickr adapter ^^^
+			if(rs[0]&&rs[0].url_n || rs[0]&&rs[0].url_z){			
+				// only necessary for flickr data vvvv
+						adapter = flickrTest;
+						rs = res.filter(function(o,i){
+							o.height_z = o.height_n || o.height_z;
+							o.width_z = o.width_n || o.height_z;
+							o.url_z = o.url_n || o.url_z;
+							return o.height_z > o.width_z * .5
+						});//filter out any with a really wide aspect ratio.
+				// end flickr adapter ^^^
+			}
 
 
 			console.log(rs);
@@ -492,10 +494,12 @@ function attachDemoControls(tremula){
 
 // $(".horizontalPop").click();
 	// tremula.Grid.toggleScrollAxis('y');
-	tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[10,10],easeToCompensation:50,surfaceMap:thumbRollerDial});
+	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[10,10],easeToCompensation:20,surfaceMap:thumbRollerDial});
+	// tremula.Grid.updateConfig({steppedScrolling:false,axes:0,itemConstraint:100,itemMargins:[10,10],easeToCompensation:50,surfaceMap:twelveToSix});
+	// tremula.Grid.updateConfig({steppedScrolling:false,axes:0,itemConstraint:100,itemMargins:[10,10],easeToCompensation:50,surfaceMap:sixToTwelve});
 	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:50,surfaceMap:tremula.projections.pinterest});
-	window.resizeFn = resizeSteppedScrolling;
-	window.resizeFn(tremula)
+	// window.resizeFn = resizeSteppedScrolling;
+	// window.resizeFn(tremula)
 	// toggleDebug();
 
 
@@ -506,10 +510,10 @@ function attachDemoControls(tremula){
 
 
 	loadTestData(
-		'test/ctrls_5.json',
+		// 'test/ctrls_5.json',
 		// 'test/flickr_10_allRect.json',
 		// 'test/flickr_10.json',
-		// 'test/flickr_25.json',
+		'test/flickr_25.json',
 		postLoadSeq //<---- this is here for the stepped scrolling test
 	);
 

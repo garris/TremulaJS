@@ -113,6 +113,7 @@
 
 		var xo = (grid0-this.outerDims[0]*.5)-p.x;
 		// var yo = (grid1-this.outerDims[1]*.5)-p.y;
+
 		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
 		var zo = Math.min(-200,((1-tri)*-2000))+500;
 		
@@ -146,19 +147,22 @@
 // ========= thumbRollerDial =================
 
 
-	var pinterestPath = [
-		{x:.5,y:0},
-		{x:.5,y:.33},
-		{x:.5,y:.66},
-		{x:.5,y:1}
+	var thumbRollerDialPath = [
+		{x:0,y:0},				//p0
+		{x:0,y:1},	//p1
+		{x:1,y:0},	//p2
+		{x:1,y:1} 				//p3
 	];
 	function thumbRollerDial(x,y){
 
-		var curve = pinterestPath;
+		var curve = thumbRollerDialPath;
 
 		var 
 		count = this.parent.staticAxisCount+1,
-		gridDims = this.parent.gridDims,
+
+		grid0 = this.parent.gridDims[0],
+		grid1 = this.parent.gridDims[1],
+
 		axisLength = this.parent.currentGridContentDims,
 		tRamp = this.waves.tailRamp,
 		hRamp = this.waves.headRamp,
@@ -172,32 +176,185 @@
 		// console.log(axisLength)
 
 		var xyFactor = [
-			gridDims[0], //Math.max(0,gridDims[0]),
-			gridDims[1] //Math.max(0,gridDims[1])
+			grid0,
+			grid1
 		];
 
 		var cubicBezier = jsBezier.factorCurveBy(curve,xyFactor);
 		
 		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
-		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
+		// var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
+		// var gExt = (g<0)?156+(156+g*100):g*100;
+		var gExt = tRamp * 90 -45;
 
-		var xo = p.x-(this.dims[0]*.5)*count +x - this.parent.itemMargins[0]*this.parent.staticAxisCount //- ((axisLength[0]-this.dims[0])*.5) +  count*(this.itemMargins[0]*.5) - this.itemMargins[0]*.5;
-		var yo = (gridDims[1]-this.outerDims[1]*.5)-p.y;
-		var zo = 20*(tri*10);
-if(this.index==1)console.log(zo)
+		// var xo = grid0 - p.x - (this.dims[0]*.5) - (((axisLength[0]-this.dims[0])*.5) - x - this.itemMargins[0]);
+		var zo = grid0 - p.x - (this.dims[0]*.5) - (((axisLength[0]-this.dims[0])*.5) - x - this.itemMargins[0]);
+		var yo = (grid1-this.outerDims[1]*.5)-p.y;
+		var xo = grid0*.5-this.dims[0]*.5;
+// if(this.index==3)console.log(gExt)
+
 		this.e.style.webkitTransformOrigin = this.e.style.MozTransformOrigin = '50%';
 		
 		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
 		'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)'
-		+' rotateX('+((1-tRamp*180)+86)+'deg)';
+		//+' rotateX('+(gExt)+'deg)';
 
 		var z = 1000000-this.index;
 		this.e.style.zIndex = z;
 
-		this.e.style.opacity = Math.min(1,zo*zo*0.00007);
+		this.e.style.opacity = 1;//Math.min(1,zo*zo*0.00007);
 
 		this.pPos = [x,y];
-	}//pinterest()
+	}//thumbRollerDial()
+
+
+
+
+
+
+
+// ========= twelveToSix =================
+
+
+	var twelveToSixPath = [
+		//soft arc 12to6
+		{x:1,y:0},				//p0
+		{x:0.75,y:0.25},	//p1
+		{x:0.75,y:0.75},	//p2
+		{x:1,y:1} 				//p3
+
+
+		//hard arc 12to6
+		// {x:1,y:0},//p0
+		// {x:0,y:0},//p1
+		// {x:0,y:1},//p2
+		// {x:1,y:1} //p3
+	];
+
+
+	function twelveToSix(x,y){
+
+		var curve = twelveToSixPath;
+
+		var 
+		count = this.parent.staticAxisCount+1,
+
+		grid0 = this.parent.gridDims[0],
+		grid1 = this.parent.gridDims[1],
+
+		axisLength = this.parent.currentGridContentDims,
+		tRamp = this.waves.tailRamp,
+		hRamp = this.waves.headRamp,
+		tri = this.waves.triangle,
+		//s = 1,
+		r,
+		xo,//xo=x,//-xoffset, 
+		yo;//yo=y;//-yoffset;
+
+
+		// console.log(axisLength)
+
+		var xyFactor = [
+			grid0,
+			grid1
+		];
+
+		var cubicBezier = jsBezier.factorCurveBy(curve,xyFactor);
+		
+		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
+		// var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
+		// var gExt = (g<0)?156+(156+g*100):g*100;
+		var gExt = tRamp * 90 -45;
+// if(this.index==3)console.log(gExt)
+
+		var xo = grid0 - p.x - (this.dims[0]*.5) - (((axisLength[0]-this.dims[0])*.5) - x - this.itemMargins[0]);
+		var yo = (grid1-this.outerDims[1]*.5)-p.y;
+		var zo = 0;
+
+		this.e.style.webkitTransformOrigin = this.e.style.MozTransformOrigin = '50%';
+		
+		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
+		'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)'
+		+' rotateZ('+(gExt)+'deg)';
+
+		var z = 1000000-this.index;
+		this.e.style.zIndex = z;
+
+		this.e.style.opacity = 1;//Math.min(1,zo*zo*0.00007);
+
+		this.pPos = [x,y];
+	}//thumbRollerDial()
+
+
+
+
+
+
+
+
+
+// ========= sixToTwelvePath =================
+
+	var sixToTwelvePath = [
+		//soft arc 12to6
+		{x:0,y:0},				//p0
+		{x:0.25,y:0.25},	//p1
+		{x:0.25,y:0.75},	//p2
+		{x:0,y:1} 				//p3
+
+	];
+	function sixToTwelve(x,y){
+
+		var curve = sixToTwelvePath;
+
+		var 
+		count = this.parent.staticAxisCount+1,
+
+		grid0 = this.parent.gridDims[0],
+		grid1 = this.parent.gridDims[1],
+
+		axisLength = this.parent.currentGridContentDims,
+		tRamp = this.waves.tailRamp,
+		hRamp = this.waves.headRamp,
+		tri = this.waves.triangle,
+		//s = 1,
+		r,
+		xo,//xo=x,//-xoffset, 
+		yo;//yo=y;//-yoffset;
+
+
+		// console.log(axisLength)
+
+		var xyFactor = [
+			grid0,
+			grid1
+		];
+
+		var cubicBezier = jsBezier.factorCurveBy(curve,xyFactor);
+		
+		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
+		// var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
+		// var gExt = (g<0)?156+(156+g*100):g*100;
+		var gExt = hRamp * 90 -45;
+// if(this.index==3)console.log(gExt)
+
+		var xo = grid0 - p.x - (this.dims[0]*.5) - (((axisLength[0]-this.dims[0])*.5) - x - this.itemMargins[0]);
+		var yo = (grid1-this.outerDims[1]*.5)-p.y;
+		var zo = 0;
+
+		this.e.style.webkitTransformOrigin = this.e.style.MozTransformOrigin = '50%';
+		
+		this.e.style.transform = this.e.style.OTransform = this.e.style.MozTransform = this.e.style.webkitTransform = 
+		'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)'
+		+' rotateZ('+(gExt)+'deg)';
+
+		var z = 1000000-this.index;
+		this.e.style.zIndex = z;
+
+		this.e.style.opacity = 1;//Math.min(1,zo*zo*0.00007);
+
+		this.pPos = [x,y];
+	}//sixToTwelvePath()
 
 
 
