@@ -452,7 +452,7 @@ function attachDemoControls(tremula){
 	// toggleDebug();
 
 
-	window.loadHorizontalPop = function(){
+	window.loadHorizontalPop = function loadHorizontalPop(){
 		tremula.Grid.removeAll();
 		tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:0,surfaceMap:horizontalPop});
 		window.resizeFn = resizeSteppedScrolling;
