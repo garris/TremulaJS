@@ -33,6 +33,9 @@ define([
 		this.boxCount 				= 0;	//count of data elements
 		this.boxes      			= [];	//array of data elements
 
+		this.steppedScrolling = false;
+		this.easeToCompensation = 0;
+
 		this.springLimit 			= options.itemEasingParams.springLimit; //depth of item level movement when itemEasing is enabled
 
 		this.boxAxisLengths 		= [0,0]; //The total H&W axis lengths after evaluating data (including item margin -- but does not include axis margin)
@@ -61,9 +64,17 @@ define([
 			this.scrollPos = (isDelta)?this.scrollPos+v:v ;
 		}
 		
+		this.getAbsToScrollPos = function(v) {
+			return v-this.firstItemPos;
+		}
+
 		this.setAbsScrollPos = function(v,isDelta) {
+			return this.scrollPos = (isDelta)?this.scrollPos+v:this.firstItemPos+v ;
+		}
+		
+		this.moveToAbsScrollPos = function(v,isDelta) {
 			this.scrollPos = (isDelta)?this.scrollPos+v:this.firstItemPos+v ;
-			return this.scrollPos;
+			this.startPhysicsLoop()
 		}
 		
 		this.getScrollViewDim = function(){
@@ -223,6 +234,8 @@ define([
 	
 	Grid.prototype.updateConfig = function(config,torf){
 		if(config.hasOwnProperty('axes'))config.staticAxisCount=config.axes;//need to map this...
+		if(config.hasOwnProperty('surfaceMap'))this.setSurfaceMap(config.surfaceMap);
+
 		$.extend(this,config);
 		this.resetAllItemConstraints();
 		if(torf)this.setLayout(null,config);
@@ -357,12 +370,8 @@ define([
 		if (
 			
 			(!this.isLooping && this.scrollPos>this.firstItemPos)
-					
-			//TODO:  There is one last bug where you can not see a set of data which is longer than the viewable area 
-			//but still shorter than the viewable area PLUS scrollMargin X 2.   
-			//This can be fixed by working with working with something less crude than this.hasShortGridDimsSi.   
-			//This binary property is not enough to handle the long-but-not-long-enough scrollAxis content problem.
-			||(this.hasShortGridDimsSi && this.absScrollPos>2) //<--- TODO:  this bit here should kick off it's own block and implement a marginScrollWarp=true state
+			||
+			(this.hasShortGridDimsSi && this.absScrollPos>2 && !this.steppedScrolling)
 
 		){
 			this.isInHeadMargin = true;
@@ -467,7 +476,7 @@ define([
 				if(this.absScrollPos<0){
 					ns = this.scrollPos-this.firstItemPos;//normalized scroll
 				}else{
-					ns = -(this.scrollPos-this.trailingEdgeScrollPos);//normalized scroll
+					// ns = -(this.scrollPos-this.trailingEdgeScrollPos);//normalized scroll <--- this was causing bug #10 "stream jumps when tail dragging at or near absolute 0 scrollPos"
 				}
 			}				
 
@@ -536,30 +545,63 @@ define([
 		return evt.gesture.center['page'+this.SA];
 	}
 
-	Grid.prototype.jumpObjTo = function(p,obj,origin){//object or index of object
+	Grid.prototype.getClosestScrollOriginObj = function(){
+		var arr = this.boxes, obj;
+
+		if(this.isInHeadMargin){
+			obj = this.getBoxFromIndex(0);
+		}else if(this.isInTailMargin){
+			obj = this.getLastBoxFromIndex();
+		}else{		
+			obj = arr.reduce(function(a,b){
+				return (a.waves.triangle>b.waves.triangle)?a:b;
+			});
+		}
+		return obj;
+	}
+
+
+	Grid.prototype.jumpObjTo = function(p,obj){//object or index of object
 		
 		this.resetEasing();
 		
 		if(!obj)obj=0;
-		
 		if(!isNaN(obj)){obj = this.getBoxFromIndex(obj);}
 		
-		if(p>this.firstItemPos)
-			p=this.firstItemPos;
+		// if(p>this.firstItemPos)
+		// 	p=this.firstItemPos;
 
-		if(p<this.trailingEdgeScrollPos)
-			p=this.trailingEdgeScrollPos;
+		// if(p<this.trailingEdgeScrollPos)
+		// 	p=this.trailingEdgeScrollPos;
 		
-		//if(!isNaN(origin)){}//if origin is an axis value
-		//u.log(origin)
 		var oPoint = obj.headPointPos[this.si]+obj.width*.5;
-		//this.$dbug.append(oPoint)
 		
-		//this.setScrollPos(p-oPoint+this.firstItemPos)
 		this.setAbsScrollPos(p-oPoint)
 		this.startPhysicsLoop();
 	}
+
+
+	Grid.prototype.easeToThisStepItem = function(o){
+		this.easeObjTo(this.easeToCompensation,o)
+	}
 	
+
+	Grid.prototype.easeToClosestStepItem = function(){
+		var obj = this.getClosestScrollOriginObj();
+		this.easeObjTo(this.easeToCompensation,obj)
+	}
+	
+	Grid.prototype.easeToNextStepItem = function(){
+		var obj = this.getClosestScrollOriginObj();
+		var next = this.getBoxFromIndex(obj.index+1 || null);
+		this.easeObjTo(this.easeToCompensation,next||obj)
+	}
+	Grid.prototype.easeToPrevStepItem = function(){
+		var obj = this.getClosestScrollOriginObj();
+		var prev = this.getBoxFromIndex(obj.index-1 || null);
+		this.easeObjTo(this.easeToCompensation,prev||obj)
+	}
+
 	//@param p = 0..1
 	Grid.prototype.jumpToScrollProgress = function(p){
 		if(p>1)p=0.999;
@@ -570,7 +612,16 @@ define([
 		this.startPhysicsLoop();
 	}
 
+	Grid.prototype.easeObjTo = function(p,obj,ms,eFn){//obj: accepts object or index of object; p: is scrollPos
+	
+	// console.log('easeObjTo',obj.index)
+	
+		if(!obj)obj=0;
+		if(!isNaN(obj)){obj = this.getBoxFromIndex(obj);}
+		var oPoint = this.getAbsToScrollPos(obj.headPointPos[this.si]+obj.width*.5);
 
+		this.easeTo(p-oPoint,ms,eFn);
+	}
 
 	Grid.prototype.easeTo = function(p,ms,eFn){
 		ms = (ms==undefined)?this.easeToDuration:ms;
@@ -639,7 +690,14 @@ define([
 		this.startPhysicsLoop();
 	}
 	
-				
+
+
+	Grid.prototype.removeAll = function(){
+			$.each(this.boxes,function(i,o){o.remove();})
+			this.boxes=[];
+			this.boxCount = 0;//cached value of this.boxes.length			
+	}
+
 /**
  * Add new data items to the view model. 
  * calls setDimentions() on each object
@@ -656,8 +714,6 @@ define([
 
 		if(!adapter)adapter=this.options.adapter;
 
-		var LCB = this.options.lastContentBlock;
-
 		//if we are not appending new items to our box list
 		//call remove on each item then clear our model array & set boxCount cache to zero
 		if(!flag){
@@ -665,8 +721,16 @@ define([
 			this.boxes=[];
 			this.boxCount = 0;//cached value of this.boxes.length
 
-			if(LCB)data.splice(0,0,LCB);
+			//if(LCB)data.splice(0,0,LCB);
 		}
+
+		//if there *is* content block content and it is not already in our boxes array then insert it into our data array
+		var LCB = this.options.lastContentBlock;
+		var hasLcbInBoxesArray = this.boxes.filter(function(x){return x.model.isLastContentBlock}).length>0;
+		if(LCB && !hasLcbInBoxesArray){
+			data.splice(0,0,LCB);
+		}
+		
 
 		if(!data){
 			//you could put something here to update the DOM -- otherwise it will appear as if nothing happened until a DOM event triggers a repaint.
@@ -704,13 +768,13 @@ define([
 			// if(ptr==0)
 				// this.setAbsScrollPos(2000);//TODO:   THIS IS JUST A KLUDGE TO ENABLE *SCROLL ON* -- harmless until we see a scroll axis longer than 2000px, that is, assuming you want the stuff to scroll on...
 			
-			//if this is not the first item AND there is a Last Content Block then *insert* new items OTHERWISE append new items
+			//if this is not the first item AND there is a Last Content Block
 			if(LCB && i>0){
-				this.boxes.splice(-1,0,b);
+				this.boxes.splice(-1,0,b);//LCB is the last item. Add the new item just before that -- IOW: second to last
 			}else if(flag=="insert"){
-				this.boxes.splice(0,0,b);
+				this.boxes.splice(0,0,b);//add new item to the beginning of the list
 			}else{
-				this.boxes.push(b);
+				this.boxes.push(b);//push new item to the end of the list
 			}
 			
 			this.e.appendChild(b.e);
@@ -727,7 +791,6 @@ define([
 	
 	Grid.prototype.resetAllItemConstraints = function(){
 		var c = this.boxCount;
-		
 		for (var i = 0; i < c; i++) {
 			var b = this.boxes[i];
 		
@@ -801,8 +864,8 @@ define([
 		//Handle an empty set of data.
 		if(!b){
 			this.hasData = false;
-			var sorry = new Error('Tremula: No data found on layout operation.');
-			if(console && console.error){console.error(sorry)}
+			var sorry = 'Tremula: Warning. No data found on layout operation.';
+			if(console && console.error){console.info(sorry)}
 			return sorry;
 		}else{
 			this.hasData = true;
@@ -860,11 +923,13 @@ define([
 		if(this.hasShortGridDimsSi){
 			this.boxAxisLengths[this.si]=gridDimsSiPlusScrollMargin;
 		}
-		
+
+		//if steppedScrolling is true then we will add extra scroll margin to the tail (so tail scrolling ends the stream to the center)
+		var tailScrollAxisOffsetAmt = (this.steppedScrolling)?this.scrollAxisOffset*2:this.scrollAxisOffset;
 
 		//cache the location of the trailing edge of the stream
 		//if the content scroll dim is smaller than the scrolling gridDim then use that.
-		this.trailingEdgeScrollPos = -(this.scrollAxisOffset)+ Math.min(
+		this.trailingEdgeScrollPos = -(tailScrollAxisOffsetAmt)+ Math.min(
 			this.getTrailingEdgeScrollPos()+(this.contentDims[this.si]-this.gridDims[this.si]),
 			this.getTrailingEdgeScrollPos()
 		);
@@ -1095,8 +1160,6 @@ define([
 	Grid.prototype.handleGesture = function(ev){
 		// if(window.isDragging) return;
 
-
-
 		switch(ev.type) {
 
 			case 'mousewheel':
@@ -1119,8 +1182,10 @@ define([
 				var isNextHeadMargin = !this.hasMediumGridDimsSi && nextScrollPos>this.firstItemPos;
 				var isNextTailMargin = !this.hasMediumGridDimsSi && nextScrollPos<maxScroll;
 				
+
+				//   || this.isInHeadMargin
 				//add scroll tension if looping is OFF and the very next tick is going to put us beyound the first item or the last item
-				if(!this.isLooping && (isNextHeadMargin||isNextTailMargin)){
+				if(!this.isLooping && (isNextHeadMargin||isNextTailMargin) ){
 					if(this.sx){
 						dx=Math.min(dx*.1,100);
 					}else{
@@ -1213,7 +1278,11 @@ define([
 				this.isTouching=false;
 				//var m = this.momentum = -this.dMomentum;
 				var m = -ev.gesture.velocityX;
-				this.startEasing(m,ev)
+
+				if(this.steppedScrolling)
+					this.easeToNextStepItem();
+				else
+					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
 				break;
@@ -1222,9 +1291,13 @@ define([
 				if(!this.sx){return}
 				ev.gesture.stopDetect();
 				this.isTouching=false;
-				//var m = this.momentum = this.dMomentum;
+
 				var m = ev.gesture.velocityX;
-				this.startEasing(m,ev)
+
+				if(this.steppedScrolling)
+					this.easeToPrevStepItem();
+				else
+					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
 				break;
@@ -1233,9 +1306,13 @@ define([
 				if(this.sx){return}
 				ev.gesture.stopDetect();
 				this.isTouching=false;
-				//var m = this.momentum = -this.dMomentum;
+
 				var m = -ev.gesture.velocityY;
-				this.startEasing(m,ev)
+
+				if(this.steppedScrolling)
+					this.easeToNextStepItem();
+				else
+					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
 				break;
@@ -1246,7 +1323,11 @@ define([
 				this.isTouching=false;
 				//var m = this.momentum = this.dMomentum;
 				var m = ev.gesture.velocityY;
-				this.startEasing(m,ev)
+
+				if(this.steppedScrolling)
+					this.easeToPrevStepItem();
+				else
+					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
 				break;
@@ -1261,21 +1342,32 @@ define([
 
 				this.tagLastUserEvent(ev);
 				break;
-				
-				
+
+
 			case 'release':
 				//u.log('release: '+new Date().getMilliseconds())
 
 				//test for last event being a touch AND being OVER x ms ago.  Also make sure we're not in the middle of easing.
-				var lastTouchMs = new Date() - this.lastUserEvent.time;
-				if(!this.isEasing && this.lastUserEvent.evt.type == 'touch' && lastTouchMs < 1000){
+				var lastUserEvtMs = new Date() - this.lastUserEvent.time;
+				var lastWasTouch = /touch/.test(this.lastUserEvent.evt.type,'i');
+				
+				if(!this.isEasing && lastWasTouch && lastUserEvtMs < 1000){
 					this.$e.trigger('tremulaItemSelect',ev);
 				}
 
-
-
 				this.isTouching=false;
-				this.oneShotPaint();
+				if(this.steppedScrolling){
+
+
+					var lastWasLegalTouch =  lastWasTouch && ev.target && ev.target.className && !/\bgridBox\b/.test(ev.target.className);
+
+					if(!lastWasTouch || lastWasLegalTouch){
+						this.easeToClosestStepItem();
+					};
+				
+				}else{
+					this.oneShotPaint();
+				}
 
 				this.tagLastUserEvent(ev);
 				break;                  

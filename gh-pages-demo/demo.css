@@ -1,7 +1,8 @@
-@import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+@import url(http://fonts.googleapis.com/css?family=Oswald);
 
 body{
-	font-family: 'Yanone Kaffeesatz', sans-serif;
+	font-family: 'Oswald', sans-serif;
+	font-size: .8em;
 	background-color: #ddd;
 }
 
@@ -14,7 +15,10 @@ body{
 	user-select: none;				
 }
 
-
+a{
+	color: inherit;
+	text-decoration: inherit;
+}
 
 /* Tremula Styles  */
 
@@ -26,7 +30,7 @@ body{
 	width: 100%;
 }
 
-.boxLabel{display: none;}
+.boxLabel{display: none;font-size: 12px;font-weight: 100; color:#666;}
 
 
 .doReflect .boxLabel{
@@ -58,6 +62,25 @@ body{
 
 
 /* Demo Styles  */
+
+.debug{
+	display:none;
+	position: absolute;
+	bottom: 0px;
+	width: 400px;
+	height: 50%;
+	z-index: 3;
+	background: #eee;
+	font-size: 12px;
+	font-weight: 100;
+	font-family: courier;
+	color: #666;
+}
+.debug.show{display: block;}
+.debug li {
+list-style: none;
+}
+.debug li span{display: none;}
 
 .controls{
 	position: absolute;
@@ -108,17 +131,19 @@ margin-left: 38px;
 	text-align: left;	
 	overflow: auto;
 	white-space: nowrap;
+	-webkit-overflow-scrolling: touch;
 }
 
 .group.main.presets {
-	width: 238px;
+	/*width: 348px;*/
+	width: 230px;
 	white-space: normal;
 }
 
 .group.main.presets li{
 	width: 98px;
 	display: inline-block;
-	margin: 1px;
+	margin: 0px -.5px;
 } 
 
 
@@ -145,15 +170,17 @@ margin-left: 38px;
 
 .tab{
 	position: absolute;
-	top: 0;
-	background: rgba(239, 239, 239, 0.6);
-	padding: 7px 10px;
+	top: -23px;
+	/*background: rgba(239, 239, 239, 0.6);*/
+	/*background: rgba(220, 220, 220, 1);*/
+	padding: 30px 20px 22px;
 	left: 20px;
-	box-shadow: 0 -2px 11px rgba(0,0,0,0.2);
+	/*box-shadow: 0 -14px 11px rgba(0,0,0,0.2);*/
 	cursor: pointer;
-	font-size: 30px;
+	font-size: 27px;
 	font-weight: 700;
-	color: #333;
+	text-align: center;
+	color: #777;
 	/* height: 70px; */
 	z-index: 3;
 	line-height: 40px;
@@ -161,14 +188,23 @@ margin-left: 38px;
 	-moz-transition: 175ms ease-in-out 0ms;
 	-ms-transition: 175ms ease-in-out 0ms;
 	transition: 175ms ease-in-out 0ms;
+	background-image: radial-gradient(closest-side,rgba(255,255,255,1),rgba(255,255,255,0));
 }
 .tab:hover{
-	background-color: #333;
-	color: #eee;
+	/*background-color: #333;*/
+	color: #555;
+	/*padding-top: 20px;*/
+	/*background: rgba(239, 239, 239, 1);*/
+	/*box-shadow: 0 -14px 11px rgba(0,0,0,0.2), 0 11px 28px -20px rgba(51, 51, 51, 0.9);*/
+	-webkit-transform: scale(1.2) translateY(0px);
+	-moz-transform: scale(1.2) translateY(0px);
+	-ms-transform: scale(1.2) translateY(0px);
+	transform: scale(1.2) translateY(0px);
 }
+
 .tab:active{
-	background-color: #fff;
-	color: #666;
+	/*background-color: #fff;*/
+	color: #FFF;
 }
 .showControls .tab{
 	-webkit-transform: translateY(-70px);
@@ -182,7 +218,7 @@ margin-left: 38px;
 }
 
 h1{
-color: rgba(0, 0, 0, 0.19);
+color: rgba(0, 0, 0, 0.3);
 position: absolute;
 z-index: 4;
 right: 0px;
@@ -194,10 +230,48 @@ padding: 15px;
 margin: 0;
 /* margin-left: -70px; */
 /* background-color: rgba(255,255,255,.7); */
-text-shadow: 0px 1px 0px rgba(255,255,255,1);
+text-shadow: 0px 1px 0px rgba(255,255,255,.5);
+background-image: radial-gradient(closest-side,rgba(255,255,255,1),rgba(255,255,255,0));
 }
 
+.viewOnGithub{
+ position: absolute;
+ top: 0px;
+ right: 0px;
+ width: 160px;
+ height: 150px;
+ overflow: hidden;
+ display: block;
+ z-index: 2;
+}
 
+.viewOnGithub .ribbonTopRight{
+ position: absolute;
+ background: rgba(167, 3, 27, 1);
+ top: 39px;
+ color:white;
+ right: -40px;
+ padding: 10px 60px;
+ display: inline-block;
+ transform: rotate(45deg);
+ -webkit-transform: rotate(44deg);
+ box-shadow: 0px 0px 3px -1px #000, 0 0 40px 0px #fff;
+ text-align: center;
+ font-size:1em; 
+ line-height: 1em;
+ text-transform:capitalize;
+}
+
+@media only screen and (max-width : 700px) {
+	h1{
+		display: none;
+		/*z-index: 0;*/
+	}
+}
+
+body .gridBox.isLastContentBlock{
+	background-color: #eee;
+}
 
 
 /* */

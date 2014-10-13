@@ -107,7 +107,7 @@ function test6(){
 
 function test120(){
 
-	describe("loading 60 items + lastContent", function() {
+	describe("loading 60 (60/120) items + lastContent", function() {
 
 		var contentDims_ = [8531,6263];//ADD "height check to test vals"
 
@@ -140,7 +140,7 @@ function test120(){
 	});//loading 60 items + lastContent
 
 
-	describe("loading 60 MORE items + lastContent", function() {
+	describe("loading 60 MORE items (120/120) + lastContent", function() {
 
 		var contentDims_ = [16543,6263];//ADD "height check to test vals"
 

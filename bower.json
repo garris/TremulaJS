@@ -1,0 +1,12 @@
+{
+  "name": "TremulaJS",
+  "version": "1.2",
+  "main": "dist/",
+  "ignore": [
+    "node_modules"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}

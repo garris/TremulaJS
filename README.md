@@ -10,10 +10,11 @@ TremulaJS is a client-side javascript UI component providing Bézier-based conte
 
 <a href="https://vimeo.com/99481197">![tremula vimeo image](docs/vimeo.png)</a>
 
+While there are some monumental physics-based JS animation frameworks out there -- most notably, [famo.us](http://famo.us), [gsap](http://greensock.com/gsap) and [velocity.js](http://velocityjs.org/) -- TremulaJS was built with a very specific end in mind: to enable the kind of long-running, low-friction user interactions one might enjoy when navigating large sets of visual data.
 
-The TremulaJS project began as an exercise to create an Apple-style momentum-scroller for Javascript. The project eventually grew into a tool able to synthesize live visual content feeds into compelling path-based interactions.
+See TremulaJS in the wild: <a href="http://www.art.com/discover/keyword--gogh/posters.htm?searchstring=GOGH" title="TremulaJS on art.com" target="_blank">currently in production on Art.com</a>.
 
-TremulaJS is compatible with all recent versions of iOS Safari, Chrome, OS X Safari, FF, IE. The component is currently in use on Art.com.
+TremulaJS is compatible with all recent versions of iOS Safari, Chrome, OS X Safari, FF, IE.
 
 TremulaJS was developed by [Garris Shipon](http://garriss.wordpress.com/) at [Art.com Labs](http://art.com/).  
 
@@ -33,20 +34,23 @@ Licensed under GPLv3.
 
 - Download, Fork, Contribute on [GitHub](https://github.com/garris/TremulaJS.git)
 
-- Learn how to create your own Grid Projections -- technical articles coming soon... stay tuned!
+- Learn how to <a href="http://davidwalsh.name/responsive-scalable-animations" title="Create your own TremulaJS grid projections" target="_blank">create your own Grid Projections</a> -- technical articles <del datetime="2014-09-17T19:09:40+00:00">coming soon</del> <a href="http://davidwalsh.name/responsive-scalable-animations" title="Create your own TremulaJS grid projections" target="_blank">here</a>!
+
+**follow [@garris](https://twitter.com/garris)** 
+
 
 
 ### Dependencies
 
 - HammerJS *(A most awesome touch event component)*
 - JsBezier *(Thank you Simon Porritt !)*
-- jQuery *(TremulaJS uses only a little bit of jQuery. Would be happy to remove it from the project in the future.)*
+- jQuery *(Is jQuery the most important, most useful JS library ever? Yes, in 2009. Wouldn't it be nice to tweak a few lines and drop the jQuery requirement — yup. Will someone step forward and help me do it? Well, will you? punk...)*
 
 ### Tested in the following browsers
 iOS Safari, Chrome, OS X Safari, FF, IE (recent versions) 
 
 
-### running mocha.js tests
+### Running mocha.js tests
 open /TremulaJS/test.html in the web browser of your choice.
 
 
@@ -54,4 +58,3 @@ open /TremulaJS/test.html in the web browser of your choice.
 ### Building with r.js
 		step 1. cd to the root /TremulaJS/ directory
 		step 2. $ node r.js -o build.js; node r.js -o cssIn=src/Tremula.css out=dist/Tremula.css optimizeCss=standard
-

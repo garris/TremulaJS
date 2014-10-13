@@ -4,7 +4,7 @@
 		<title>TremulaJS</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 
-		<link rel="stylesheet" href="dist/Tremula.css">
+		<link rel="stylesheet" href="src/Tremula.css">
 		<link rel="stylesheet" href="gh-pages-demo/demo.css">
 		<style type="text/css">
 
@@ -21,8 +21,8 @@
 		<script src="gh-pages-demo/tremulaConfig.js"></script>
 		<script src="gh-pages-demo/tremulaControls.js"></script>
 		<script src="gh-pages-demo/tremulaProjections.js"></script>
-		<script src="dist/Tremula.js"></script>
-
+		<script src="xsrc/Tremula.js"></script>
+		<script data-main="src/Tremula" src="libs/require.js"></script>
 		<script type="text/javascript">
 
 
@@ -30,8 +30,10 @@
 			$().ready(function(){
 				setTimeout(function(){
 					var tremula = tremulaInit();
-					tremula.Grid.updateConfig({itemConstraint:200,itemMargins:[20,20]});
+					tremula.Grid.updateConfig({itemConstraint:400,itemMargins:[30,30]});
+					// tremula.Grid.updateConfig({axes:0,itemConstraint:300,itemMargins:[30,30],surfaceMap:userProjection1});
 					attachDemoControls(tremula);
+										
 					window.tremula=tremula;//does not need to be on the window -- implemented here for convienience.
 
 					$('body').removeClass('doReflect');
@@ -71,7 +73,10 @@
 
 		</script>
 
-
+<style>
+	.gridBox{margin-left: -0px;}
+	/*img{display:none;}*/
+</style>
 
 	</head>
 
@@ -93,7 +98,17 @@
 			
 			<div class="buttons" >
 				
-				<ul class="group main presets"><li class="streamHorizontal">streamHorizontal</li><li class="pinterest">pinterest</li><li class="btnL2">turntable</li><li class="mountain">mountain</li><li class="btnL3">enterTheDragon</li><li class="xy">xyPlain (toggle)</li></ul>
+				<ul class="group main presets">
+					<li class="streamHorizontal">streamHorizontal</li>
+					<li class="pinterest">pinterest</li>
+					<li class="horizontalPop">horizontalPop</li>
+					<li class="btnL2">turntable</li>
+					<li class="mountain">mountain</li>
+					<li class="mountainPop">mountainPop</li>
+					<li class="btnL3">enterTheDragon</li>
+					<li class="xy">xyPlain (toggle)</li>
+					<li class="carouselWithPop">carouselWithPop</li>
+				</ul>
 
 				<ul class="group main">
 					<li class="more">Experimental stuff...</li>

@@ -1,0 +1,23 @@
+{
+  "name": "artDotCom_MQ_prototype",
+  "version": "0.0.0",
+  "description": "",
+  "main": "",
+  "devDependencies": {
+    "gulp": "^3.8.8",
+    "gulp-less": "^1.3.6",
+    "gulp-less-sourcemap": "^1.3.3",
+    "del": "^0.1.3",
+    "resemblejs": "^1.2.0"
+  },
+  "scripts": {},
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "gulp-open": "^0.3.0",
+    "bunyan": "~0.22.3",
+    "express": "^3.8.1",
+    "http-proxy": "~1.1.4",
+    "underscore": "~1.6.0"
+  }
+}
