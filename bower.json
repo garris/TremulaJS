@@ -1,6 +1,6 @@
 {
-  "name": "tremulajs",
-  "version": "1.3",
+  "name": "TremulaJS",
+  "version": "1.2",
   "main": "dist/",
   "ignore": [
     "node_modules"
