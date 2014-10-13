@@ -26,7 +26,7 @@ describe("TremulaJS", function() {
 
 	test6();
 	test60();
-// 	test120();
+	test120();
 
 
 });//TremulaJS
