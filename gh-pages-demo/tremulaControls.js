@@ -452,7 +452,7 @@ function attachDemoControls(tremula){
 			window.resizeFn = resizeSteppedScrolling;
 			resizeFn(tremula);
 			refreshData=true;
-			setTimeout(function(){loadArtDotCom(null,postLoadSeq)},1000);
+			setTimeout(function(){loadArtDotCom(null,postLoadSeq)},250);
 		}, 100)
 	})
 
@@ -470,7 +470,7 @@ function attachDemoControls(tremula){
 			window.resizeFn = resizeSteppedScrolling;
 			resizeFn(tremula);
 			refreshData=true;
-			setTimeout(function(){loadArtDotCom(null,postLoadSeq)},1000);
+			setTimeout(function(){loadArtDotCom(null,postLoadSeq)},250);
 		}, 100)
 	})
 
@@ -487,12 +487,11 @@ function attachDemoControls(tremula){
 			window.resizeFn = resizeSteppedScrolling;
 			resizeFn(tremula);
 			refreshData=true;
-			setTimeout(function(){loadArtDotCom(null,postLoadSeq)},1000);
+			setTimeout(function(){loadArtDotCom(null,postLoadSeq)},250);
 		}, 100)
 	})
 
 
-// $(".horizontalPop").click();
 	// tremula.Grid.toggleScrollAxis('y');
 	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[10,10],easeToCompensation:20,surfaceMap:thumbRollerDial});
 	// tremula.Grid.updateConfig({steppedScrolling:false,axes:0,itemConstraint:100,itemMargins:[10,10],easeToCompensation:50,surfaceMap:twelveToSix});
@@ -503,23 +502,46 @@ function attachDemoControls(tremula){
 	// toggleDebug();
 
 
+	window.loadHorizontalPop = function(){
+		tremula.Grid.removeAll();
+		tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:0,surfaceMap:horizontalPop});
+		window.resizeFn = resizeSteppedScrolling;
+		window.resizeFn(tremula)
+		loadArtDotCom(null,postLoadSeq)
+	}
 
 
+	window.loadMountainPop = function(){
+		tremula.Grid.removeAll();
+		tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
+		window.resizeFn = resizeSteppedScrolling;
+		window.resizeFn(tremula)
+		loadArtDotCom(null,postLoadSeq)
+	}
 
-	// loadArtDotCom(null,postLoadSeq)//uncomment to load something automaticly on launch
+
+	window.loadCarouselWithPop = function(){
+		tremula.Grid.removeAll();
+		tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[50,0],easeToCompensation:15,surfaceMap:carouselWithPop});
+		window.resizeFn = resizeSteppedScrolling;
+		window.resizeFn(tremula)
+		loadArtDotCom(null,postLoadSeq)
+	}
+
+	loadArtDotCom(null,postLoadSeq)//uncomment to load basic demo dataset
 
 
-	loadTestData(
-		// 'test/ctrls_5.json',
-		// 'test/flickr_10_allRect.json',
-		// 'test/flickr_10.json',
-		'test/flickr_25.json',
-		postLoadSeq //<---- this is here for the stepped scrolling test
-	);
+	// loadTestData(
+	// 	// 'test/ctrls_5.json',
+	// 	// 'test/flickr_10_allRect.json',
+	// 	// 'test/flickr_10.json',
+	// 	'test/flickr_25.json',
+	// 	postLoadSeq //<---- this is here for the stepped scrolling test
+	// );
 
 	function postLoadSeq(){
-		console.log('postLoadSeq')
-		if(tremula.steppedScrolling)
+		console.log('postLoadSeq',!!tremula.steppedScrolling)
+		if(tremula.Grid.steppedScrolling)
 			setTimeout(function(){
 				tremula.Grid.easeToClosestStepItem();
 			},100);
