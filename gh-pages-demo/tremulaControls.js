@@ -441,56 +441,6 @@ function attachDemoControls(tremula){
 
 
 
-	$(".horizontalPop").click(function() {
-		s.toggleScrollAxis('x');
-		s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,itemConstraint:100,itemMargins:[25,25],staticAxisOffset:0},0,tremula.easings.easeOutElastic,tremula.projections.streamHorizontal);
-		$body.removeClass('doReflect');
-
-		setTimeout(function(){
-			tremula.Grid.removeAll();
-			s.updateConfig( {steppedScrolling:true,axes:0,itemConstraint:300,itemMargins:[100,100],easeToCompensation:15,surfaceMap:horizontalPop} );
-			window.resizeFn = resizeSteppedScrolling;
-			resizeFn(tremula);
-			refreshData=true;
-			setTimeout(function(){loadArtDotCom(null,postLoadSeq)},250);
-		}, 100)
-	})
-
-
-
-	$(".mountainPop").click(function() {
-		s.toggleScrollAxis('x');
-		s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,itemConstraint:100,itemMargins:[25,25],staticAxisOffset:0},0,tremula.easings.easeOutElastic,tremula.projections.streamHorizontal);
-		$body.removeClass('doReflect');
-
-		// s.jumpToScrollProgress(0);
-		setTimeout(function(){
-			tremula.Grid.removeAll();
-			s.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
-			window.resizeFn = resizeSteppedScrolling;
-			resizeFn(tremula);
-			refreshData=true;
-			setTimeout(function(){loadArtDotCom(null,postLoadSeq)},250);
-		}, 100)
-	})
-
-
-
-	$(".carouselWithPop").click(function() {
-		s.toggleScrollAxis('x');
-		s.doTransition(tremula.layouts.basicGridLayout,{steppedScrolling:false,axes:0,itemConstraint:100,itemMargins:[25,25],staticAxisOffset:0},0,tremula.easings.easeOutElastic,tremula.projections.streamHorizontal);
-		$body.removeClass('doReflect');
-
-		setTimeout(function(){
-			tremula.Grid.removeAll();
-			s.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[50,0],easeToCompensation:15,surfaceMap:carouselWithPop});
-			window.resizeFn = resizeSteppedScrolling;
-			resizeFn(tremula);
-			refreshData=true;
-			setTimeout(function(){loadArtDotCom(null,postLoadSeq)},250);
-		}, 100)
-	})
-
 
 	// tremula.Grid.toggleScrollAxis('y');
 	// tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[10,10],easeToCompensation:20,surfaceMap:thumbRollerDial});
@@ -513,7 +463,7 @@ function attachDemoControls(tremula){
 
 	window.loadMountainPop = function(){
 		tremula.Grid.removeAll();
-		tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
+		tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:150,itemMargins:[20,20],easeToCompensation:-15,surfaceMap:mountainPop});
 		window.resizeFn = resizeSteppedScrolling;
 		window.resizeFn(tremula)
 		loadArtDotCom(null,postLoadSeq)
@@ -528,14 +478,29 @@ function attachDemoControls(tremula){
 		loadArtDotCom(null,postLoadSeq)
 	}
 
-	loadArtDotCom(null,postLoadSeq)//uncomment to load basic demo dataset
+
+
+	window.loadTwelveToSix= function(){
+		tremula.Grid.removeAll();
+		tremula.Grid.toggleScrollAxis('y');
+		tremula.Grid.updateConfig({steppedScrolling:false,axes:0,itemConstraint:100,itemMargins:[10,10],easeToCompensation:50,surfaceMap:twelveToSix});
+		window.resizeFn = resizeSteppedScrolling;
+		window.resizeFn(tremula)
+		loadArtDotCom(null,postLoadSeq)
+	}
+
+	// loadTwelveToSix()
+	// loadMountainPop()
+	// loadCarouselWithPop()
+	loadHorizontalPop()
+	// loadArtDotCom(null,postLoadSeq)//uncomment to load basic demo dataset
 
 
 	// loadTestData(
 	// 	// 'test/ctrls_5.json',
-	// 	// 'test/flickr_10_allRect.json',
+	// 	'test/flickr_10_allRect.json',
 	// 	// 'test/flickr_10.json',
-	// 	'test/flickr_25.json',
+	// 	// 'test/flickr_25.json',
 	// 	postLoadSeq //<---- this is here for the stepped scrolling test
 	// );
 

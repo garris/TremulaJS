@@ -44,7 +44,7 @@
 		var g = jsBezier.gradientAtPoint(cubicBezier, tRamp);
 
 		// var xo = p.x - (this.dims[0]*.5);
-		var xo = x+20;
+		var xo = x+16;
 
 		// var yo = grid1 - p.y - (this.dims[1]*.5) - (((axisLength[1]-this.dims[1])*.5) - y - this.itemMargins[1]);
 		var yo = (grid1*.5) - (p.y*0) - (this.dims[1]*.5) - (((axisLength[1]-this.dims[1])*.5) - (y*0) - this.itemMargins[1]);
@@ -111,7 +111,7 @@
 		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
 		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
-		var xo = (grid0-this.outerDims[0]*.5)-p.x;
+		var xo = (grid0-this.outerDims[0]*.5)-p.x+10;
 		// var yo = (grid1-this.outerDims[1]*.5)-p.y;
 
 		var yo = p.y-(this.dims[1]*.5)+y - ((axisLength[1]-this.dims[1])*.5) - this.itemMargins[1];
@@ -410,7 +410,7 @@
 		var p = jsBezier.pointOnCurve(cubicBezier, hRamp);
 		var g = jsBezier.gradientAtPoint(cubicBezier, hRamp);
 
-		var xo = (grid0-this.outerDims[0]*.5)-p.x;
+		var xo = (grid0-this.outerDims[0]*.5)-p.x+30;
 
 		//compensation vvvvv
 		// xo = xo -viewOffset;

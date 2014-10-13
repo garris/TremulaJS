@@ -235,7 +235,7 @@ define([
 	Grid.prototype.updateConfig = function(config,torf){
 		if(config.hasOwnProperty('axes'))config.staticAxisCount=config.axes;//need to map this...
 		if(config.hasOwnProperty('surfaceMap'))this.setSurfaceMap(config.surfaceMap);
-		
+
 		$.extend(this,config);
 		this.resetAllItemConstraints();
 		if(torf)this.setLayout(null,config);
@@ -714,13 +714,6 @@ define([
 
 		if(!adapter)adapter=this.options.adapter;
 
-		//if there *is* content block content and it is not already in our boxes array then insert it into our data array
-		var LCB = this.options.lastContentBlock;
-		var hasLcbInBoxesArray = this.boxes.filter(function(x){return x.model.isLastContentBlock}).length>0;
-		if(LCB && !hasLcbInBoxesArray){
-			data.splice(0,0,LCB);
-		}
-		
 		//if we are not appending new items to our box list
 		//call remove on each item then clear our model array & set boxCount cache to zero
 		if(!flag){
@@ -730,6 +723,14 @@ define([
 
 			//if(LCB)data.splice(0,0,LCB);
 		}
+
+		//if there *is* content block content and it is not already in our boxes array then insert it into our data array
+		var LCB = this.options.lastContentBlock;
+		var hasLcbInBoxesArray = this.boxes.filter(function(x){return x.model.isLastContentBlock}).length>0;
+		if(LCB && !hasLcbInBoxesArray){
+			data.splice(0,0,LCB);
+		}
+		
 
 		if(!data){
 			//you could put something here to update the DOM -- otherwise it will appear as if nothing happened until a DOM event triggers a repaint.
