@@ -1,10 +1,32 @@
+
+
+	function App(){
+			var that = this;
+			this.hi = function hi(x){console.log('test => ',that,x);}
+	}
+	var myTestApp = new App;
+	//myTestApp.hi('myTestApp');
+
+
+
 $(document).ready(function(){
+
+
+
+
 	setTimeout(function(){
 		window.tremula = createTremula();
 		applyBoxClick();
 		//loadFlickr()
+		// myTestApp.hi('ready timeout');
+		// window.tremula.setOnChangePub(myTestApp.hi);
 	},1000);
+
+
 });
+
+
+
 
 
 
@@ -89,6 +111,7 @@ function createTremula(){
 		//method called after each frame is painted. Passes internal parameter object.
 		//see fn definition below
 		onChangePub					: doScrollEvents,
+		// onChangePub					: myTestApp.hi,
 
 		//content/stream data can optionally be passed in on init()
 		data                : null,
@@ -127,7 +150,6 @@ function createTremula(){
 //Another option here is multiple tremula instancechaining i.e. follow the scroll events of another tremula instance.
 //use case of this may be one tremula displaying close up data view while another may be an overview.
 function doScrollEvents(o){
-	
 	showControlData(o);
 
 	if(o.scrollProgress>.7){

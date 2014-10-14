@@ -504,7 +504,8 @@ define([
 		
 		this.trackFrameRate();
 		
-		if(this.onChangePub)this.onChangePub(this)
+		//LOOP CALLBACK
+		if(this.onChangePub)this.onChangePub(this);
 		
 		return this.scrollPos;//warpedScrollPos;
 		

@@ -1,5 +1,5 @@
 /** 
-*   TremulaJS 1.2.1 https://github.com/garris/TremulaJS
+*   TremulaJS 1.2.2 https://github.com/garris/TremulaJS
 *   Copyright (C) 2014, Art.com 
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -85,8 +85,7 @@ define([
 	}
 
 	Tremula.prototype.setOnChangePub = function(cb){
-		var g = this.Grid;
-		g.onChangePub = cb;
+		this.Grid.onChangePub = cb;
 	};
 
 
