@@ -4,8 +4,17 @@
 		<title>TremulaJS</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		
+		<!-- 
+			HEY YOU: WATCH OUT! 
+			DOING SOMETHING A LITTLE OVER-LOOKABLE HERE.
+			ADDED A <base> TAG SO THIS DEMO WILL RUN IN PLACE
+			IF YOU COPY THIS CODE REMEMBER TO MAYBE DELETE THE <base> TAG. ON THE FOLLOWING LINE.  YES? OK? GOOD. 
+		-->
+		<base href="../">
+		
 
-		<link rel="stylesheet" href="../dist/Tremula.css">
+
+		<link rel="stylesheet" href="dist/Tremula.css">
 
 		<style type="text/css">
 			@import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -65,11 +74,11 @@
 
 		</style>
 		
-		<script src="../libs/jquery-min.js"></script>
-		<script src="../libs/hammer.js"></script>
-		<script src="../libs/jsBezier-0.6.js"></script>
+		<script src="libs/jquery-min.js"></script>
+		<script src="libs/hammer.js"></script>
+		<script src="libs/jsBezier-0.6.js"></script>
 
-		<script src="../dist/Tremula.js"></script>
+		<script data-main="src/Tremula" src="libs/require.js"></script>
 
 		<script type="text/javascript">
 
