@@ -67,11 +67,13 @@ cd to the tremulajs directory then...
 
 with the test server running (or you can skip that part and use a browser with same origin policy disabled)
 
-    open http://localhost:3000/test.html
+    $ open http://localhost:3000/test.html
      
 
 ### Building with r.js
-    //cd to the root /TremulaJS/ directory then...
+
+cd to the tremulajs directory then...
+
     $ node r.js -o build.js; node r.js -o cssIn=src/Tremula.css out=dist/Tremula.css optimizeCss=standard
 
 
