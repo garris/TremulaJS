@@ -39,22 +39,47 @@ Licensed under GPLv3.
 **follow [@garris](https://twitter.com/garris)** 
 
 
+  
+
+### Installing
+
+cd to the root of your project then...
+
+     $ bower install tremulajs --save
+    
+Optional install for mocha test framework and local host server (this is just a convenience for testing on local phones and tablets.) 
+
+cd to the tremulajs directory then...
+    
+    $ npm install
+
+
+
+
+### Running the local test server
+
+cd to the tremulajs directory then...
+
+     $ node server.js
+     
+     
+### Running mocha.js tests
+
+with the test server running (or you can skip that part and use a browser with same origin policy disabled)
+
+    open http://localhost:3000/test.html
+     
+
+### Building with r.js
+    //cd to the root /TremulaJS/ directory then...
+    $ node r.js -o build.js; node r.js -o cssIn=src/Tremula.css out=dist/Tremula.css optimizeCss=standard
+
 
 ### Dependencies
 
 - HammerJS *(A most awesome touch event component)*
 - JsBezier *(Thank you Simon Porritt !)*
-- jQuery *(Is jQuery the most important, most useful JS library ever? Yes, in 2009. Wouldn't it be nice to tweak a few lines and drop the jQuery requirement — yup. Will someone step forward and help me do it? Well, will you? punk...)*
+- jQuery *(jQuery is a little overkill at this point -- It would be very straightforward to remove the few remaining convenience calls.  For now, still required. John Resig, I salute you!)*
 
 ### Tested in the following browsers
 iOS Safari, Chrome, OS X Safari, FF, IE (recent versions) 
-
-
-### Running mocha.js tests
-open /TremulaJS/test.html in the web browser of your choice.
-
-
-
-### Building with r.js
-		step 1. cd to the root /TremulaJS/ directory
-		step 2. $ node r.js -o build.js; node r.js -o cssIn=src/Tremula.css out=dist/Tremula.css optimizeCss=standard
