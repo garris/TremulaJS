@@ -190,6 +190,7 @@ function attachDemoControls(tremula){
 
 	$(".more").on('click',function(evt) {
 		evt.stopPropagation();
+		$('.streamHorizontal').click();
 		$body.addClass('showTweaks')
 		$(".more").remove();
 	})
