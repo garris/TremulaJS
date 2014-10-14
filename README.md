@@ -67,7 +67,7 @@ cd to the tremulajs directory then...
 
 with the test server running (or you can skip that part and use a browser with same origin policy disabled)
 
-    open http://localhost:3000/test.html
+    $ open http://localhost:3000/test.html
      
 
 ### Building with r.js
