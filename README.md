@@ -16,7 +16,7 @@ See TremulaJS in the wild: <a href="http://www.art.com/discover/keyword--gogh/po
 
 TremulaJS is compatible with all recent versions of iOS Safari, Chrome, OS X Safari, FF, IE.
 
-TremulaJS was developed by [Garris Shipon](http://garriss.wordpress.com/) at [Art.com Labs](http://art.com/).  
+TremulaJS was created by [Garris Shipon](http://garriss.wordpress.com/) at [Art.com Labs](http://art.com/).  
 
 Licensed under GPLv3.
 
