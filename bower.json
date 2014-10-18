@@ -3,7 +3,9 @@
   "version": "1.2.2",
   "main": "dist/",
   "ignore": [
-    "node_modules"
+    "node_modules",
+    "*.sublime-project",
+    "*.sublime-workspace"
   ],
   "dependencies": {
   },
