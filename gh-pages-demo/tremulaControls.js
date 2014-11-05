@@ -493,8 +493,8 @@ function attachDemoControls(tremula){
 	// loadTwelveToSix()
 	// loadMountainPop()
 	// loadCarouselWithPop()
-	loadHorizontalPop()
-	// loadArtDotCom(null,postLoadSeq)//uncomment to load basic demo dataset
+	// loadHorizontalPop()
+	loadArtDotCom(null,postLoadSeq)//uncomment to load basic demo dataset
 
 
 	// loadTestData(
