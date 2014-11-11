@@ -584,7 +584,7 @@ define([
 
 	Grid.prototype.easeToThisStepItem = function(o){
 		this.easeObjTo(this.easeToCompensation,o)
-		this.$e.trigger('stepItemFocus',null);
+		this.$e.trigger('stepItemFocus',null,o);
 		return o;
 	}
 	
@@ -592,7 +592,7 @@ define([
 	Grid.prototype.easeToClosestStepItem = function(){
 		var obj = this.getClosestScrollOriginObj();
 		this.easeObjTo(this.easeToCompensation,obj);
-		this.$e.trigger('stepItemFocus',null);
+		this.$e.trigger('stepItemFocus',null,obj);
 		return obj;
 	}
 	
@@ -600,14 +600,14 @@ define([
 		var obj = this.getClosestScrollOriginObj();
 		var next = this.getBoxFromIndex(obj.index+1 || null);
 		this.easeObjTo(this.easeToCompensation,next||obj)
-		this.$e.trigger('stepItemFocus',null);
+		this.$e.trigger('stepItemFocus',null,next);
 		return next;
 	}
 	Grid.prototype.easeToPrevStepItem = function(){
 		var obj = this.getClosestScrollOriginObj();
 		var prev = this.getBoxFromIndex(obj.index-1 || null);
 		this.easeObjTo(this.easeToCompensation,prev||obj)
-		this.$e.trigger('stepItemFocus',null);
+		this.$e.trigger('stepItemFocus',null,prev);
 		return prev;
 	}
 
