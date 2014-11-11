@@ -584,23 +584,31 @@ define([
 
 	Grid.prototype.easeToThisStepItem = function(o){
 		this.easeObjTo(this.easeToCompensation,o)
+		this.$e.trigger('stepItemFocus',null);
+		return o;
 	}
 	
 
 	Grid.prototype.easeToClosestStepItem = function(){
 		var obj = this.getClosestScrollOriginObj();
-		this.easeObjTo(this.easeToCompensation,obj)
+		this.easeObjTo(this.easeToCompensation,obj);
+		this.$e.trigger('stepItemFocus',null);
+		return obj;
 	}
 	
 	Grid.prototype.easeToNextStepItem = function(){
 		var obj = this.getClosestScrollOriginObj();
 		var next = this.getBoxFromIndex(obj.index+1 || null);
 		this.easeObjTo(this.easeToCompensation,next||obj)
+		this.$e.trigger('stepItemFocus',null);
+		return next;
 	}
 	Grid.prototype.easeToPrevStepItem = function(){
 		var obj = this.getClosestScrollOriginObj();
 		var prev = this.getBoxFromIndex(obj.index-1 || null);
 		this.easeObjTo(this.easeToCompensation,prev||obj)
+		this.$e.trigger('stepItemFocus',null);
+		return prev;
 	}
 
 	//@param p = 0..1
@@ -1201,6 +1209,8 @@ define([
 				ev.gesture.center.pageX = ev.pageX;//ev.originalEvent.pageX;
 				ev.gesture.center.pageY = ev.pageY;//ev.originalEvent.pageY;
 				//fingeredOffset = this.scrollPos; moved below...
+
+				// if(this.isInHeadMargin){ev.gesture.deltaX = dx*.01}
 				
 				// ===>  NOTE: THERE IS NO BREAK HERE. MW EVENTS ARE NORMALIZED (as ev.gesture.*) ABOVE AND THEN PROCESSED AS DRAG EVENTS BELOW vvv
 				
