@@ -757,7 +757,7 @@ define([
 			//each box gets a serial id
 			//b.index = i;//this is moved because insert function shuffles the deck in a non-desirable way
 			var d = data[i-ptr];
-			if(d.isLastContentBlock)
+			if(d.isLastContentBlock && d.adapter)
 				b.setModel(new d.adapter(data[i-ptr],this));//shim data through the adapter. 
 			else
 				b.setModel(new adapter(data[i-ptr],this));//shim data through the adapter.  We will eventually want to add a DOM template configuration for this as well.
