@@ -5,7 +5,7 @@
  */
 
 /** 
-*   TremulaJS 1.2.2 https://github.com/garris/TremulaJS
+*   TremulaJS 1.2.3 https://github.com/garris/TremulaJS
 *   Copyright (C) 2014, Art.com 
 *
 *   This program is free software: you can redistribute it and/or modify
