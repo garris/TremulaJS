@@ -54,6 +54,17 @@ cd to the tremulajs directory then...
     $ npm install
 
 
+### Stepped scrolling (aka "paged" scrolling)
+This feature will auto scroll the stream so that a single item is always presented in the center of the screen -- this is a cover-flow "like" behavior. 
+
+![](http://garris.github.io/TremulaJS/docs/steppedSwiping.png)
+
+To view the functionality, open the [demo here](http://garris.github.io/TremulaJS/) and call any of the following methods in the console...
+
+    loadMountainPop()
+    loadCarouselWithPop()
+    loadHorizontalPop()
+
 
 
 ### Running the local test server
