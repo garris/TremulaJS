@@ -178,7 +178,15 @@ define([
 		this.isChildEasing = false;
 
 		this.lastSelected = null;
-		
+
+		this.setLastSelected = function(item){
+			this.lastSelected = item || null;
+		}
+
+		this.getLastSelected = function(){
+			return this.lastSelected;
+		}		
+
 
 		this.getBoxFromIndex = function(i){
 			return this.boxes[i];
@@ -596,16 +604,16 @@ define([
 		return obj;
 	}
 	
-	Grid.prototype.easeToNextStepItem = function(){
-		var obj = this.getClosestScrollOriginObj();
-		var next = this.getBoxFromIndex(obj.index+1 || null);
+	Grid.prototype.easeToNextStepItem = function(o){
+		var obj = o || this.getClosestScrollOriginObj();
+		var next = this.getBoxFromIndex(obj.index+1);
 		this.easeObjTo(this.easeToCompensation,next||obj)
 		this.$e.trigger('stepItemFocus',next);
 		return next;
 	}
-	Grid.prototype.easeToPrevStepItem = function(){
-		var obj = this.getClosestScrollOriginObj();
-		var prev = this.getBoxFromIndex(obj.index-1 || null);
+	Grid.prototype.easeToPrevStepItem = function(o){
+		var obj = o || this.getClosestScrollOriginObj();
+		var prev = this.getBoxFromIndex(obj.index-1);
 		this.easeObjTo(this.easeToCompensation,prev||obj)
 		this.$e.trigger('stepItemFocus',prev);
 		return prev;
@@ -1179,6 +1187,7 @@ define([
 
 	Grid.prototype.handleGesture = function(ev){
 		// if(window.isDragging) return;
+		// var that = this;
 
 		switch(ev.type) {
 
@@ -1265,6 +1274,9 @@ define([
 
 
 				this.isTouching=true;
+
+				if(!this.getLastSelected())
+					this.setLastSelected(this.getClosestScrollOriginObj());
 				
 				//incase we are at the begining of a touch event or incase this is a fallthrough WheelEvent
 				if(fingeredOffset==0 || /wheel|scroll/.test(ev.type)){
@@ -1302,11 +1314,12 @@ define([
 				var m = -ev.gesture.velocityX;
 
 				if(this.steppedScrolling)
-					this.easeToNextStepItem();
+					this.easeToNextStepItem(this.getLastSelected());
 				else
 					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
+				this.setLastSelected();
 				break;
 
 			case 'swiperight':
@@ -1317,11 +1330,12 @@ define([
 				var m = ev.gesture.velocityX;
 
 				if(this.steppedScrolling)
-					this.easeToPrevStepItem();
+					this.easeToPrevStepItem(this.getLastSelected());
 				else
 					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
+				this.setLastSelected();
 				break;
 				
 			case 'swipeup':
@@ -1332,11 +1346,12 @@ define([
 				var m = -ev.gesture.velocityY;
 
 				if(this.steppedScrolling)
-					this.easeToNextStepItem();
+					this.easeToNextStepItem(this.getLastSelected());
 				else
 					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
+				this.setLastSelected();
 				break;
 
 			case 'swipedown':
@@ -1347,11 +1362,12 @@ define([
 				var m = ev.gesture.velocityY;
 
 				if(this.steppedScrolling)
-					this.easeToPrevStepItem();
+					this.easeToPrevStepItem(this.getLastSelected());
 				else
 					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
+				this.setLastSelected();
 				break;
 		
 			case 'touch':
@@ -1392,6 +1408,7 @@ define([
 				}
 
 				this.tagLastUserEvent(ev);
+				this.setLastSelected();
 				break;                  
 				
 		}//switch

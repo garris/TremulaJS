@@ -16,6 +16,62 @@
 
 
 
+	function horizontalStepped(x,y){
+
+		var curve = userPath;
+
+		var 
+		grid0 = this.parent.gridDims[0],
+		grid1 = this.parent.gridDims[1],
+		axisLength = this.parent.currentGridContentDims,
+		tRamp = this.waves.tailRamp,
+		hRamp = this.waves.headRamp,
+		tri = this.waves.triangle,
+		xo,
+		yo;
+
+		// tri = Math.min(.9,tri);
+		
+		
+		var xyFactor = [
+			grid0,
+			grid1
+		];
+
+		var cubicBezier = jsBezier.factorCurveBy(curve,xyFactor);
+
+		var p = jsBezier.pointOnCurve(cubicBezier, tRamp);
+		var g = jsBezier.gradientAtPoint(cubicBezier, tRamp);
+
+		// var xo = p.x - (this.dims[0]*.5);
+		var xo = x+16;
+
+		// var yo = grid1 - p.y - (this.dims[1]*.5) - (((axisLength[1]-this.dims[1])*.5) - y - this.itemMargins[1]);
+		var yo = (grid1*.5) - (p.y*0) - (this.dims[1]*.5) - (((axisLength[1]-this.dims[1])*.5) - (y*0) - this.itemMargins[1]);
+
+		var zo = 0;//(tri)*.5;
+
+		// if(this.index==0)console.log(tri)
+
+		this.e.style.transformOrigin = this.e.style.webkitTransformOrigin = this.e.style.MozTransformOrigin = '50%';
+
+		this.e.style.transform = this.e.style.MozTransform = this.e.style.webkitTransform = 
+			'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)';
+			//+' rotateY('+((tRamp*.7*90)-30)+'deg)';
+
+
+		// var z = 10000-this.index;
+		var z = 10000-this.index;
+		this.e.style.zIndex = Math.abs(Math.floor(tri*100));
+		this.e.style.opacity = 1;//Math.max(tri,.5);
+		this.e.style.webkitBoxShadow = '0 0 10px rgba(0,0,0,'+Math.min(tri,.3)+')';
+
+		this.pPos = [x,y];
+	}
+
+
+//==============
+
 	function horizontalPop(x,y){
 
 		var curve = userPath;
