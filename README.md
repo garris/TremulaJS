@@ -74,7 +74,10 @@ with the test server running (or you can skip that part and use a browser with s
 
 cd to the tremulajs directory then...
 
-    $ node r.js -o build.js; node r.js -o cssIn=src/Tremula.css out=dist/Tremula.css optimizeCss=standard
+    $ node r.js -o build.js; node r.js -o cssIn=src/Tremula.css out=dist/Tremula.css;node r.js -o build_min.js; node r.js -o cssIn=src/Tremula.css out=dist/Tremula.min.css optimizeCss=standard
+
+
+
 
 
 ### Dependencies
