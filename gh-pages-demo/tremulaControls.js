@@ -453,6 +453,15 @@ function attachDemoControls(tremula){
 	// toggleDebug();
 
 
+	window.loadHorizontalStepped = function loadHorizontalStepped(){
+		tremula.Grid.removeAll();
+		tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:0,surfaceMap:horizontalStepped});
+		window.resizeFn = resizeSteppedScrolling;
+		window.resizeFn(tremula)
+		loadArtDotCom(null,postLoadSeq)
+	}
+
+
 	window.loadHorizontalPop = function loadHorizontalPop(){
 		tremula.Grid.removeAll();
 		tremula.Grid.updateConfig({steppedScrolling:true,axes:0,itemConstraint:200,itemMargins:[20,20],easeToCompensation:0,surfaceMap:horizontalPop});
