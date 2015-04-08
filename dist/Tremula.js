@@ -2484,10 +2484,11 @@ define('Grid',[
 				}
 			}				
 
-
-			var r = Math.min(1,ns/this.bounceMargin);//percent of bounce margin traveled
-			var ez = Math.min(1,easings.easeOutQuart(null,r,0,1,1));
-			this.setScrollPos(D*ez,true)
+			if(!this.hasMediumGridDimsSi){
+				var r = Math.min(1,ns/this.bounceMargin);//percent of bounce margin traveled
+				var ez = Math.min(1,easings.easeOutQuart(null,r,0,1,1));
+				this.setScrollPos(D*ez,true)
+			}
 		}
 		
 		//this.page = -Math.floor(this.scrollPos/this.boxAxisLengths[this.si])-1;//TODO: REMOVE if page number is not needed.
@@ -3427,7 +3428,7 @@ define('Grid',[
 
 
 /** 
-*   TremulaJS 1.3.0 https://github.com/garris/TremulaJS
+*   TremulaJS 1.3.1 https://github.com/garris/TremulaJS
 *   Copyright (C) 2014, Art.com 
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -3539,7 +3540,7 @@ define('Tremula',[
 				transitionCurve					:easings.easeOutCubic,
 				easeTime        				:500,
 				springLimit 						:20 //in px
-															 },
+			},
 			scrollAxis 							:'x',
 			itemConstraint 					:null,
 			staticAxisCount 				:0

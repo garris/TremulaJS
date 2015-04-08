@@ -488,10 +488,11 @@ define([
 				}
 			}				
 
-
-			var r = Math.min(1,ns/this.bounceMargin);//percent of bounce margin traveled
-			var ez = Math.min(1,easings.easeOutQuart(null,r,0,1,1));
-			this.setScrollPos(D*ez,true)
+			if(!this.hasMediumGridDimsSi){
+				var r = Math.min(1,ns/this.bounceMargin);//percent of bounce margin traveled
+				var ez = Math.min(1,easings.easeOutQuart(null,r,0,1,1));
+				this.setScrollPos(D*ez,true)
+			}
 		}
 		
 		//this.page = -Math.floor(this.scrollPos/this.boxAxisLengths[this.si])-1;//TODO: REMOVE if page number is not needed.

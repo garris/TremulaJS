@@ -1,5 +1,5 @@
 /** 
-*   TremulaJS 1.3.0 https://github.com/garris/TremulaJS
+*   TremulaJS 1.3.1 https://github.com/garris/TremulaJS
 *   Copyright (C) 2014, Art.com 
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -111,7 +111,7 @@ define([
 				transitionCurve					:easings.easeOutCubic,
 				easeTime        				:500,
 				springLimit 						:20 //in px
-															 },
+			},
 			scrollAxis 							:'x',
 			itemConstraint 					:null,
 			staticAxisCount 				:0
