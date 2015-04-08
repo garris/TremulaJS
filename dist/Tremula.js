@@ -2174,7 +2174,15 @@ define('Grid',[
 		this.isChildEasing = false;
 
 		this.lastSelected = null;
-		
+
+		this.setLastSelected = function(item){
+			this.lastSelected = item || null;
+		}
+
+		this.getLastSelected = function(){
+			return this.lastSelected;
+		}		
+
 
 		this.getBoxFromIndex = function(i){
 			return this.boxes[i];
@@ -2476,10 +2484,11 @@ define('Grid',[
 				}
 			}				
 
-
-			var r = Math.min(1,ns/this.bounceMargin);//percent of bounce margin traveled
-			var ez = Math.min(1,easings.easeOutQuart(null,r,0,1,1));
-			this.setScrollPos(D*ez,true)
+			if(!this.hasMediumGridDimsSi){
+				var r = Math.min(1,ns/this.bounceMargin);//percent of bounce margin traveled
+				var ez = Math.min(1,easings.easeOutQuart(null,r,0,1,1));
+				this.setScrollPos(D*ez,true)
+			}
 		}
 		
 		//this.page = -Math.floor(this.scrollPos/this.boxAxisLengths[this.si])-1;//TODO: REMOVE if page number is not needed.
@@ -2592,16 +2601,16 @@ define('Grid',[
 		return obj;
 	}
 	
-	Grid.prototype.easeToNextStepItem = function(){
-		var obj = this.getClosestScrollOriginObj();
-		var next = this.getBoxFromIndex(obj.index+1 || null);
+	Grid.prototype.easeToNextStepItem = function(o){
+		var obj = o || this.getClosestScrollOriginObj();
+		var next = this.getBoxFromIndex(obj.index+1);
 		this.easeObjTo(this.easeToCompensation,next||obj)
 		this.$e.trigger('stepItemFocus',next);
 		return next;
 	}
-	Grid.prototype.easeToPrevStepItem = function(){
-		var obj = this.getClosestScrollOriginObj();
-		var prev = this.getBoxFromIndex(obj.index-1 || null);
+	Grid.prototype.easeToPrevStepItem = function(o){
+		var obj = o || this.getClosestScrollOriginObj();
+		var prev = this.getBoxFromIndex(obj.index-1);
 		this.easeObjTo(this.easeToCompensation,prev||obj)
 		this.$e.trigger('stepItemFocus',prev);
 		return prev;
@@ -3175,6 +3184,7 @@ define('Grid',[
 
 	Grid.prototype.handleGesture = function(ev){
 		// if(window.isDragging) return;
+		// var that = this;
 
 		switch(ev.type) {
 
@@ -3261,6 +3271,9 @@ define('Grid',[
 
 
 				this.isTouching=true;
+
+				if(!this.getLastSelected())
+					this.setLastSelected(this.getClosestScrollOriginObj());
 				
 				//incase we are at the begining of a touch event or incase this is a fallthrough WheelEvent
 				if(fingeredOffset==0 || /wheel|scroll/.test(ev.type)){
@@ -3298,11 +3311,12 @@ define('Grid',[
 				var m = -ev.gesture.velocityX;
 
 				if(this.steppedScrolling)
-					this.easeToNextStepItem();
+					this.easeToNextStepItem(this.getLastSelected());
 				else
 					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
+				this.setLastSelected();
 				break;
 
 			case 'swiperight':
@@ -3313,11 +3327,12 @@ define('Grid',[
 				var m = ev.gesture.velocityX;
 
 				if(this.steppedScrolling)
-					this.easeToPrevStepItem();
+					this.easeToPrevStepItem(this.getLastSelected());
 				else
 					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
+				this.setLastSelected();
 				break;
 				
 			case 'swipeup':
@@ -3328,11 +3343,12 @@ define('Grid',[
 				var m = -ev.gesture.velocityY;
 
 				if(this.steppedScrolling)
-					this.easeToNextStepItem();
+					this.easeToNextStepItem(this.getLastSelected());
 				else
 					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
+				this.setLastSelected();
 				break;
 
 			case 'swipedown':
@@ -3343,11 +3359,12 @@ define('Grid',[
 				var m = ev.gesture.velocityY;
 
 				if(this.steppedScrolling)
-					this.easeToPrevStepItem();
+					this.easeToPrevStepItem(this.getLastSelected());
 				else
 					this.startEasing(m,ev)
 
 				this.tagLastUserEvent(ev);
+				this.setLastSelected();
 				break;
 		
 			case 'touch':
@@ -3388,6 +3405,7 @@ define('Grid',[
 				}
 
 				this.tagLastUserEvent(ev);
+				this.setLastSelected();
 				break;                  
 				
 		}//switch
@@ -3410,7 +3428,7 @@ define('Grid',[
 
 
 /** 
-*   TremulaJS 1.2.4 https://github.com/garris/TremulaJS
+*   TremulaJS 1.3.1 https://github.com/garris/TremulaJS
 *   Copyright (C) 2014, Art.com 
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -3522,7 +3540,7 @@ define('Tremula',[
 				transitionCurve					:easings.easeOutCubic,
 				easeTime        				:500,
 				springLimit 						:20 //in px
-															 },
+			},
 			scrollAxis 							:'x',
 			itemConstraint 					:null,
 			staticAxisCount 				:0
@@ -3623,6 +3641,7 @@ define('Tremula',[
 
 })
 
-   ;
+   
+;
 require(["Tremula"]);
 }());
