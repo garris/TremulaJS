@@ -3237,7 +3237,7 @@ define('Grid',[
 			case 'dragleft':
 
 
-			// === manually block page scroll ===
+			// === manually block cross axis page scroll ===
 			// if in horizontal config and the user is scrolling horizontally
 			// or if in vertical config and the user is scrolling vertically
 
@@ -3249,20 +3249,17 @@ define('Grid',[
 
 			}else if(this.sx){//is horizontal config
 
-
-				// if(ev.gesture.deltaX != 0){//this old bit was recently disabled
-					if(Math.abs(ev.gesture.deltaY/ev.gesture.deltaX) <= 1){ // if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
+					//ignore firefox DOMMouseScroll events
+					if(!/DOMMouseScroll/.test(ev.type) && Math.abs(ev.gesture.deltaY/ev.gesture.deltaX) <= 1){ // if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
 						shuntEvent(ev);
 					}
-				// }
 
 			}else{// is vertical config
 
-				// if(ev.gesture.deltaY != 0){//this old bit was recently disabled -- not needed now?
-					if(Math.abs(ev.gesture.deltaX/ev.gesture.deltaY) <= 1){ // if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
+					//ignore firefox DOMMouseScroll events
+					if(!/DOMMouseScroll/.test(ev.type) && Math.abs(ev.gesture.deltaX/ev.gesture.deltaY) <= 1){ // if this ratio is 1 or less then the user is scrolling the scroll axis: so block native events
 						shuntEvent(ev);
 					}
-				// }
 
 			}// config case
 			// === END: manually block page scroll  === 
@@ -3274,7 +3271,9 @@ define('Grid',[
 
 				if(!this.getLastSelected())
 					this.setLastSelected(this.getClosestScrollOriginObj());
-				
+			
+
+
 				//incase we are at the begining of a touch event or incase this is a fallthrough WheelEvent
 				if(fingeredOffset==0 || /wheel|scroll/.test(ev.type)){
 					fingeredOffset = this.scrollPos;
