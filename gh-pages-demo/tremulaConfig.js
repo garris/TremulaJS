@@ -6,7 +6,7 @@ tremulaConfigs = {
 			data                : null,
 			maxWidthClassMap		: {mini:50,small:143,medium:244,large:2000},//large will apply to anything over medium limit
 			lastContentBlock 		: {
-				template :'<div class="lastContentItem">This item will remain at the end of the stream.  Use it for a loading message continer if you like.</div>',
+				template :'<div class="lastContentItem">This item will remain at the end of the stream.  Use it for a loading message container if you like.</div>',
 				layoutType :'tremulaBlockItem',
 				noScaling:true,
 				w:300,
