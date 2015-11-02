@@ -6,6 +6,7 @@ function stopwatch(label, resolution) {
     label = '';
   }
   this.label = label;
+  this.isRunning = false;
   this.lastLapTime = 0.0;
   this.startTime = 0.0;
   this.stopTime = 0.0;
@@ -48,9 +49,11 @@ function stopwatch(label, resolution) {
     if (toConsole) {
       console.log(label + ' ' + this.selfTime + "ms")
     }
+    this.isRunning = false;
     return this.selfTime;
   };
   this.start = () => {
+   this.isRunning = true;
    this.startTime = this.getTime();   
   };
   this.start();
