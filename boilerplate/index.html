@@ -3,7 +3,7 @@
 	<head>
 		<title>TremulaJS</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-		
+
 
 		<link rel="stylesheet" href="../dist/Tremula.css">
 
@@ -21,7 +21,7 @@
 				-khtml-user-select: none;
 				-moz-user-select: none;
 				-ms-user-select: none;
-				user-select: none;				
+				user-select: none;
 			}
 
 
@@ -45,12 +45,12 @@
 				border:#fff 10px solid;
 				margin: -10px 0 0 -10px;
 			}
-			
+
 			.moneyShot{
 				width:100%;
 			}
-			
-			
+
+
 			/* .tremulaContainer must have actual dimentionality (set H&W) */
 			.tremulaContainer{
 				height:400px;
@@ -64,7 +64,7 @@
 			}
 
 		</style>
-		
+
 		<script src="../libs/jquery-min.js"></script>
 		<script src="../libs/hammer.js"></script>
 		<script src="../libs/jsBezier-0.6.js"></script>
@@ -78,8 +78,29 @@
 			$(document).ready(function(){
 				setTimeout(function(){
 					window.tremula = tremulaInit();//does not need to be on the window -- implemented here for convienience.
-					loadFlickr()
+
+          var data = [
+            {"id":"14770557605","owner":"77358520@N00","secret":"87c851194c","server":"5591","farm":6,"title":"Paris","ispublic":1,"isfriend":0,"isfamily":0,"url_n":"https://farm6.staticflickr.com/5591/14770557605_87c851194c_n.jpg","height_n":"320","width_n":212},
+            {"id":"14770224262","owner":"77358520@N00","secret":"398cbf9839","server":"3858","farm":4,"title":"Paris","ispublic":1,"isfriend":0,"isfamily":0,"url_n":"https://farm4.staticflickr.com/3858/14770224262_398cbf9839_n.jpg","height_n":"320","width_n":240},
+            {"id":"14770557605","owner":"77358520@N00","secret":"87c851194c","server":"5591","farm":6,"title":"Paris","ispublic":1,"isfriend":0,"isfamily":0,"url_n":"https://farm6.staticflickr.com/5591/14770557605_87c851194c_n.jpg","height_n":"320","width_n":212},
+            {"id":"14770224262","owner":"77358520@N00","secret":"398cbf9839","server":"3858","farm":4,"title":"Paris","ispublic":1,"isfriend":0,"isfamily":0,"url_n":"https://farm4.staticflickr.com/3858/14770224262_398cbf9839_n.jpg","height_n":"320","width_n":240},
+            {"id":"14768250614","owner":"77358520@N00","secret":"dfa428e6ec","server":"3862","farm":4,"title":"Paris","ispublic":1,"isfriend":0,"isfamily":0,"url_n":"https://farm4.staticflickr.com/3862/14768250614_dfa428e6ec_n.jpg","height_n":212,"width_n":"320"}
+          ];
+
+          function dataAdapter(data,env){
+            this.data = data;
+            this.w = this.width = data.width_n;
+            this.h = this.height = data.height_n;
+            this.imgUrl = data.url_n;
+            this.auxClassList = "flickrRS";//stamp each mapped item with map ID
+            this.template = this.data.template||('<img draggable="false" onload="imageLoaded(this)" class="moneyShot" src=""/>');
+          }
+          tremula.appendData(data,dataAdapter);
+          tremula.cache.endOfScrollFlag = false;
+
+
 				},1000);
+
 			});
 
 
@@ -87,7 +108,7 @@
 
 			function tremulaInit(){
 
-				// .tremulaContainer must exist and have actual dimentionality 
+				// .tremulaContainer must exist and have actual dimentionality
 				// requires display:block with an explicitly defined H & W
 				$tremulaContainer = $('.tremulaContainer');
 
@@ -97,14 +118,14 @@
 				//Create a config object -- this is how most default behaivior is set.
 				//see updateConfig(prop_val_object,refreshStreamFlag) method to change properties of a running instance
 				var config = {
-					
+
 					//method called after each frame is painted. Passes internal parameter object.
 					//see fn definition below
 					onChangePub					: doScrollEvents,
 
 					//content/stream data can optionally be passed in on init()
 					data                : null,
-					
+
 					// lastContentBlock enables a persistant content block to exist at the end of the stream at all times.
 					// Common use case is to target $('.lastContentItem') with a conditional loading spinner when API is churning.
 					lastContentBlock 		: {
@@ -163,7 +184,7 @@
 					// (x) mountain
 					// (x) turntable
 					// (x) enterTheDragon
-					// (x) userProjection  [Note: use without namespace like this   surfaceMap:userProjection,  <-- the userProjection is at the bottom of this file...] 
+					// (x) userProjection  [Note: use without namespace like this   surfaceMap:userProjection,  <-- the userProjection is at the bottom of this file...]
 					//----------------------
 					surfaceMap          :tremula.projections.streamHorizontal,
 
@@ -183,12 +204,12 @@
 						springLimit         :40 //in px
 					}
 				};
-				
-				//initalize the tremula instance with 3 parameters: 
+
+				//initalize the tremula instance with 3 parameters:
 				//a DOM container, a config object, and a parent context
 				tremula.init($tremulaContainer,config,this);
 
-				//return the tremula hook 
+				//return the tremula hook
 				return tremula;
 			}
 
@@ -213,7 +234,7 @@
 
 			//Basic example of API integration
 			//=================================
-			//DATA FUNCTIONS OF NOTE: 
+			//DATA FUNCTIONS OF NOTE:
 			//tremula.refreshData(returned_set_array,dataAdapter)//replaces current data set with returned_set_array
 			//tremula.appendData(returned_set_array,dataAdapter)//appends current data set with returned_set_array
 			//tremula.insertData(returned_set_array,dataAdapter)//prepends current data set with returned_set_array
@@ -224,7 +245,7 @@
 				$.ajax({
 					url:dataUrl
 					,dataType: 'jsonp'
-					,jsonp: 'jsoncallback' 
+					,jsonp: 'jsoncallback'
 				})
 				.done(function(res){
 					console.log('API success',res);
@@ -245,7 +266,7 @@
 				this.w = this.width = data.width_z;
 				this.h = this.height = data.height_z;
 				this.imgUrl = data.url_z;
-				this.auxClassList = "flickrRS";//stamp each mapped item with map ID 
+				this.auxClassList = "flickrRS";//stamp each mapped item with map ID
 				this.template = this.data.template||('<img draggable="false" class="moneyShot" onload="imageLoaded(this)" src=""/>');
 			}
 
@@ -254,11 +275,11 @@
 			// ----------------------------
 			// EXAMPLE: tremula.Grid.updateConfig({itemConstraint:100},true);
 			// ----------------------------
-			// Use toggleScrollAxis() to set the scrollAxis, 
-			// NOTE: not all projections will work with this setting. 
+			// Use toggleScrollAxis() to set the scrollAxis,
+			// NOTE: not all projections will work with this setting.
 			// see: surfaceMap projection compatibility list above
 			// ----------------------------
-			// EXAMPLE: tremula.Grid.toggleScrollAxis('y'); 
+			// EXAMPLE: tremula.Grid.toggleScrollAxis('y');
 			// ----------------------------
 
 
@@ -285,7 +306,7 @@
 
 				var curve = userPath;
 
-				var 
+				var
 				grid0 = this.parent.gridDims[0],
 				grid1 = this.parent.gridDims[1],
 				axisLength = this.parent.currentGridContentDims,
@@ -301,7 +322,7 @@
 				];
 
 				var cubicBezier = jsBezier.factorCurveBy(curve,xyFactor);
-	
+
 				var p = jsBezier.pointOnCurve(cubicBezier, tRamp);
 				var g = jsBezier.gradientAtPoint(cubicBezier, tRamp);
 
@@ -312,7 +333,7 @@
 				var zo = 0;
 
 				this.e.style.transformOrigin = this.e.style.webkitTransformOrigin = this.e.style.MozTransformOrigin = '50%';
-	
+
 				this.e.style.transform = this.e.style.MozTransform = this.e.style.webkitTransform = 'translate3d(' + xo + 'px,' + yo +'px, ' + zo + 'px)'
 
 				var z = 10000-this.index;
@@ -336,12 +357,12 @@
 
 	<body class="doReflect">
 
-		
+
 		<div class="tremulaContainer"></div>
 		<h1>TremulaJS</h1>
 
 	</body>
-	
+
 </html>
 
 
