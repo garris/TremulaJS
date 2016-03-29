@@ -67,7 +67,12 @@ To view the functionality, open the [demo here](http://garris.github.io/TremulaJ
 
 
 
-### Running the local test server
+### Running with local data
+
+TremulaJS is happy to run with a local data source.  You will need to make sure your browser is not throwing a security error though.  Safari typically does not have an issue with this.  If you prefer to use chrome you can do a google search to find out how to disable _same origin policy_.  Or, you can just run the handy server -- follow the instructions below...  
+
+
+### Running locally with the local test server
 
 cd to the tremulajs directory then...
 
@@ -76,7 +81,11 @@ cd to the tremulajs directory then...
      
 ### Running mocha.js tests
 
-with the test server running (or you can skip that part and use a browser with same origin policy disabled)
+Running tests will require MochaJS. To add, cd to the tremulajs directory then run...
+
+    $ npm install
+
+Then you can run the test script with the test server running (or you can skip that part and use a browser with same origin policy disabled)
 
     $ open http://localhost:3000/test.html
      
