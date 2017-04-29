@@ -1,5 +1,7 @@
 # TremulaJS
 
+[![CDNJS](https://img.shields.io/cdnjs/v/TremulaJS.svg)](https://cdnjs.com/libraries/TremulaJS)
+
 **Picture Streams + Momentum Engine + Bézier Paths + Cross-Browser + Cross-Device**  
 
 TremulaJS is a client-side javascript UI component providing Bézier-based content-stream interactions with momentum & physics effects for mouse, scroll and and touch UIs. 
