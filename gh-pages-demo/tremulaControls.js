@@ -358,7 +358,7 @@ function attachDemoControls(tremula){
 	$(window).on('resize', $.debounce(250, function(){ resizeFn(tremula) }) );
 
 	$(".loadArtDotCom").click(function(){loadArtDotCom(null,postLoadSeq)});
-	$(".loadFlickr").click(function(){loadFlickr(null,postLoadSeq)})
+	$(".loadFlickr").click(function(){loadFlickr(null,null)})
 
 
 
