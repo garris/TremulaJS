@@ -503,7 +503,8 @@ function attachDemoControls(tremula){
 	// loadMountainPop()
 	// loadCarouselWithPop()
 	// loadHorizontalPop()
-	loadArtDotCom(null,postLoadSeq)//uncomment to load basic demo dataset
+// 	loadArtDotCom(null,postLoadSeq)//uncomment to load basic demo dataset
+	loadFlickr(null,null)
 
 
 	// loadTestData(
