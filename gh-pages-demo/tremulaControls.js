@@ -503,14 +503,14 @@ function attachDemoControls(tremula){
 	// loadMountainPop()
 	// loadCarouselWithPop()
 	// loadHorizontalPop()
-	loadArtDotCom(null,postLoadSeq)//uncomment to load basic demo dataset
-
+	// loadArtDotCom(null,postLoadSeq)//uncomment to load basic demo dataset
+	loadFlickr(null,null)//uncomment to load basic demo dataset
 
 	// loadTestData(
 	// 	// 'test/ctrls_5.json',
-	// 	'test/flickr_10_allRect.json',
+	// 	// 'test/flickr_10_allRect.json',
 	// 	// 'test/flickr_10.json',
-	// 	// 'test/flickr_25.json',
+	// 	'test/flickr_25.json',
 	// 	postLoadSeq //<---- this is here for the stepped scrolling test
 	// );
 
