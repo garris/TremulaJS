@@ -28,7 +28,7 @@ Licensed under GPLv3.
 
 - See [the demo video](https://vimeo.com/99481197) (2.5 min), illustrating some of the visual possibilities.  
 
-- Play with the [live component demo](http://garris.github.com/TremulaJS)  
+- Play with the [live component demo](http://garris.github.io/TremulaJS)  
 
 - Experiment with the configuration file on [CodePen](http://codepen.io/garris/pen/bevqG?editors=001)  
 
