@@ -12,21 +12,7 @@ TremulaJS is a client-side javascript UI component providing Bézier-based conte
 
 <a href="https://vimeo.com/99481197">![tremula vimeo image](docs/vimeo.png)</a>
 
-While there are some monumental physics-based JS animation frameworks out there -- most notably, [famo.us](http://famo.us), [gsap](http://greensock.com/gsap) and [velocity.js](http://velocityjs.org/) -- TremulaJS was built with a very specific end in mind: to enable the kind of long-running, low-friction user interactions one might enjoy when navigating large sets of visual data.
-
-See TremulaJS in the wild: <a href="http://www.art.com/discover/keyword--gogh/posters.htm?searchstring=GOGH" title="TremulaJS on art.com" target="_blank">currently in production on Art.com</a>.
-
-TremulaJS is compatible with all recent versions of iOS Safari, Chrome, OS X Safari, FF, IE.
-
-TremulaJS was created by [Garris Shipon](http://garriss.wordpress.com/) at [Art.com Labs](http://art.com/).  
-
-Licensed under GPLv3.
-
-**follow [@garris](https://twitter.com/garris)**  
-
-## More info...
-
-- See [the demo video](https://vimeo.com/99481197) (2.5 min), illustrating some of the visual possibilities.  
+## More...
 
 - Play with the [live component demo](http://garris.github.io/TremulaJS)  
 
